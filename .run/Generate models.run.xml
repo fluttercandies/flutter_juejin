@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Generate models" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+    <option name="arguments" value="model" />
+    <option name="filePath" value="$PROJECT_DIR$/tools/jj.dart" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,0 +1,25 @@
+// Copyright 2022 The FlutterCandies author. All rights reserved.
+// Use of this source code is governed by a MIT license that can be found in the
+// LICENSE file.
+
+import '../internals/urls.dart';
+import '../models/data_model.dart';
+import '../models/response_model.dart';
+import '../utils/http_util.dart';
+
+class RecommendAPI {
+  const RecommendAPI._();
+
+  static const String _api = '${Urls.apiHost}/recommend_api/v1';
+  static const String articles = '$_api/article';
+
+  static Future<ResponseModel<FeedModel>> getAllFeedArticles({
+    int limit = 20,
+  }) {
+    return HttpUtil.fetchModels(
+      FetchType.post,
+      url: '$articles/recommend_all_feed',
+      body: <String, dynamic>{'limit': limit},
+    );
+  }
+}

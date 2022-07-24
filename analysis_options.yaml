@@ -3,15 +3,18 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - "lib/models/**.g.dart"
-    - "lib/routes/**.dart"
 
 linter:
   rules:
     avoid_print: true
     constant_identifier_names: false
-    prefer_const_constructors:
+    prefer_const_constructors: true
     prefer_const_constructors_in_immutables: true
     prefer_const_declarations: true
     prefer_const_literals_to_create_immutables: true
     prefer_single_quotes: true
     require_trailing_commas: grue
+    sort_child_properties_last: true
+    sort_constructors_first: true
+    sort_pub_dependencies: true
+    sort_unnamed_constructors_first: true

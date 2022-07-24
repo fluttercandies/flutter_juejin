@@ -3,6 +3,7 @@
 // LICENSE file.
 
 import 'package:flutter/material.dart';
+@FFArgumentImport()
 import 'package:juejin/exports.dart';
 
 @FFRoute(name: 'home-page')
@@ -24,8 +25,13 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> refresh() async {
     safeSetState(() => _feeds = null);
-    final feeds = await RecommendAPI.getAllFeedArticles();
-    safeSetState(() => _feeds = feeds.models);
+    tryCatchResponse(
+      request: RecommendAPI.getAllFeedArticles(),
+      onSuccess: (ResponseModel<FeedModel> res) => safeSetState(
+        () => _feeds = res.models,
+      ),
+      reportType: (_) => 'fetch articles feed',
+    );
   }
 
   Widget itemBuilder(BuildContext context, int index) {
@@ -50,9 +56,9 @@ class _HomePageState extends State<HomePage> {
         bottom: false,
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: const JJLogo(heroTag: defaultLogoHeroTag),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: JJLogo(heroTag: defaultLogoHeroTag),
             ),
             if (_feeds == null)
               const Expanded(child: Center(child: CircularProgressIndicator()))
@@ -68,8 +74,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh),
         onPressed: refresh,
+        child: const Icon(Icons.refresh),
       ),
     );
   }
@@ -83,7 +89,7 @@ class _ArticleWidget extends StatelessWidget {
   Widget _buildTitle(BuildContext context) {
     return Text(
       article.articleInfo.title,
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
@@ -150,7 +156,7 @@ class _ArticleWidget extends StatelessWidget {
     final int count = article.articleInfo.diggCount;
     return Row(
       children: <Widget>[
-        Icon(Icons.thumb_up_alt_outlined),
+        const Icon(Icons.thumb_up_alt_outlined),
         const Gap.h(4),
         Text(count == 0 ? '点赞' : '$count'),
       ],
@@ -161,7 +167,7 @@ class _ArticleWidget extends StatelessWidget {
     final int count = article.articleInfo.commentCount;
     return Row(
       children: <Widget>[
-        Icon(Icons.message_outlined),
+        const Icon(Icons.message_outlined),
         const Gap.h(4),
         Text(count == 0 ? '评论' : '$count'),
       ],
@@ -170,7 +176,7 @@ class _ArticleWidget extends StatelessWidget {
 
   Widget _buildCategory(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
         borderRadius: RadiusConstants.r2,
         color: context.theme.dividerColor.withOpacity(.05),
@@ -182,57 +188,67 @@ class _ArticleWidget extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: context.theme.cardColor,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildTitle(context),
-          const Gap.v(10),
-          SizedBox(
-            height: 64,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _buildInfo(context),
-                      _buildBrief(context),
-                    ],
-                  ),
-                ),
-                if (article.articleInfo.coverImage.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 10),
-                    child: _buildCoverImage(context),
-                  ),
-              ],
-            ),
-          ),
-          const Gap.v(10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildContent(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _buildTitle(context),
+        const Gap.v(10),
+        SizedBox(
+          height: 64,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              _buildInteractions(context),
-              _buildCategory(context),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildInfo(context),
+                    _buildBrief(context),
+                  ],
+                ),
+              ),
+              if (article.articleInfo.coverImage.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 10),
+                  child: _buildCoverImage(context),
+                ),
             ],
           ),
-        ],
+        ),
+        const Gap.v(10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            _buildInteractions(context),
+            _buildCategory(context),
+          ],
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Tapper(
+      onTap: () => context.navigator.pushNamed(
+        Routes.articleDetailPage.name,
+        arguments: Routes.articleDetailPage.d(article: article),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: context.theme.cardColor,
+        ),
+        child: _buildContent(context),
       ),
     );
   }
 }
 
 class _AdvertiseWidget extends StatelessWidget {
-  const _AdvertiseWidget(this.ad, {super.key});
+  const _AdvertiseWidget(this.ad, {Key? key}) : super(key: key);
 
   final AdvertiseItemModel ad;
 
@@ -261,7 +277,7 @@ class _AdvertiseWidget extends StatelessWidget {
           Text(ad.ctime),
           const Spacer(),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
             decoration: BoxDecoration(
               borderRadius: RadiusConstants.r2,
               color: context.theme.dividerColor.withOpacity(.05),

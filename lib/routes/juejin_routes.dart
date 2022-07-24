@@ -4,14 +4,25 @@
 // **************************************************************************
 // ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import,unnecessary_import
 import 'package:flutter/foundation.dart';
+import 'package:juejin/exports.dart';
 
 const List<String> routeNames = <String>[
+  'article-detail-page',
   'home-page',
   'splash-page',
 ];
 
 class Routes {
   const Routes._();
+
+  /// 'article-detail-page'
+  ///
+  /// [name] : 'article-detail-page'
+  ///
+  /// [constructors] :
+  ///
+  /// ArticleDetailPage : [Key? key, ArticleItemModel(required) article]
+  static const _ArticleDetailPage articleDetailPage = _ArticleDetailPage();
 
   /// 'home-page'
   ///
@@ -30,6 +41,24 @@ class Routes {
   ///
   /// SplashPage : [Key? key]
   static const _SplashPage splashPage = _SplashPage();
+}
+
+class _ArticleDetailPage {
+  const _ArticleDetailPage();
+
+  String get name => 'article-detail-page';
+
+  Map<String, dynamic> d({
+    Key? key,
+    required ArticleItemModel article,
+  }) =>
+      <String, dynamic>{
+        'key': key,
+        'article': article,
+      };
+
+  @override
+  String toString() => name;
 }
 
 class _HomePage {

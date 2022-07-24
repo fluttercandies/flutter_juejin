@@ -3,6 +3,7 @@ export 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 export 'package:flutter/services.dart' show HapticFeedback, TextInputFormatter;
 export 'package:flutter_svg/flutter_svg.dart' show SvgPicture;
 
+export 'apis/content_api.dart';
 export 'apis/recommend_api.dart';
 
 export 'constants/constants.dart';
@@ -39,3 +40,4 @@ export 'utils/toast_util.dart';
 export 'widgets/error_widget.dart';
 export 'widgets/gaps.dart';
 export 'widgets/logo.dart';
+export 'widgets/tapper.dart';

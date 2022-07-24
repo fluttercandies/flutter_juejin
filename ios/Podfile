@@ -47,7 +47,7 @@ def install_plugin_pods(application_path = nil, relative_symlink_dir, platform)
     plugin_name = plugin_hash['name']
     plugin_path = plugin_hash['path']
     has_native_build = plugin_hash.fetch('native_build', true)
-    if (plugin_name && plugin_path && has_native_build) {
+    if (plugin_name && plugin_path && has_native_build)
       specPath = "#{plugin_path}/#{platform}/#{plugin_name}.podspec"
       pod plugin_name, :path => specPath
     end

@@ -24,7 +24,8 @@ enum FetchType { head, get, post, put, patch, delete }
 class HttpUtil {
   const HttpUtil._();
 
-  static const String tag = '🌐 HttpUtil';
+  static const String _tag = '🌐 HttpUtil';
+  static bool isLogging = false;
 
   static final Dio dio = Dio()
     ..options = dioBaseOptions
@@ -59,7 +60,7 @@ class HttpUtil {
     FetchType fetchType, {
     required String url,
     Map<String, String>? queryParameters,
-    dynamic body,
+    Object? body,
     Json? headers,
     ResponseType? responseType,
     CancelToken? cancelToken,
@@ -103,9 +104,9 @@ class HttpUtil {
         resBody!,
         modelFilter: modelFilter,
       );
-      LogUtil.d('Response model: $model', tag: tag);
+      _log('Response model: $model');
       if (!model.isSucceed) {
-        LogUtil.d('Response is not succeed: ${model.msg}', tag: tag);
+        _log('Response is not succeed: ${model.msg}');
       }
       return model;
     } else {
@@ -160,26 +161,25 @@ class HttpUtil {
           filePath = '$tempPath/$filename';
           final File file = File(filePath);
           if (file.existsSync() && deleteIfExist) {
-            LogUtil.d('Deleting existing download file: $filePath', tag: tag);
+            _log('Deleting existing download file: $filePath');
             file.deleteSync();
           }
           if (file.existsSync()) {
             if (openAfterDownloaded) {
-              LogUtil.d('File exist in $filePath, opening...', tag: tag);
+              _log('File exist in $filePath, opening...');
               _openFile(filePath);
             } else {
-              LogUtil.d('File exist in $filePath.', tag: tag);
+              _log('File exist in $filePath.');
             }
             completer.complete(filePath);
             cancelToken!.cancel();
             stopwatch.stop();
             return filePath;
           }
-          LogUtil.d(
+          _log(
             'File start download:\n'
             '[URL ]: $url\n'
             '[PATH]: $filePath',
-            tag: tag,
           );
           return filePath;
         },
@@ -195,10 +195,7 @@ class HttpUtil {
             newProgress = (count / total).toStringAsFixed(2);
           }
           if (newProgress != progress) {
-            LogUtil.d(
-              'File download progress: $newProgress ($filename)',
-              tag: tag,
-            );
+            _log('File download progress: $newProgress ($filename)');
             progress = newProgress;
           }
           progressCallback?.call(count, total);
@@ -214,7 +211,7 @@ class HttpUtil {
         final int speed = totalContentLength ~/ stopwatch.elapsed.inSeconds;
         sb.write('\n[SPEED]: ${speed.fileSizeFromBytes}/s');
       }
-      LogUtil.d(sb.toString(), tag: tag);
+      _log(sb.toString());
       if (openAfterDownloaded) {
         _openFile(filePath);
       }
@@ -224,11 +221,11 @@ class HttpUtil {
         completer.completeError(e, s);
       }
     } catch (e, s) {
-      LogUtil.e(
+      _log(
         'File download failed: $e\n'
         '[URL ]: $url\n',
         stackTrace: s,
-        tag: tag,
+        isError: true,
       );
       completer.completeError(e, s);
     }
@@ -263,11 +260,11 @@ class HttpUtil {
 
   static Future<OpenResult?> _openFile(String path) async {
     try {
-      LogUtil.d('Opening file $path...', tag: tag);
+      _log('Opening file $path...');
       final OpenResult result = await OpenFile.open(path);
       return result;
-    } catch (e) {
-      LogUtil.e('Error when opening file [$path]: $e', tag: tag);
+    } catch (e, s) {
+      _log('Error when opening file [$path]: $e', stackTrace: s, isError: true);
       return null;
     }
   }
@@ -276,24 +273,24 @@ class HttpUtil {
     Response<dynamic> response,
   ) {
     final int statusCode = response.statusCode ?? 0;
-    LogUtil.d('Response status code: ${response.statusCode}', tag: tag);
+    _log('Response status code: ${response.statusCode}');
     if (statusCode >= 200 && statusCode < 300) {
-      LogUtil.d('Response code success: $statusCode', tag: tag);
+      _log('Response code success: $statusCode');
       return _successModel();
     } else if (statusCode >= 300 && statusCode < 400) {
-      LogUtil.d('Response code moved: $statusCode', tag: tag);
+      _log('Response code moved: $statusCode');
       return _successModel();
     } else if (statusCode >= 400 && statusCode < 500) {
       final String message = 'Response code client error: $statusCode';
-      LogUtil.d(message, tag: tag);
+      _log(message);
       return _failModel(message);
     } else if (statusCode >= 500) {
       final String message = 'Response code server error: $statusCode';
-      LogUtil.d(message, tag: tag);
+      _log(message);
       return _failModel(message);
     } else {
       final String message = 'Response code unknown status: $statusCode';
-      LogUtil.d(message, tag: tag);
+      _log(message);
       return _failModel(message);
     }
   }
@@ -302,7 +299,7 @@ class HttpUtil {
     FetchType fetchType, {
     required String url,
     Map<String, String?>? queryParameters,
-    dynamic body,
+    Object? body,
     Json? headers,
     ResponseType? responseType = ResponseType.json,
     CancelToken? cancelToken,
@@ -310,6 +307,9 @@ class HttpUtil {
   }) async {
     if (!url.startsWith('http(s?)://')) {
       url = 'https://$url';
+    }
+    if (body is Map && !body.containsKey('client_type')) {
+      body['client_type'] = 2606; // Indicates client type.
     }
     headers ??= <String, String?>{};
     // System headers.
@@ -322,7 +322,7 @@ class HttpUtil {
           MapEntry<String, dynamic>(key, value.toString()),
     );
     if (effectiveHeaders.isNotEmpty) {
-      LogUtil.d('$fetchType headers: $effectiveHeaders', tag: tag);
+      _log('$fetchType headers: $effectiveHeaders');
     }
     final Uri replacedUri = Uri.parse(url).replace(
       queryParameters: queryParameters?.map<String, String>(
@@ -338,49 +338,49 @@ class HttpUtil {
     );
 
     final Response<T> response;
-    final String requestUrlString = replacedUri.toString();
     switch (fetchType) {
       case FetchType.head:
-        response = await dio.head(
-          requestUrlString,
+        response = await dio.headUri(
+          replacedUri,
+          data: body,
           options: options,
           cancelToken: cancelToken,
         );
         break;
       case FetchType.get:
-        response = await dio.get(
-          requestUrlString,
+        response = await dio.getUri(
+          replacedUri,
           options: options,
           cancelToken: cancelToken,
         );
         break;
       case FetchType.post:
-        response = await dio.post(
-          requestUrlString,
+        response = await dio.postUri(
+          replacedUri,
           data: body,
           options: options,
           cancelToken: cancelToken,
         );
         break;
       case FetchType.put:
-        response = await dio.put(
-          requestUrlString,
+        response = await dio.putUri(
+          replacedUri,
           data: body,
           options: options,
           cancelToken: cancelToken,
         );
         break;
       case FetchType.patch:
-        response = await dio.patch(
-          requestUrlString,
+        response = await dio.patchUri(
+          replacedUri,
           data: body,
           options: options,
           cancelToken: cancelToken,
         );
         break;
       case FetchType.delete:
-        response = await dio.delete(
-          requestUrlString,
+        response = await dio.deleteUri(
+          replacedUri,
           data: body,
           options: options,
           cancelToken: cancelToken,
@@ -393,22 +393,34 @@ class HttpUtil {
     return response;
   }
 
+  static void _log(
+    Object? message, {
+    StackTrace? stackTrace,
+    bool isError = false,
+  }) {
+    if (isLogging) {
+      if (isError) {
+        LogUtil.e(message, stackTrace: stackTrace, tag: _tag);
+      } else {
+        LogUtil.d(message, stackTrace: stackTrace, tag: _tag);
+      }
+    }
+  }
+
   static QueuedInterceptorsWrapper get _interceptor {
     return QueuedInterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
-        LogUtil.d('Fetching(${options.method}) url: ${options.uri}', tag: tag);
+        _log('Fetching(${options.method}) url: ${options.uri}');
         if (options.data != null) {
-          LogUtil.d('Raw request body: ${options.data}', tag: tag);
+          _log('Raw request body: ${options.data}');
         }
         handler.next(options);
       },
       onResponse: (Response<dynamic> res, ResponseInterceptorHandler handler) {
-        LogUtil.d(
-          'Got response from: ${res.requestOptions.uri} '
-          '${res.statusCode}',
-          tag: tag,
+        _log(
+          'Got response from: ${res.requestOptions.uri} ${res.statusCode}',
         );
-        LogUtil.d('Raw response body: ${res.data}', tag: tag);
+        _log('Raw response body: ${res.data}');
         dynamic resolvedData;
         if (res.statusCode == HttpStatus.noContent) {
           resolvedData = _successModel().toJson();
@@ -441,17 +453,17 @@ class HttpUtil {
           return;
         }
         if (kDebugMode) {
-          LogUtil.e(e, stackTrace: e.stackTrace, tag: tag);
+          _log(e, stackTrace: e.stackTrace, isError: true);
         }
         final bool isConnectionTimeout = e.type == DioErrorType.connectTimeout;
         final bool isStatusError = e.response != null &&
             e.response!.statusCode != null &&
             e.response!.statusCode! >= HttpStatus.internalServerError;
         if (!isConnectionTimeout && isStatusError) {
-          LogUtil.e(
+          _log(
             'Error when requesting ${e.requestOptions.uri}\n$e\n'
             'Raw response data: ${e.response?.data}',
-            stackTrace: null,
+            isError: true,
           );
         }
         if (e.response?.data is String) {

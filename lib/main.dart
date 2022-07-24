@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart' show DioError, DioErrorType;
 
 import 'app.dart';
 import 'exports.dart';
@@ -18,6 +19,9 @@ void main() {
     },
     (Object e, StackTrace s) {
       if (e is ModelError) {
+        return;
+      }
+      if (e is DioError && e.type == DioErrorType.cancel) {
         return;
       }
       HapticUtil.notifyFailure();

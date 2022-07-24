@@ -80,39 +80,7 @@ class HttpUtil {
     FetchType fetchType, {
     required String url,
     Map<String, String>? queryParameters,
-    dynamic body,
-    Json? headers,
-    ResponseType responseType = ResponseType.json,
-    CancelToken? cancelToken,
-  }) async {
-    final Response<Json> response = await getResponse(
-      fetchType,
-      url: url,
-      queryParameters: queryParameters,
-      body: body,
-      headers: headers,
-      responseType: responseType,
-      cancelToken: cancelToken,
-    );
-
-    final Json? resBody = response.data;
-    if (resBody?.isNotEmpty ?? false) {
-      final ResponseModel<T> model = ResponseModel<T>.fromJson(resBody!);
-      LogUtil.d('Response model: $model', tag: tag);
-      if (!model.isSucceed) {
-        LogUtil.d('Response is not succeed: ${model.msg}', tag: tag);
-      }
-      return model;
-    } else {
-      return _handleStatusCode(response);
-    }
-  }
-
-  static Future<ResponseModel<T>> fetchModels<T extends DataModel>(
-    FetchType fetchType, {
-    required String url,
-    Map<String, String?>? queryParameters,
-    dynamic body,
+    Object? body,
     Json? headers,
     ResponseType responseType = ResponseType.json,
     CancelToken? cancelToken,
@@ -133,7 +101,6 @@ class HttpUtil {
     if (resBody?.isNotEmpty ?? false) {
       final ResponseModel<T> model = ResponseModel<T>.fromJson(
         resBody!,
-        isModels: true,
         modelFilter: modelFilter,
       );
       LogUtil.d('Response model: $model', tag: tag);

@@ -11,14 +11,14 @@ class RecommendAPI {
   const RecommendAPI._();
 
   static const String _api = '${Urls.apiHost}/recommend_api/v1';
-  static const String articles = '$_api/article';
+  static const String _articles = '$_api/article';
 
   static Future<ResponseModel<FeedModel>> getAllFeedArticles({
     int limit = 20,
   }) {
-    return HttpUtil.fetchModels(
+    return HttpUtil.fetchModel(
       FetchType.post,
-      url: '$articles/recommend_all_feed',
+      url: '$_articles/recommend_all_feed',
       body: <String, dynamic>{'limit': limit},
     );
   }

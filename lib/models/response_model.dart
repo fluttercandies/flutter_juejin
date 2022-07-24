@@ -2,11 +2,17 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 
+import 'package:dio/dio.dart' show DioError, DioErrorType;
 import 'package:flutter/foundation.dart';
+import 'package:oktoast/oktoast.dart' show ToastPosition;
 
+import '../utils/log_util.dart';
+import '../utils/toast_util.dart';
 import 'data_model.dart';
 
 @immutable
@@ -50,7 +56,6 @@ class ResponseModel<T extends DataModel> {
 
   factory ResponseModel.fromJson(
     Json json, {
-    bool isModels = false,
     bool Function(Json json)? modelFilter,
   }) {
     List<T> makeModels(List<Json> list) {
@@ -60,18 +65,17 @@ class ResponseModel<T extends DataModel> {
       return list.map(makeModel<T>).toList();
     }
 
+    final Object? data = json['data'];
+    final bool hasData = data != null;
+    final bool isModels = data is List;
     return ResponseModel<T>(
       code: json['err_no'] as int? ?? codeSucceed,
       msg: json['err_msg'] as String? ?? errorExternalRequest,
-      data: !isModels && json['data'] != null
-          ? makeModel<T>(json['data'] as Json)
-          : null,
+      data: hasData && !isModels ? makeModel<T>(data as Json) : null,
       rawData: json['data'],
       total: json['count'] as int?,
       canLoadMore: json['has_more'] as bool? ?? false,
-      models: isModels && json['data'] != null && json['data'] is List
-          ? makeModels((json['data'] as List<dynamic>).cast<Json>())
-          : null,
+      models: hasData && isModels ? makeModels(data.cast<Json>()) : null,
     );
   }
 
@@ -149,4 +153,92 @@ class ResponseModel<T extends DataModel> {
 
   @override
   String toString() => const JsonEncoder.withIndent('  ').convert(toJson());
+}
+
+/// 统一封装的针对 [ResponseModel] 网络请求的处理方法。
+///
+/// 在 `await` 该调用后再执行其他命令等同于 `finally`，只有在每一个回调中都正确地 `await`
+/// 才能保证方法有效。
+///
+/// - [request] 请求的实例
+/// - [onSuccess] 请求成功后的回调
+/// - [onFailed] 请求接口返回了失败的回调
+/// - [onError] 请求过程中发生了内部错误的回调
+/// - [onCancelled] 请求被取消的回调
+/// - [reportType] 上报的内容构造
+Future<void> tryCatchResponse<T extends DataModel>({
+  required Future<ResponseModel<T>> request,
+  required FutureOr<void> Function(ResponseModel<T> res) onSuccess,
+  FutureOr<void> Function(ResponseModel<T> res)? onFailed,
+  FutureOr<void> Function(Object? e)? onError,
+  FutureOr<void> Function()? onCancelled,
+  String? Function(Object? r)? reportType,
+  bool showToastOnFailed = true,
+  bool showToastOnError = true,
+  ToastPosition? failedToastPosition,
+  ToastPosition? errorToastPosition,
+}) async {
+  try {
+    final ResponseModel<T> res = await request;
+    if (res.isSucceed) {
+      await onSuccess(res);
+      return;
+    }
+    // 优先处理取消的操作。
+    if (res.isCancelled) {
+      LogUtil.w('Request has been cancelled: ${res.msg}');
+      await onCancelled?.call();
+      return;
+    }
+    // 回落到请求失败。
+    final bool shouldReport = reportType != null && reportType(res) != null;
+    if (shouldReport && !res.msg.contains(ResponseModel.errorInternalRequest)) {
+      LogUtil.e('Failed when ${reportType(res)}: ${res.msg}');
+    }
+    if (showToastOnFailed) {
+      if (res.msg.contains(ResponseModel.errorInternalRequest)) {
+        showToastWithPosition(
+          '网络状况差，请稍后重试...',
+          position: failedToastPosition,
+        );
+      } else {
+        showToastWithPosition(res.msg, position: failedToastPosition);
+      }
+    }
+    await onFailed?.call(res);
+  } catch (e, s) {
+    if (e is DioError) {
+      // 处理 401 的操作。
+      if (e.type == DioErrorType.response) {
+        if (e.response?.statusCode == HttpStatus.unauthorized) {
+          showToast('身份已失效，请重新登录');
+          LogUtil.w(
+            'Token has been expired during the request: '
+            '${e.requestOptions.uri}',
+          );
+          return;
+        }
+      }
+      // 处理取消的操作。
+      if (e.type == DioErrorType.cancel) {
+        LogUtil.w('Request has been cancelled: ${e.requestOptions.uri}');
+        await onCancelled?.call();
+        return;
+      }
+    }
+    final bool shouldReport = reportType != null && reportType(null) != null;
+    if (shouldReport) {
+      LogUtil.e(
+        'Error when ${reportType(null)}: $e',
+        stackTrace: s,
+      );
+    }
+    if (showToastOnError) {
+      showErrorToastWithPosition(
+        '请求失败 (-1 $e)',
+        position: errorToastPosition,
+      );
+    }
+    await onError?.call(e);
+  }
 }

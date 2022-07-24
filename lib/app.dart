@@ -5,6 +5,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:oktoast/oktoast.dart';
 
 import 'exports.dart';
@@ -60,6 +61,13 @@ class JJAppState extends State<JJApp> {
             ),
           ),
         ),
+        locale: const Locale('zh'),
+        localizationsDelegates: const <LocalizationsDelegate>[
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const <Locale>[Locale('zh')],
       ),
     );
   }

@@ -83,9 +83,10 @@ ArticleItemModel _$ArticleItemModelFromJson(Map<String, dynamic> json) =>
       authorUserInfo: UserInfoModel.fromJson(
           json['author_user_info'] as Map<String, dynamic>),
       category: Category.fromJson(json['category'] as Map<String, dynamic>),
-      tags: (json['tags'] as List<dynamic>)
-          .map((e) => Tag.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      tags: (json['tags'] as List<dynamic>?)
+              ?.map((e) => Tag.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       userInteract:
           UserInteract.fromJson(json['user_interact'] as Map<String, dynamic>),
       org: UserOrg.fromJson(json['org'] as Map<String, dynamic>),
@@ -114,7 +115,9 @@ ArticleInfo _$ArticleInfoFromJson(Map<String, dynamic> json) => ArticleInfo(
       articleId: json['article_id'] as String,
       userId: json['user_id'] as String,
       categoryId: json['category_id'] as String,
-      tagIds: (json['tag_ids'] as List<dynamic>).map((e) => e as int).toList(),
+      tagIds:
+          (json['tag_ids'] as List<dynamic>?)?.map((e) => e as int).toList() ??
+              [],
       visibleLevel: json['visible_level'] as int,
       linkUrl: json['link_url'] as String,
       coverImage: json['cover_image'] as String,
@@ -271,9 +274,10 @@ CommentItemModel _$CommentItemModelFromJson(Map<String, dynamic> json) =>
           UserInfoModel.fromJson(json['user_info'] as Map<String, dynamic>),
       userInteract:
           UserInteract.fromJson(json['user_interact'] as Map<String, dynamic>),
-      replyInfos: (json['reply_infos'] as List<dynamic>)
-          .map((e) => e as Object)
-          .toList(),
+      replyInfos: (json['reply_infos'] as List<dynamic>?)
+              ?.map((e) => e as Object)
+              .toList() ??
+          [],
       isAuthor: json['is_author'] as bool,
     );
 
@@ -293,14 +297,16 @@ CommentInfo _$CommentInfoFromJson(Map<String, dynamic> json) => CommentInfo(
       itemId: json['item_id'] as String,
       itemType: json['item_type'] as int,
       commentContent: json['comment_content'] as String,
-      commentPics: (json['comment_pics'] as List<dynamic>)
-          .map((e) => e as Object)
-          .toList(),
+      commentPics: (json['comment_pics'] as List<dynamic>?)
+              ?.map((e) => e as Object)
+              .toList() ??
+          [],
       commentStatus: json['comment_status'] as int,
       ctime: json['ctime'] as int,
-      commentReplies: (json['commentReplys'] as List<dynamic>)
-          .map((e) => e as Object)
-          .toList(),
+      commentReplies: (json['commentReplys'] as List<dynamic>?)
+              ?.map((e) => CommentReply.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       diggCount: json['digg_count'] as int,
       buryCount: json['bury_count'] as int,
       replyCount: json['reply_count'] as int,
@@ -319,13 +325,243 @@ Map<String, dynamic> _$CommentInfoToJson(CommentInfo instance) =>
       'comment_pics': instance.commentPics,
       'comment_status': instance.commentStatus,
       'ctime': instance.ctime,
-      'commentReplys': instance.commentReplies,
+      'commentReplys': instance.commentReplies.map((e) => e.toJson()).toList(),
       'digg_count': instance.diggCount,
       'bury_count': instance.buryCount,
       'reply_count': instance.replyCount,
       'is_digg': instance.isDigg,
       'is_bury': instance.isBury,
       'level': instance.level,
+    };
+
+CommentReply _$CommentReplyFromJson(Map<String, dynamic> json) => CommentReply(
+      replyId: json['reply_id'] as String,
+      replyCommentId: json['reply_comment_id'] as String,
+      userId: json['user_id'] as String,
+      replyToReplyId: json['reply_to_reply_id'] as String,
+      replyToUserId: json['reply_to_user_id'] as String,
+      itemId: json['item_id'] as String,
+      itemType: json['item_type'] as int,
+      replyContent: json['reply_content'] as String,
+      replyPics: (json['reply_pics'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      replyStatus: json['reply_status'] as int,
+      ctime: json['ctime'] as int,
+      diggCount: json['digg_count'] as int,
+      buryCount: json['burry_count'] as int,
+    );
+
+Map<String, dynamic> _$CommentReplyToJson(CommentReply instance) =>
+    <String, dynamic>{
+      'reply_id': instance.replyId,
+      'reply_comment_id': instance.replyCommentId,
+      'user_id': instance.userId,
+      'reply_to_reply_id': instance.replyToReplyId,
+      'reply_to_user_id': instance.replyToUserId,
+      'item_id': instance.itemId,
+      'item_type': instance.itemType,
+      'reply_content': instance.replyContent,
+      'reply_pics': instance.replyPics,
+      'reply_status': instance.replyStatus,
+      'ctime': instance.ctime,
+      'digg_count': instance.diggCount,
+      'burry_count': instance.buryCount,
+    };
+
+PostItemModel _$PostItemModelFromJson(Map<String, dynamic> json) =>
+    PostItemModel(
+      msgId: json['msg_id'] as String,
+      msgInfo: PostInfo.fromJson(json['msg_Info'] as Map<String, dynamic>),
+      authorUserInfo: UserInfoModel.fromJson(
+          json['author_user_info'] as Map<String, dynamic>),
+      topic: PostTopic.fromJson(json['topic'] as Map<String, dynamic>),
+      userInteract:
+          UserInteract.fromJson(json['user_interact'] as Map<String, dynamic>),
+      org: UserOrg.fromJson(json['org'] as Map<String, dynamic>),
+      theme: PostTheme.fromJson(json['theme'] as Map<String, dynamic>),
+      hotComment: PostItemModel._readHotComment(json, 'hot_comment') == null
+          ? null
+          : HotComment.fromJson(
+              PostItemModel._readHotComment(json, 'hot_comment')
+                  as Map<String, dynamic>),
+      diggUser: (json['digg_user'] as List<dynamic>?)
+              ?.map((e) => UserInfoModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$PostItemModelToJson(PostItemModel instance) =>
+    <String, dynamic>{
+      'msg_id': instance.msgId,
+      'msg_Info': instance.msgInfo.toJson(),
+      'author_user_info': instance.authorUserInfo.toJson(),
+      'topic': instance.topic.toJson(),
+      'user_interact': instance.userInteract.toJson(),
+      'org': instance.org.toJson(),
+      'theme': instance.theme.toJson(),
+      'hot_comment': instance.hotComment?.toJson(),
+      'digg_user': instance.diggUser.map((e) => e.toJson()).toList(),
+    };
+
+PostInfo _$PostInfoFromJson(Map<String, dynamic> json) => PostInfo(
+      id: json['id'] as int,
+      msgId: json['msg_id'] as String,
+      userId: json['user_id'] as String,
+      topicId: json['topic_id'] as String,
+      content: json['content'] as String,
+      picList: (json['pic_list'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      url: json['url'] as String,
+      urlTitle: json['url_title'] as String,
+      urlPic: json['url_pic'] as String,
+      verifyStatus: json['verify_status'] as int,
+      status: json['status'] as int,
+      ctime: json['ctime'] as String,
+      mtime: json['mtime'] as String,
+      rtime: json['rtime'] as String,
+      commentCount: json['comment_count'] as int,
+      diggCount: json['digg_count'] as int,
+      hotIndex: (json['hot_index'] as num).toDouble(),
+      rankIndex: (json['rank_index'] as num).toDouble(),
+      commentScore: json['comment_score'] as int,
+      isAdvertRecommend: json['is_advert_recommend'] as bool,
+      auditStatus: json['audit_status'] as int,
+      themeId: json['theme_id'] as String,
+    );
+
+Map<String, dynamic> _$PostInfoToJson(PostInfo instance) => <String, dynamic>{
+      'id': instance.id,
+      'msg_id': instance.msgId,
+      'user_id': instance.userId,
+      'topic_id': instance.topicId,
+      'content': instance.content,
+      'pic_list': instance.picList,
+      'url': instance.url,
+      'url_title': instance.urlTitle,
+      'url_pic': instance.urlPic,
+      'verify_status': instance.verifyStatus,
+      'status': instance.status,
+      'ctime': instance.ctime,
+      'mtime': instance.mtime,
+      'rtime': instance.rtime,
+      'comment_count': instance.commentCount,
+      'digg_count': instance.diggCount,
+      'hot_index': instance.hotIndex,
+      'rank_index': instance.rankIndex,
+      'comment_score': instance.commentScore,
+      'is_advert_recommend': instance.isAdvertRecommend,
+      'audit_status': instance.auditStatus,
+      'theme_id': instance.themeId,
+    };
+
+PostTopic _$PostTopicFromJson(Map<String, dynamic> json) => PostTopic(
+      topicId: json['topic_id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      icon: json['icon'] as String,
+      msgCount: json['msg_count'] as int,
+      followerCount: json['follower_count'] as int,
+      attenderCount: json['attender_count'] as int,
+      notice: json['notice'] as String,
+      adminIds: (json['admin_ids'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      themeIds: (json['theme_ids'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      categoryId: json['cate_id'] as String,
+      isRec: json['is_rec'] as bool,
+      recRank: json['rec_rank'] as int,
+    );
+
+Map<String, dynamic> _$PostTopicToJson(PostTopic instance) => <String, dynamic>{
+      'topic_id': instance.topicId,
+      'title': instance.title,
+      'description': instance.description,
+      'icon': instance.icon,
+      'msg_count': instance.msgCount,
+      'follower_count': instance.followerCount,
+      'attender_count': instance.attenderCount,
+      'notice': instance.notice,
+      'admin_ids': instance.adminIds,
+      'theme_ids': instance.themeIds,
+      'cate_id': instance.categoryId,
+      'is_rec': instance.isRec,
+      'rec_rank': instance.recRank,
+    };
+
+PostTheme _$PostThemeFromJson(Map<String, dynamic> json) => PostTheme(
+      themeId: json['theme_id'] as String,
+      name: json['name'] as String,
+      cover: json['cover'] as String,
+      brief: json['brief'] as String,
+      isLottery: json['is_lottery'] as bool,
+      isRec: json['is_rec'] as bool,
+      recRank: json['rec_rank'] as int,
+      topicIds: (json['topic_ids'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      hot: json['hot'] as int,
+      viewCount: json['view_cnt'] as int,
+      userCount: json['user_cnt'] as int,
+      status: json['status'] as int,
+      ctime: json['ctime'] as int,
+      mtime: json['mtime'] as int,
+      lotteryBeginTime: json['lottery_begin_time'] as int,
+      lotteryEndTime: json['lottery_end_time'] as int,
+    );
+
+Map<String, dynamic> _$PostThemeToJson(PostTheme instance) => <String, dynamic>{
+      'theme_id': instance.themeId,
+      'name': instance.name,
+      'cover': instance.cover,
+      'brief': instance.brief,
+      'is_lottery': instance.isLottery,
+      'is_rec': instance.isRec,
+      'rec_rank': instance.recRank,
+      'topic_ids': instance.topicIds,
+      'hot': instance.hot,
+      'view_cnt': instance.viewCount,
+      'user_cnt': instance.userCount,
+      'status': instance.status,
+      'ctime': instance.ctime,
+      'mtime': instance.mtime,
+      'lottery_begin_time': instance.lotteryBeginTime,
+      'lottery_end_time': instance.lotteryEndTime,
+    };
+
+HotComment _$HotCommentFromJson(Map<String, dynamic> json) => HotComment(
+      commentId: json['comment_id'] as String,
+      commentInfo:
+          CommentInfo.fromJson(json['comment_info'] as Map<String, dynamic>),
+      userInfo: HotComment._readUserInfo(json, 'user_info') == null
+          ? null
+          : UserInfoModel.fromJson(HotComment._readUserInfo(json, 'user_info')
+              as Map<String, dynamic>),
+      userInteract:
+          UserInteract.fromJson(json['user_interact'] as Map<String, dynamic>),
+      replyInfos: (json['reply_infos'] as List<dynamic>?)
+              ?.map((e) => e as Object)
+              .toList() ??
+          [],
+      isAuthor: json['is_author'] as bool,
+    );
+
+Map<String, dynamic> _$HotCommentToJson(HotComment instance) =>
+    <String, dynamic>{
+      'comment_id': instance.commentId,
+      'comment_info': instance.commentInfo.toJson(),
+      'user_info': instance.userInfo?.toJson(),
+      'user_interact': instance.userInteract.toJson(),
+      'reply_infos': instance.replyInfos,
+      'is_author': instance.isAuthor,
     };
 
 FeedModel _$FeedModelFromJson(Map<String, dynamic> json) => FeedModel(
@@ -395,8 +631,8 @@ Map<String, dynamic> _$UserInfoModelToJson(UserInfoModel instance) =>
       'digg_article_count': instance.diggArticleCount,
       'got_digg_count': instance.gotDiggCount,
       'got_view_count': instance.gotViewCount,
-      'postShortmsgCount': instance.postShortMsgCount,
-      'diggShortmsgCount': instance.diggShortMsgCount,
+      'post_shortmsg_count': instance.postShortMsgCount,
+      'digg_shortmsg_count': instance.diggShortMsgCount,
       'isfollowed': instance.isFollowed,
       'favorable_author': instance.favorableAuthor,
       'power': instance.power,
@@ -473,7 +709,7 @@ Map<String, dynamic> _$UserGrowthInfoToJson(UserGrowthInfo instance) =>
     };
 
 UserInteract _$UserInteractFromJson(Map<String, dynamic> json) => UserInteract(
-      id: json['id'] as int,
+      id: json['id'] as int? ?? 0,
       omitEmpty: json['omitempty'] as int,
       userId: json['user_id'] as int,
       isDigg: json['is_digg'] as bool,

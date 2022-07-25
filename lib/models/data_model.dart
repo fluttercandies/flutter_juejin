@@ -22,6 +22,8 @@ part 'item/article_item_model.dart';
 
 part 'item/comment_item_model.dart';
 
+part 'item/post_item_model.dart';
+
 part 'feed_model.dart';
 
 part 'user_model.dart';

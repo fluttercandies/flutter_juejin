@@ -140,7 +140,10 @@ class _ArticleWidget extends StatelessWidget {
       aspectRatio: 3 / 2,
       child: ClipRRect(
         borderRadius: RadiusConstants.r2,
-        child: Image.network(article.articleInfo.coverImage, fit: BoxFit.cover),
+        child: Image.network(
+          article.articleInfo.slicedCoverImage(),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

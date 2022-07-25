@@ -133,6 +133,15 @@ class ArticleInfo extends DataModel {
         .differenceString;
   }
 
+  String slicedCoverImage({num width = 330, String extension = 'jpg'}) {
+    width -= (width % 3);
+    width = width.toInt();
+    return coverImage.replaceAll(
+      'watermark.image',
+      'no-mark:$width:$width:$width:${width ~/ 3 * 2}.$extension',
+    );
+  }
+
   @override
   Map<String, dynamic> toJson() => _$ArticleInfoToJson(this);
 

@@ -41,3 +41,7 @@ class Screens {
     SystemChrome.setSystemUIOverlayStyle(style);
   }
 }
+
+extension ScreenSizeDoubleExtension on double {
+  int toPx() => (this * Screens.scale).toInt();
+}

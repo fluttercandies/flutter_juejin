@@ -31,6 +31,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   UserInfoModel get userInfo => detail.authorUserInfo;
 
   late NestedWebviewController _webviewController;
+  bool _hasContentLoaded = false;
 
   @override
   void initState() {
@@ -48,6 +49,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
         _detail = res.data;
         _webviewController = NestedWebviewController(
           '${articleInfo.content}?mode=${brightness.isDark ? 'dark' : 'light'}',
+          onLoadComplete: () => safeSetState(() => _hasContentLoaded = true),
         );
       }),
       reportType: (_) => 'fetch article $articleId detail',
@@ -55,9 +57,6 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    if (_detail == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
     return CustomScrollView(
       slivers: <Widget>[
         SliverToBoxAdapter(
@@ -146,15 +145,26 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: _buildBody(context),
+      body: Stack(
+        children: <Widget>[
+          if (_detail != null) _buildBody(context),
+          if (_detail == null || !_hasContentLoaded)
+            Container(
+              alignment: Alignment.center,
+              color: context.theme.canvasColor,
+              child: const CircularProgressIndicator(),
+            ),
+        ],
+      ),
     );
   }
 }
 
 class NestedWebviewController {
-  NestedWebviewController(this.initialUrl);
+  NestedWebviewController(this.initialUrl, {this.onLoadComplete});
 
   final String initialUrl;
+  final void Function()? onLoadComplete;
 
   WebViewController? get controller => _controller;
   WebViewController? _controller;
@@ -175,6 +185,7 @@ class NestedWebviewController {
 
   void onPageFinished(String url) {
     if (_status != WebViewStatus.failed) {
+      onLoadComplete?.call();
       _controller?.runJavascript(scrollHeightJs);
     }
   }

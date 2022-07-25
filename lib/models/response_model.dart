@@ -264,3 +264,13 @@ Future<void> tryCatchResponse<T extends DataModel>({
     await onError?.call(e);
   }
 }
+
+/// Create a base64 encoded cursor from content id and size limit.
+///
+/// Example format: {"v":"7124199886689566751","i":20}
+String cursorFromLastIdAndLimit(String? lastId, int limit) {
+  if (lastId != null) {
+    return base64Encode(utf8.encode('{"v":"$lastId","i":$limit}'));
+  }
+  return '0';
+}

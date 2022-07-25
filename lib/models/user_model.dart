@@ -250,6 +250,7 @@ class UserInteract extends DataModel {
   factory UserInteract.fromJson(Map<String, dynamic> json) =>
       _$UserInteractFromJson(json);
 
+  @JsonKey(defaultValue: 0)
   final int id;
   @JsonKey(name: 'omitempty')
   final int omitEmpty;

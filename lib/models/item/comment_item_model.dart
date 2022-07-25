@@ -22,6 +22,7 @@ class CommentItemModel extends DataModel {
   final CommentInfo commentInfo;
   final UserInfoModel userInfo;
   final UserInteract userInteract;
+  @JsonKey(defaultValue: [])
   final List<Object> replyInfos;
   final bool isAuthor;
 
@@ -67,11 +68,12 @@ class CommentInfo extends DataModel {
   final String itemId;
   final int itemType;
   final String commentContent;
+  @JsonKey(defaultValue: [])
   final List<Object> commentPics;
   final int commentStatus;
   final int ctime;
-  @JsonKey(name: 'commentReplys')
-  final List<Object> commentReplies;
+  @JsonKey(defaultValue: [], name: 'commentReplys')
+  final List<CommentReply> commentReplies;
   final int diggCount;
   final int buryCount;
   final int replyCount;
@@ -105,5 +107,62 @@ class CommentInfo extends DataModel {
         isDigg,
         isBury,
         level,
+      ];
+}
+
+@JsonSerializable()
+class CommentReply extends DataModel {
+  const CommentReply({
+    required this.replyId,
+    required this.replyCommentId,
+    required this.userId,
+    required this.replyToReplyId,
+    required this.replyToUserId,
+    required this.itemId,
+    required this.itemType,
+    required this.replyContent,
+    required this.replyPics,
+    required this.replyStatus,
+    required this.ctime,
+    required this.diggCount,
+    required this.buryCount,
+  });
+
+  factory CommentReply.fromJson(Map<String, dynamic> json) =>
+      _$CommentReplyFromJson(json);
+
+  final String replyId;
+  final String replyCommentId;
+  final String userId;
+  final String replyToReplyId;
+  final String replyToUserId;
+  final String itemId;
+  final int itemType;
+  final String replyContent;
+  @JsonKey(defaultValue: [])
+  final List<String> replyPics;
+  final int replyStatus;
+  final int ctime;
+  final int diggCount;
+  @JsonKey(name: 'burry_count')
+  final int buryCount;
+
+  @override
+  Map<String, dynamic> toJson() => _$CommentReplyToJson(this);
+
+  @override
+  List<Object?> get props => <Object>[
+        replyId,
+        replyCommentId,
+        userId,
+        replyToReplyId,
+        replyToUserId,
+        itemId,
+        itemType,
+        replyContent,
+        replyPics,
+        replyStatus,
+        ctime,
+        diggCount,
       ];
 }

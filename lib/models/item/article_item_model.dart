@@ -27,6 +27,7 @@ class ArticleItemModel extends DataModel {
   final ArticleInfo articleInfo;
   final UserInfoModel authorUserInfo;
   final Category category;
+  @JsonKey(defaultValue: [])
   final List<Tag> tags;
   final UserInteract userInteract;
   final UserOrg org;
@@ -97,6 +98,7 @@ class ArticleInfo extends DataModel {
   final String articleId;
   final String userId;
   final String categoryId;
+  @JsonKey(defaultValue: [])
   final List<int> tagIds;
   final int visibleLevel;
   final String linkUrl;

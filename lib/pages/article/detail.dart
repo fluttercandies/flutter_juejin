@@ -47,8 +47,14 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       request: ContentAPI.getDetailById(articleId),
       onSuccess: (ResponseModel<ArticleItemModel> res) => safeSetState(() {
         _detail = res.data;
+        final String url = '${articleInfo.content}'
+            '?mode=${brightness.isDark ? 'dark' : 'light'}';
+        LogUtil.d(
+          'Loading $url for article $articleId...',
+          tag: '📃 Article WebView',
+        );
         _webviewController = NestedWebviewController(
-          '${articleInfo.content}?mode=${brightness.isDark ? 'dark' : 'light'}',
+          url,
           onLoadComplete: () => safeSetState(() => _hasContentLoaded = true),
         );
       }),
@@ -184,6 +190,7 @@ class NestedWebviewController {
   }
 
   void onPageFinished(String url) {
+    _controller?.runJavascript(removeHeaderJs);
     if (_status != WebViewStatus.failed) {
       onLoadComplete?.call();
       _controller?.runJavascript(scrollHeightJs);
@@ -214,6 +221,10 @@ class NestedWebviewController {
 }
 
 enum WebViewStatus { loading, failed, completed }
+
+const String removeHeaderJs = '''
+document.querySelectorAll("h1, img.cover-image").forEach((e) => e.remove());
+''';
 
 const String scrollHeightJs = '''(function() {
   var height = 0;

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
-part of 'data_model.dart';
+part of '../data_model.dart';
 
 @JsonSerializable()
 class AdvertiseItemModel extends DataModel {
@@ -72,6 +72,12 @@ class AdvertiseItemModel extends DataModel {
   final String topicId;
   final int status;
   final UserInfoModel itemUserInfo;
+
+  String get createTime {
+    return DateTime.now()
+        .difference((int.parse(ctime) * 1000).toDateTimeInMilliseconds)
+        .differenceString;
+  }
 
   @override
   Map<String, dynamic> toJson() => _$AdvertiseItemModelToJson(this);

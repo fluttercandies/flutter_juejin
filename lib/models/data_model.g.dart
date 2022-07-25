@@ -262,6 +262,72 @@ Map<String, dynamic> _$TagToJson(Tag instance) => <String, dynamic>{
       'concern_user_count': instance.concernUserCount,
     };
 
+CommentItemModel _$CommentItemModelFromJson(Map<String, dynamic> json) =>
+    CommentItemModel(
+      commentId: json['comment_id'] as String,
+      commentInfo:
+          CommentInfo.fromJson(json['comment_info'] as Map<String, dynamic>),
+      userInfo:
+          UserInfoModel.fromJson(json['user_info'] as Map<String, dynamic>),
+      userInteract:
+          UserInteract.fromJson(json['user_interact'] as Map<String, dynamic>),
+      replyInfos: (json['reply_infos'] as List<dynamic>)
+          .map((e) => e as Object)
+          .toList(),
+      isAuthor: json['is_author'] as bool,
+    );
+
+Map<String, dynamic> _$CommentItemModelToJson(CommentItemModel instance) =>
+    <String, dynamic>{
+      'comment_id': instance.commentId,
+      'comment_info': instance.commentInfo.toJson(),
+      'user_info': instance.userInfo.toJson(),
+      'user_interact': instance.userInteract.toJson(),
+      'reply_infos': instance.replyInfos,
+      'is_author': instance.isAuthor,
+    };
+
+CommentInfo _$CommentInfoFromJson(Map<String, dynamic> json) => CommentInfo(
+      commentId: json['comment_id'] as String,
+      userId: json['user_id'] as String,
+      itemId: json['item_id'] as String,
+      itemType: json['item_type'] as int,
+      commentContent: json['comment_content'] as String,
+      commentPics: (json['comment_pics'] as List<dynamic>)
+          .map((e) => e as Object)
+          .toList(),
+      commentStatus: json['comment_status'] as int,
+      ctime: json['ctime'] as int,
+      commentReplies: (json['commentReplys'] as List<dynamic>)
+          .map((e) => e as Object)
+          .toList(),
+      diggCount: json['digg_count'] as int,
+      buryCount: json['bury_count'] as int,
+      replyCount: json['reply_count'] as int,
+      isDigg: json['is_digg'] as bool,
+      isBury: json['is_bury'] as bool,
+      level: json['level'] as int,
+    );
+
+Map<String, dynamic> _$CommentInfoToJson(CommentInfo instance) =>
+    <String, dynamic>{
+      'comment_id': instance.commentId,
+      'user_id': instance.userId,
+      'item_id': instance.itemId,
+      'item_type': instance.itemType,
+      'comment_content': instance.commentContent,
+      'comment_pics': instance.commentPics,
+      'comment_status': instance.commentStatus,
+      'ctime': instance.ctime,
+      'commentReplys': instance.commentReplies,
+      'digg_count': instance.diggCount,
+      'bury_count': instance.buryCount,
+      'reply_count': instance.replyCount,
+      'is_digg': instance.isDigg,
+      'is_bury': instance.isBury,
+      'level': instance.level,
+    };
+
 FeedModel _$FeedModelFromJson(Map<String, dynamic> json) => FeedModel(
       itemType: FeedModel._feedItemTypeFromJson(json['item_type'] as int),
       itemInfo: FeedModel._handleItemInfoType(json, 'item_info') as Object,

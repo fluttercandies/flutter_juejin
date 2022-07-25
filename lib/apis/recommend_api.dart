@@ -2,6 +2,8 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
+import 'dart:convert';
+
 import '../internals/urls.dart';
 import '../models/data_model.dart';
 import '../models/response_model.dart';
@@ -14,12 +16,23 @@ class RecommendAPI {
   static const String _articles = '$_api/article';
 
   static Future<ResponseModel<FeedModel>> getAllFeedArticles({
+    String? lastId,
     int limit = 20,
-  }) {
+  }) async {
+    final String cursor;
+    if (lastId == null) {
+      cursor = '0';
+    } else {
+      cursor = base64Encode(utf8.encode('{"v":"$lastId","i":$limit}'));
+    }
     return HttpUtil.fetchModel(
       FetchType.post,
       url: '$_articles/recommend_all_feed',
-      body: <String, dynamic>{'limit': limit},
+      body: <String, dynamic>{
+        'cursor': cursor,
+        'limit': limit,
+        'sort_type': 200,
+      },
     );
   }
 }

@@ -6,15 +6,19 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../constants/constants.dart';
+import '../extensions/duration_extension.dart';
+import '../extensions/num_extension.dart';
 import '../utils/log_util.dart';
 
 part 'data_model.d.dart';
 
 part 'data_model.g.dart';
 
-part 'advertise_item_model.dart';
+part 'item/advertise_item_model.dart';
 
-part 'article_item_model.dart';
+part 'item/article_item_model.dart';
+
+part 'item/comment_item_model.dart';
 
 part 'feed_model.dart';
 

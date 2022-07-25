@@ -66,6 +66,12 @@ extension IntExtension on int {
   Duration get milliseconds => Duration(milliseconds: this);
 
   Duration get microseconds => Duration(microseconds: this);
+
+  DateTime get toDateTimeInMicroseconds =>
+      DateTime.fromMicrosecondsSinceEpoch(this);
+
+  DateTime get toDateTimeInMilliseconds =>
+      DateTime.fromMillisecondsSinceEpoch(this);
 }
 
 extension DoubleExtension on double {

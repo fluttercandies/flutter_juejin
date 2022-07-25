@@ -9,6 +9,8 @@ final Map<Type, DataFactory> dataModelFactories = <Type, DataFactory>{
   ArticleExtra: ArticleExtra.fromJson,
   Category: Category.fromJson,
   Tag: Tag.fromJson,
+  CommentItemModel: CommentItemModel.fromJson,
+  CommentInfo: CommentInfo.fromJson,
   FeedModel: FeedModel.fromJson,
   UserInfoModel: UserInfoModel.fromJson,
   UserUniversity: UserUniversity.fromJson,

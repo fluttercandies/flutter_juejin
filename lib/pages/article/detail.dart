@@ -91,7 +91,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                       children: <Widget>[
                         Text(userInfo.userName),
                         Text(
-                          articleInfo.ctime,
+                          articleInfo.createTime,
                           style: context.textTheme.caption,
                         ),
                       ],

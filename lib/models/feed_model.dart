@@ -20,13 +20,13 @@ class FeedModel extends DataModel {
   final Object itemInfo;
 
   static FeedItemType _feedItemTypeFromJson(int value) {
-    return FeedItemType.values.singleWhere((FeedItemType e) => e.type == value);
+    return FeedItemType.fromInt(value);
   }
 
   static int _feedItemTypeToJson(FeedItemType type) => type.type;
 
   static Object _handleItemInfoType(Map<dynamic, dynamic> json, String key) {
-    final FeedItemType itemType = _feedItemTypeFromJson(json['item_type']);
+    final FeedItemType itemType = FeedItemType.fromInt(json['item_type']);
     final Json itemInfo = json[key]!;
     switch (itemType) {
       case FeedItemType.article:
@@ -50,6 +50,10 @@ enum FeedItemType {
   advertisement(14);
 
   const FeedItemType(this.type);
+
+  factory FeedItemType.fromInt(int value) {
+    return values.singleWhere((FeedItemType e) => e.type == value);
+  }
 
   final int type;
 }

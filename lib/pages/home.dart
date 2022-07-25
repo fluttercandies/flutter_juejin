@@ -15,27 +15,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<FeedModel>? _feeds;
+  late final LoadingBase<FeedModel> _lb = LoadingBase(
+    request: (_, String? lastId) => RecommendAPI.getAllFeedArticles(
+      lastId: lastId,
+    ),
+  );
 
   @override
   void initState() {
     super.initState();
-    refresh();
+    // refresh();
   }
 
-  Future<void> refresh() async {
-    safeSetState(() => _feeds = null);
-    tryCatchResponse(
-      request: RecommendAPI.getAllFeedArticles(),
-      onSuccess: (ResponseModel<FeedModel> res) => safeSetState(
-        () => _feeds = res.models,
-      ),
-      reportType: (_) => 'fetch articles feed',
-    );
-  }
+  // Future<void> refresh() async {
+  //   safeSetState(() => _feeds = null);
+  //   tryCatchResponse(
+  //     request: RecommendAPI.getAllFeedArticles(),
+  //     onSuccess: (ResponseModel<FeedModel> res) => safeSetState(
+  //       () => _feeds = res.models,
+  //     ),
+  //     reportType: (_) => 'fetch articles feed',
+  //   );
+  // }
 
-  Widget itemBuilder(BuildContext context, int index) {
-    final Object feed = _feeds![index].itemInfo;
+  Widget itemBuilder(final FeedModel model) {
+    final Object feed = model.itemInfo;
     if (feed is ArticleItemModel) {
       return _ArticleWidget(feed);
     }
@@ -60,23 +64,31 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.symmetric(vertical: 16),
               child: JJLogo(heroTag: defaultLogoHeroTag),
             ),
-            if (_feeds == null)
-              const Expanded(child: Center(child: CircularProgressIndicator()))
-            else
-              Expanded(
-                child: ListView.separated(
-                  itemCount: _feeds!.length,
-                  itemBuilder: itemBuilder,
-                  separatorBuilder: (_, __) => const Gap.v(8),
-                ),
+            Expanded(
+              child: RefreshListWrapper(
+                loadingBase: _lb,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                itemBuilder: itemBuilder,
+                dividerBuilder: (_, __) => const Gap.v(8),
               ),
+            ),
+            // if (_feeds == null)
+            //   const Expanded(child: Center(child: CircularProgressIndicator()))
+            // else
+            //   Expanded(
+            //     child: ListView.separated(
+            //       itemCount: _feeds!.length,
+            //       itemBuilder: itemBuilder,
+            //       separatorBuilder: (_, __) => const Gap.v(8),
+            //     ),
+            //   ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: refresh,
-        child: const Icon(Icons.refresh),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: refresh,
+      //   child: const Icon(Icons.refresh),
+      // ),
     );
   }
 }
@@ -109,7 +121,7 @@ class _ArticleWidget extends StatelessWidget {
               color: context.theme.dividerColor,
             ),
           ),
-          Expanded(child: Text(article.articleInfo.ctime)),
+          Expanded(child: Text(article.articleInfo.createTime)),
         ],
       ),
     );
@@ -195,7 +207,7 @@ class _ArticleWidget extends StatelessWidget {
         _buildTitle(context),
         const Gap.v(10),
         SizedBox(
-          height: 64,
+          height: 68,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -274,7 +286,7 @@ class _AdvertiseWidget extends StatelessWidget {
               color: context.theme.dividerColor,
             ),
           ),
-          Text(ad.ctime),
+          Text(ad.createTime),
           const Spacer(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
@@ -320,7 +332,7 @@ class _AdvertiseWidget extends StatelessWidget {
           _buildInfo(context),
           const Gap.v(10),
           SizedBox(
-            height: 64,
+            height: 68,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[

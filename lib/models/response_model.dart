@@ -22,17 +22,21 @@ class ResponseModel<T extends DataModel> {
     required this.msg,
     this.rawData,
     this.data,
+    this.page,
     this.total,
     this.canLoadMore = false,
     this.models,
+    this.cursor,
   });
 
   const ResponseModel.succeed({
     this.rawData,
     this.data,
+    this.page,
     this.total,
     this.canLoadMore = false,
     this.models,
+    this.cursor,
   })  : code = codeSucceed,
         msg = '';
 
@@ -40,18 +44,22 @@ class ResponseModel<T extends DataModel> {
     required this.msg,
     this.rawData,
     this.data,
+    this.page,
     this.total,
     this.canLoadMore = false,
     this.models,
+    this.cursor,
   }) : code = codeFailed;
 
   const ResponseModel.cancelled({
     required this.msg,
     this.rawData,
     this.data,
+    this.page,
     this.total,
     this.canLoadMore = false,
     this.models,
+    this.cursor,
   }) : code = codeCancelled;
 
   factory ResponseModel.fromJson(
@@ -69,13 +77,15 @@ class ResponseModel<T extends DataModel> {
     final bool hasData = data != null;
     final bool isModels = data is List;
     return ResponseModel<T>(
-      code: json['err_no'] as int? ?? codeSucceed,
-      msg: json['err_msg'] as String? ?? errorExternalRequest,
+      code: json['err_no'] ?? codeSucceed,
+      msg: json['err_msg'] ?? errorExternalRequest,
       data: hasData && !isModels ? makeModel<T>(data as Json) : null,
       rawData: json['data'],
-      total: json['count'] as int?,
-      canLoadMore: json['has_more'] as bool? ?? false,
+      page: int.tryParse(json['cursor'] ?? ''),
+      total: json['count'],
+      canLoadMore: json['has_more'] ?? false,
       models: hasData && isModels ? makeModels(data.cast<Json>()) : null,
+      cursor: json['cursor'],
     );
   }
 
@@ -89,9 +99,11 @@ class ResponseModel<T extends DataModel> {
       msg: msg,
       data: data,
       rawData: rawData,
+      page: page,
       total: total,
       canLoadMore: canLoadMore,
       models: models,
+      cursor: cursor,
     );
   }
 
@@ -109,9 +121,13 @@ class ResponseModel<T extends DataModel> {
   final Object? rawData;
 
   /// Below fields only works when requesting a list of data.
+  final int? page;
   final int? total;
   final bool canLoadMore;
   final List<T>? models;
+
+  /// Tracking visit position.
+  final String? cursor;
 
   bool get isSucceed => code == codeSucceed;
 
@@ -124,18 +140,22 @@ class ResponseModel<T extends DataModel> {
     String? msg,
     String? rawData,
     T? data,
+    int? page,
     int? total,
     bool? canLoadMore,
     List<T>? models,
+    String? cursor,
   }) {
     return ResponseModel<T>(
       code: code ?? this.code,
       msg: msg ?? this.msg,
       data: data ?? this.data,
       rawData: rawData ?? this.rawData,
+      page: page ?? this.page,
       total: total ?? this.total,
       canLoadMore: canLoadMore ?? this.canLoadMore,
       models: models ?? this.models,
+      cursor: cursor ?? this.cursor,
     );
   }
 
@@ -144,10 +164,12 @@ class ResponseModel<T extends DataModel> {
       'code': code,
       'msg': msg,
       if (data != null) 'data': data!.toJson(),
+      if (page != null) 'cursor': total,
       if (total != null) 'count': total,
       if (canLoadMore) 'has_more': true,
       if (models != null)
         'data': models!.map((T model) => model.toJson()).toList(),
+      if (cursor != null) 'cursor': cursor,
     };
   }
 

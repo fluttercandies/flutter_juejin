@@ -42,6 +42,7 @@ export 'utils/toast_util.dart';
 
 export 'widgets/error_widget.dart';
 export 'widgets/gaps.dart';
+export 'widgets/lazy_indexed_stack.dart';
 export 'widgets/logo.dart';
 export 'widgets/refresh/base_refresh_wrapper.dart';
 export 'widgets/refresh/refresh_grid_wrapper.dart';

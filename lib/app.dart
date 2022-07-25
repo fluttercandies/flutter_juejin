@@ -31,6 +31,19 @@ class JJAppState extends State<JJApp> {
     );
   }
 
+  Widget _buildBottomPaddingVerticalShield(BuildContext context) {
+    return PositionedDirectional(
+      start: 0,
+      end: 0,
+      bottom: 0,
+      height: MediaQuery.of(context).padding.bottom,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onVerticalDragStart: (_) {},
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return _buildOKToast(
@@ -68,6 +81,12 @@ class JJAppState extends State<JJApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const <Locale>[Locale('zh')],
+        builder: (BuildContext context, Widget? child) => Stack(
+          children: <Widget>[
+            child!,
+            _buildBottomPaddingVerticalShield(context),
+          ],
+        ),
       ),
     );
   }

@@ -28,4 +28,19 @@ class RecommendAPI {
       },
     );
   }
+
+  static Future<ResponseModel<PostItemModel>> getRecommendPosts({
+    String? lastId,
+    int limit = 20,
+  }) {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_posts/recommend',
+      body: <String, dynamic>{
+        'cursor': cursorFromLastIdAndLimit(lastId, limit),
+        'limit': limit,
+        'sort_type': 300,
+      },
+    );
+  }
 }

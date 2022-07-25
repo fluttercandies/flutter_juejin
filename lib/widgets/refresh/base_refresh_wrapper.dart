@@ -333,7 +333,8 @@ class ListEmptyIndicator extends StatelessWidget {
                 onTap!();
               } else {
                 loadingBase
-                  ?..refresh()
+                  ?..indicatorStatus = IndicatorStatus.fullScreenBusying
+                  ..refresh()
                   ..isLoading = true
                   ..setState();
               }

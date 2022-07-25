@@ -20,8 +20,8 @@ class UserInfoModel extends DataModel {
     required this.diggArticleCount,
     required this.gotDiggCount,
     required this.gotViewCount,
-    required this.postShortmsgCount,
-    required this.diggShortmsgCount,
+    required this.postShortMsgCount,
+    required this.diggShortMsgCount,
     required this.isFollowed,
     required this.favorableAuthor,
     required this.power,
@@ -59,8 +59,10 @@ class UserInfoModel extends DataModel {
   final int diggArticleCount;
   final int gotDiggCount;
   final int gotViewCount;
-  final int postShortmsgCount;
-  final int diggShortmsgCount;
+  @JsonKey(name: 'postShortmsgCount')
+  final int postShortMsgCount;
+  @JsonKey(name: 'diggShortmsgCount')
+  final int diggShortMsgCount;
   @JsonKey(name: 'isfollowed')
   final bool isFollowed;
   final int favorableAuthor;
@@ -101,8 +103,8 @@ class UserInfoModel extends DataModel {
         diggArticleCount,
         gotDiggCount,
         gotViewCount,
-        postShortmsgCount,
-        diggShortmsgCount,
+        postShortMsgCount,
+        diggShortMsgCount,
         isFollowed,
         favorableAuthor,
         power,

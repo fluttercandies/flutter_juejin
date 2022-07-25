@@ -13,7 +13,6 @@ import 'exports.dart';
 void main() {
   runZonedGuarded<void>(
     () async {
-      WidgetsFlutterBinding.ensureInitialized();
       JJErrorWidget.takeOver();
       runApp(JJApp(key: JJ.appKey));
     },

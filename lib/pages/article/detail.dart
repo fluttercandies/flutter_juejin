@@ -8,6 +8,7 @@ import 'dart:ui' as ui;
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 @FFRoute(name: 'article-detail-page')
@@ -21,6 +22,8 @@ class ArticleDetailPage extends StatefulWidget {
 }
 
 class _ArticleDetailPageState extends State<ArticleDetailPage> {
+  final ValueNotifier<bool> _authorInTitle = ValueNotifier<bool>(false);
+
   String get articleId => widget.article.articleId;
 
   ArticleItemModel get detail => _detail!;
@@ -62,6 +65,81 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     );
   }
 
+  Widget _buildAuthorInTitle(BuildContext context) {
+    return SizedBox(
+      height: 32,
+      child: ValueListenableBuilder<bool>(
+        valueListenable: _authorInTitle,
+        builder: (_, bool value, __) => AnimatedSlide(
+          offset: value ? Offset.zero : const Offset(0, 1.5),
+          curve: Curves.easeInOutCubic,
+          duration: kThemeAnimationDuration,
+          child: Row(
+            children: <Widget>[
+              ClipOval(child: Image.network(userInfo.avatarLarge)),
+              const Gap.h(8),
+              Expanded(
+                child: Text(
+                  userInfo.userName,
+                  style: context.textTheme.bodyMedium,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                decoration: BoxDecoration(
+                  borderRadius: RadiusConstants.r4,
+                  color: context.theme.dividerColor.withOpacity(.05),
+                ),
+                child: Text(
+                  '${detail.userInteract.isFollow ? '已' : '未'}关注',
+                  style: context.textTheme.caption,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAuthorInHeader(BuildContext context) {
+    return Container(
+      height: 42,
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: <Widget>[
+          AspectRatio(
+            aspectRatio: 1,
+            child: ClipOval(child: Image.network(userInfo.avatarLarge)),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  userInfo.buildNameAndLevel(),
+                  Text(
+                    '${articleInfo.createTime} · '
+                    '阅读${articleInfo.viewCount}',
+                    style: context.textTheme.caption,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            child: Text('${detail.userInteract.isFollow ? '已' : '未'}关注'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildBody(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
@@ -77,42 +155,24 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
           ),
         ),
         SliverToBoxAdapter(
-          child: Container(
-            height: 42,
-            margin: const EdgeInsets.symmetric(vertical: 12),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: <Widget>[
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: ClipOval(child: Image.network(userInfo.avatarLarge)),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        userInfo.buildNameAndLevel(),
-                        Text(
-                          '${articleInfo.createTime} · '
-                          '阅读${articleInfo.viewCount}',
-                          style: context.textTheme.caption,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Text(detail.userInteract.isFollow ? '已关注' : '未关注'),
-                ),
-              ],
-            ),
+          child: VisibilityDetector(
+            key: ValueKey<String>('article-$articleId-author'),
+            onVisibilityChanged: (VisibilityInfo info) {
+              _authorInTitle.value = info.visibleFraction < 0.2;
+            },
+            child: _buildAuthorInHeader(context),
           ),
         ),
         if (articleInfo.coverImage.isNotEmpty)
-          SliverToBoxAdapter(child: Image.network(articleInfo.coverImage)),
+          SliverToBoxAdapter(
+            child: Image.network(
+              articleInfo.slicedCoverImage(
+                width: context.mediaQuery.size.width.toPx(),
+                extension: 'image',
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
         ValueListenableBuilder<double>(
           valueListenable: _webviewController.scrollHeightNotifier,
           builder: (BuildContext context, double scrollHeight, Widget? child) {
@@ -150,7 +210,18 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: context.theme.canvasColor,
+        elevation: 0,
+        title: _detail != null ? _buildAuthorInTitle(context) : null,
+        titleSpacing: 8,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.more_horiz_rounded),
+          ),
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           if (_detail != null) _buildBody(context),
@@ -198,6 +269,7 @@ class NestedWebviewController {
   }
 
   void onWebResourceError(WebResourceError error) {
+    LogUtil.e(error, stackTrace: StackTrace.current);
     _status = WebViewStatus.failed;
   }
 

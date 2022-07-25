@@ -59,9 +59,9 @@ class UserInfoModel extends DataModel {
   final int diggArticleCount;
   final int gotDiggCount;
   final int gotViewCount;
-  @JsonKey(name: 'postShortmsgCount')
+  @JsonKey(name: 'post_shortmsg_count')
   final int postShortMsgCount;
-  @JsonKey(name: 'diggShortmsgCount')
+  @JsonKey(name: 'digg_shortmsg_count')
   final int diggShortMsgCount;
   @JsonKey(name: 'isfollowed')
   final bool isFollowed;

@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:process_run/shell.dart';
 
 import 'internals/command.dart';
 import 'internals/utils.dart';
@@ -23,8 +24,14 @@ void main(List<String> arguments) {
     await runner.run(arguments);
   }, (Object e, StackTrace s) {
     log(composeLogString('Exception occurred: $e'));
-    log(composeLogString('========== STACK TRACE =========='));
-    log(composeLogString(s));
+    if (e is ShellException) {
+      log(composeLogString('==========   STD ERR   =========='));
+      log(composeLogString(e.result?.stderr));
+    }
+    if (s != StackTrace.empty) {
+      log(composeLogString('========== STACK TRACE =========='));
+      log(composeLogString(s));
+    }
     exit(-1);
   });
 }

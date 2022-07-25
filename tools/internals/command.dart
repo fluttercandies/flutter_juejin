@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
+import 'package:process_run/shell.dart';
 
 import 'constants.dart';
 import 'utils.dart';
@@ -38,10 +39,17 @@ abstract class JJCommand extends Command<void> {
       await runProcess();
       stopwatch.stop();
       await afterRan();
-    } catch (e) {
+    } catch (e, s) {
       log(composeLogString('Exception occurred: $e'));
-      log(composeLogString('========== STACK TRACE =========='));
-      log(composeLogString(e.nullableStackTrace.toString()));
+      if (e is ShellException) {
+        log(composeLogString('==========   STD ERR   =========='));
+        log(composeLogString(e.result?.stdout));
+        log(composeLogString(e.result?.stderr));
+      }
+      if (s != StackTrace.empty) {
+        log(composeLogString('========== STACK TRACE =========='));
+        log(composeLogString(s));
+      }
       exit(-1);
     }
   }
@@ -51,8 +59,15 @@ abstract class JJCommand extends Command<void> {
     _fallbackResults = argParser.parse(arguments);
     runZonedGuarded<void>(runProcess, (Object e, StackTrace s) {
       log(composeLogString('Exception occurred: $e'));
-      log(composeLogString('========== STACK TRACE =========='));
-      log(composeLogString(s));
+      if (e is ShellException) {
+        log(composeLogString('==========   STD ERR   =========='));
+        log(composeLogString(e.result?.stdout));
+        log(composeLogString(e.result?.stderr));
+      }
+      if (s != StackTrace.empty) {
+        log(composeLogString('========== STACK TRACE =========='));
+        log(composeLogString(s));
+      }
       exit(-1);
     });
   }
@@ -61,14 +76,5 @@ abstract class JJCommand extends Command<void> {
     if (!Platform.isMacOS && !Platform.isWindows && !Platform.isLinux) {
       throw OSError('${Platform.operatingSystem} is not supported.');
     }
-  }
-}
-
-extension _NullableObjectExtension on Object? {
-  StackTrace? get nullableStackTrace {
-    if (this is Error?) {
-      return (this as Error?)?.stackTrace;
-    }
-    return null;
   }
 }

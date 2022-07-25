@@ -89,9 +89,10 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(userInfo.userName),
+                        userInfo.buildNameAndLevel(),
                         Text(
-                          articleInfo.createTime,
+                          '${articleInfo.createTime} · '
+                          '阅读${articleInfo.viewCount}',
                           style: context.textTheme.caption,
                         ),
                       ],

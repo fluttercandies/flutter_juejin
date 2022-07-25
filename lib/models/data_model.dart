@@ -2,10 +2,12 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
+import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../constants/constants.dart';
+import '../constants/resources.dart';
 import '../extensions/duration_extension.dart';
 import '../extensions/num_extension.dart';
 import '../utils/log_util.dart';

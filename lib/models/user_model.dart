@@ -85,6 +85,22 @@ class UserInfoModel extends DataModel {
   final UserGrowthInfo userGrowthInfo;
   final bool isVip;
 
+  Widget buildLevelImage({double? width, double height = 12}) {
+    final String asset = R.ASSETS_ICON_USER_LV1_WEBP.replaceAll('1', '$level');
+    return Image.asset(asset, width: width, height: height);
+  }
+
+  Widget buildNameAndLevel({double? levelWidth, double levelHeight = 12}) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text(userName),
+        const SizedBox(width: 4),
+        buildLevelImage(width: levelWidth, height: levelHeight),
+      ],
+    );
+  }
+
   @override
   Map<String, dynamic> toJson() => _$UserInfoModelToJson(this);
 

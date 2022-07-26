@@ -24,6 +24,7 @@ export 'extensions/string_extension.dart';
 
 export 'internals/instance.dart';
 export 'internals/methods.dart';
+export 'internals/special_text.dart';
 export 'internals/urls.dart';
 
 export 'models/data_model.dart';

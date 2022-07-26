@@ -13,6 +13,7 @@ dependencies:
   dio: ^4.0.6
   equatable: ^2.0.3
   extended_sliver: ^2.1.3
+  extended_text: ^9.1.0
   ff_annotation_route_library: ^3.0.0
   flutter:
     sdk: flutter

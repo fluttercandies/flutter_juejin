@@ -85,6 +85,15 @@ class UserInfoModel extends DataModel {
   final UserGrowthInfo userGrowthInfo;
   final bool isVip;
 
+  Widget buildCircleAvatar({double? size}) {
+    return ClipOval(
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Image.network(avatarLarge, fit: BoxFit.cover),
+      ),
+    );
+  }
+
   Widget buildLevelImage({double? width, double height = 12}) {
     final String asset = R.ASSETS_ICON_USER_LV1_WEBP.replaceAll('1', '$level');
     return Image.asset(asset, width: width, height: height);

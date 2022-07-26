@@ -76,7 +76,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
           duration: kThemeAnimationDuration,
           child: Row(
             children: <Widget>[
-              ClipOval(child: Image.network(userInfo.avatarLarge)),
+              userInfo.buildCircleAvatar(),
               const Gap.h(8),
               Expanded(
                 child: Text(
@@ -111,10 +111,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: <Widget>[
-          AspectRatio(
-            aspectRatio: 1,
-            child: ClipOval(child: Image.network(userInfo.avatarLarge)),
-          ),
+          userInfo.buildCircleAvatar(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),

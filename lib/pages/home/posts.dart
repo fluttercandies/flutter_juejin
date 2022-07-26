@@ -47,23 +47,16 @@ class _PostsPageState extends State<PostsPage> {
   }
 }
 
-class _PostItemWidget extends StatefulWidget {
+class _PostItemWidget extends StatelessWidget {
   const _PostItemWidget(this.post, {Key? key}) : super(key: key);
 
   final PostItemModel post;
 
-  @override
-  State<_PostItemWidget> createState() => _PostItemWidgetState();
-}
+  UserInfoModel get user => post.authorUserInfo;
 
-class _PostItemWidgetState extends State<_PostItemWidget> {
-  bool _isContentCollapsed = true;
+  PostInfo get postInfo => post.msgInfo;
 
-  UserInfoModel get user => widget.post.authorUserInfo;
-
-  PostInfo get postInfo => widget.post.msgInfo;
-
-  PostTopic? get topic => widget.post.topic;
+  PostTopic? get topic => post.topic;
 
   Widget _buildInfo(BuildContext context) {
     final StringBuffer sb = StringBuffer();
@@ -113,8 +106,8 @@ class _PostItemWidgetState extends State<_PostItemWidget> {
 
   Widget _buildContent(BuildContext context) {
     return ExtendedText(
-      widget.post.msgInfo.content,
-      maxLines: _isContentCollapsed ? 3 : null,
+      postInfo.content,
+      maxLines: 3,
       overflowWidget: const TextOverflowWidget(
         child: Text.rich(
           TextSpan(
@@ -155,6 +148,42 @@ class _PostItemWidgetState extends State<_PostItemWidget> {
     );
   }
 
+  Widget _buildPraisedUsers(BuildContext context) {
+    const double size = 22, offset = 4;
+    final List<UserInfoModel> users = post.diggUser;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        SizedBox(
+          width: (size - offset) * users.length + offset,
+          height: size,
+          child: Stack(
+            children: List<Widget>.generate(
+              users.length,
+              (int index) => PositionedDirectional(
+                top: 0,
+                bottom: 0,
+                start: index * (size - offset),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: context.theme.cardColor,
+                      width: 2,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: users[index].buildCircleAvatar(),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const Gap.h(8),
+        Text('等人赞过', style: context.textTheme.caption),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -170,6 +199,10 @@ class _PostItemWidgetState extends State<_PostItemWidget> {
           Row(
             children: <Widget>[
               if (topic != null) _buildTopic(context),
+              if (post.diggUser.isNotEmpty) ...<Widget>[
+                const Spacer(),
+                _buildPraisedUsers(context),
+              ],
             ],
           ),
         ],

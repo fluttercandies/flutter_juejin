@@ -56,6 +56,8 @@ class _PostItemWidget extends StatelessWidget {
 
   PostInfo get postInfo => post.msgInfo;
 
+  HotComment? get hotComment => post.hotComment;
+
   PostTopic? get topic => post.topic;
 
   Widget _buildInfo(BuildContext context) {
@@ -123,6 +125,34 @@ class _PostItemWidget extends StatelessWidget {
         ),
       ),
       specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),
+    );
+  }
+
+  Widget _buildHotComment(BuildContext context) {
+    final HotComment comment = hotComment!;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: RadiusConstants.r2,
+        color: context.theme.dividerColor,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Image.asset(R.ASSETS_ICON_POST_HOT_COMMENT_PNG, height: 20),
+              Text(
+                '${comment.commentInfo.diggCount}人赞',
+                style: context.textTheme.caption,
+              ),
+            ],
+          ),
+          Text(comment.commentInfo.commentContent),
+        ],
+      ),
     );
   }
 
@@ -196,6 +226,10 @@ class _PostItemWidget extends StatelessWidget {
           const Gap.v(10),
           _buildContent(context),
           const Gap.v(10),
+          if (hotComment != null) ...<Widget>[
+            _buildHotComment(context),
+            const Gap.v(10),
+          ],
           Row(
             children: <Widget>[
               if (topic != null) _buildTopic(context),

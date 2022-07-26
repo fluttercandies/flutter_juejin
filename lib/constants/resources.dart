@@ -8,6 +8,9 @@ class R {
 
   static const String ASSETS_BRAND_SVG = 'assets/brand.svg';
 
+  static const String ASSETS_ICON_POST_HOT_COMMENT_PNG =
+      'assets/icon/post/hot_comment.png';
+
   static const String ASSETS_ICON_USER_LV1_WEBP = 'assets/icon/user/lv1.webp';
 
   static const String ASSETS_ICON_USER_LV2_WEBP = 'assets/icon/user/lv2.webp';

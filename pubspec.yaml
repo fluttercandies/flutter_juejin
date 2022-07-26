@@ -49,4 +49,5 @@ flutter:
   assets:
     - assets/
     - assets/icon/
+    - assets/icon/post/
     - assets/icon/user/

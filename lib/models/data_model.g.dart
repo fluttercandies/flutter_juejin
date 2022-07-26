@@ -376,7 +376,10 @@ PostItemModel _$PostItemModelFromJson(Map<String, dynamic> json) =>
       msgInfo: PostInfo.fromJson(json['msg_Info'] as Map<String, dynamic>),
       authorUserInfo: UserInfoModel.fromJson(
           json['author_user_info'] as Map<String, dynamic>),
-      topic: PostTopic.fromJson(json['topic'] as Map<String, dynamic>),
+      topic: PostItemModel._readTopic(json, 'topic') == null
+          ? null
+          : PostTopic.fromJson(
+              PostItemModel._readTopic(json, 'topic') as Map<String, dynamic>),
       userInteract:
           UserInteract.fromJson(json['user_interact'] as Map<String, dynamic>),
       org: UserOrg.fromJson(json['org'] as Map<String, dynamic>),
@@ -397,7 +400,7 @@ Map<String, dynamic> _$PostItemModelToJson(PostItemModel instance) =>
       'msg_id': instance.msgId,
       'msg_Info': instance.msgInfo.toJson(),
       'author_user_info': instance.authorUserInfo.toJson(),
-      'topic': instance.topic.toJson(),
+      'topic': instance.topic?.toJson(),
       'user_interact': instance.userInteract.toJson(),
       'org': instance.org.toJson(),
       'theme': instance.theme.toJson(),

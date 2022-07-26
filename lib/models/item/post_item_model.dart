@@ -25,7 +25,8 @@ class PostItemModel extends DataModel {
   @JsonKey(name: 'msg_Info')
   final PostInfo msgInfo;
   final UserInfoModel authorUserInfo;
-  final PostTopic topic;
+  @JsonKey(readValue: _readTopic)
+  final PostTopic? topic;
   final UserInteract userInteract;
   final UserOrg org;
   final PostTheme theme;
@@ -39,6 +40,14 @@ class PostItemModel extends DataModel {
       return map[key];
     }
     return null;
+  }
+
+  static Map<String, dynamic>? _readTopic(Map map, String key) {
+    final String? topicId = map[key]['topic_id'];
+    if (topicId == null || topicId.isEmpty || topicId == '0') {
+      return null;
+    }
+    return map[key];
   }
 
   @override
@@ -111,6 +120,12 @@ class PostInfo extends DataModel {
   final bool isAdvertRecommend;
   final int auditStatus;
   final String themeId;
+
+  String get createTime {
+    return DateTime.now()
+        .difference((int.parse(ctime) * 1000).toDateTimeInMilliseconds)
+        .differenceString;
+  }
 
   @override
   Map<String, dynamic> toJson() => _$PostInfoToJson(this);

@@ -22,10 +22,10 @@ class _ArticlesPageState extends State<ArticlesPage> {
   Widget itemBuilder(final FeedModel model) {
     final Object feed = model.itemInfo;
     if (feed is ArticleItemModel) {
-      return _ArticleWidget(feed);
+      return _ArticleWidget(feed, key: ValueKey<String>(feed.articleId));
     }
     if (feed is AdvertiseItemModel) {
-      return _AdvertiseWidget(feed);
+      return _AdvertiseWidget(feed, key: ValueKey<String>(feed.advertId));
     }
     return Text(
       feed.toString(),

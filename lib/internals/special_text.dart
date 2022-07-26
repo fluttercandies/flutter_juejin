@@ -15,7 +15,7 @@ class TopicText extends RegExpSpecialText {
   /// - Match paired #.
   /// - Match not empty content between pairing #.
   @override
-  final RegExp regExp = RegExp(r'(\[(\d+)#)(\S+|(\S([^(#\])]+?)\S))(#\])');
+  final RegExp regExp = RegExp(r'\[(\d{18,})#(\S+?|\S((?!#\]).)+?\S)#\]');
 
   @override
   InlineSpan finishText(
@@ -26,7 +26,7 @@ class TopicText extends RegExpSpecialText {
   }) {
     final String actualText = toString();
     return SpecialTextSpan(
-      text: '#${match.group(3)}#',
+      text: '#${match.group(2)}#',
       actualText: actualText,
       start: start,
       style: (textStyle ?? const TextStyle()).copyWith(

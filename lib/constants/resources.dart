@@ -26,4 +26,19 @@ class R {
   static const String ASSETS_ICON_USER_LV7_WEBP = 'assets/icon/user/lv7.webp';
 
   static const String ASSETS_ICON_USER_LV8_WEBP = 'assets/icon/user/lv8.webp';
+
+  static const String ASSETS_ICON_USER_VIP_LV1_WEBP =
+      'assets/icon/user/vip_lv1.webp';
+
+  static const String ASSETS_ICON_USER_VIP_LV2_WEBP =
+      'assets/icon/user/vip_lv2.webp';
+
+  static const String ASSETS_ICON_USER_VIP_LV3_WEBP =
+      'assets/icon/user/vip_lv3.webp';
+
+  static const String ASSETS_ICON_USER_VIP_LV4_WEBP =
+      'assets/icon/user/vip_lv4.webp';
+
+  static const String ASSETS_ICON_USER_VIP_LV5_WEBP =
+      'assets/icon/user/vip_lv5.webp';
 }

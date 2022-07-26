@@ -122,7 +122,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   userInfo.buildNameAndLevel(),
                   Text(
                     '${articleInfo.createTime} · '
-                    '阅读${articleInfo.viewCount}',
+                    '阅读 ${articleInfo.viewCount}',
                     style: context.textTheme.caption,
                   ),
                 ],

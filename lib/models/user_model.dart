@@ -96,7 +96,15 @@ class UserInfoModel extends DataModel {
 
   Widget buildLevelImage({double? width, double height = 12}) {
     final String asset = R.ASSETS_ICON_USER_LV1_WEBP.replaceAll('1', '$level');
-    return Image.asset(asset, width: width, height: height);
+    return Image.asset(asset, width: width, height: height, fit: BoxFit.cover);
+  }
+
+  Widget buildVipImage({double? size}) {
+    final String asset = R.ASSETS_ICON_USER_VIP_LV1_WEBP.replaceAll(
+      '1',
+      '${userGrowthInfo.vipLevel}',
+    );
+    return Image.asset(asset, width: size, height: size, fit: BoxFit.cover);
   }
 
   Widget buildNameAndLevel({double? levelWidth, double levelHeight = 12}) {
@@ -106,6 +114,10 @@ class UserInfoModel extends DataModel {
         Text(userName),
         const SizedBox(width: 4),
         buildLevelImage(width: levelWidth, height: levelHeight),
+        if (userGrowthInfo.vipLevel > 0) Padding(
+          padding: const EdgeInsetsDirectional.only(start: 4),
+          child: buildVipImage(size: levelHeight * 1.375),
+        ),
       ],
     );
   }

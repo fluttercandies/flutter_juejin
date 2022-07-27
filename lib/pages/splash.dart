@@ -35,9 +35,10 @@ class _SplashPageState extends State<SplashPage> {
     await Future.wait(<Future<void>>[
       DeviceUtil.initDeviceInfo(forceRefresh: true),
       PackageUtil.initInfo(),
+      HttpUtil.init(),
     ]);
     DeviceUtil.setHighestRefreshRate();
-    await 1.seconds.delay;
+    await HttpUtil.fetch(FetchType.get, url: 'https://${Urls.domain}');
     if (mounted) {
       navigator.pushReplacementNamed(Routes.homePage.name);
     }

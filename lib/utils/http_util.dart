@@ -6,7 +6,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,20 +29,30 @@ class HttpUtil {
   static const String _tag = '🌐 HttpUtil';
   static bool isLogging = false;
 
-  static final Dio dio = Dio()
-    ..options = dioBaseOptions
-    ..interceptors.addAll(dioInterceptors);
+  static late final Dio dio;
+  static late final PersistCookieJar cookieJar;
+  static late final CookieManager cookieManager;
+  static late final BaseOptions baseOptions = BaseOptions(
+    connectTimeout: 30000,
+    sendTimeout: 30000,
+    receiveTimeout: 30000,
+    receiveDataWhenStatusError: true,
+  );
+  static late final List<Interceptor> interceptors = [
+    cookieManager,
+    _interceptor,
+  ];
 
-  static BaseOptions get dioBaseOptions {
-    return BaseOptions(
-      connectTimeout: 30000,
-      sendTimeout: 30000,
-      receiveTimeout: 30000,
-      receiveDataWhenStatusError: true,
-    );
+  static Future<void> init() async {
+    final Directory temporaryDir = await getTemporaryDirectory();
+    final String cookiesPath = '${temporaryDir.path}/persist_cookies/';
+    Directory(cookiesPath).createSync(recursive: true);
+    cookieJar = PersistCookieJar(storage: FileStorage(cookiesPath));
+    cookieManager = CookieManager(cookieJar);
+    dio = Dio()
+      ..options = baseOptions
+      ..interceptors.addAll(interceptors);
   }
-
-  static List<Interceptor> get dioInterceptors => <Interceptor>[_interceptor];
 
   static ResponseModel<T> _successModel<T extends DataModel>() =>
       ResponseModel<T>.succeed();

@@ -10,7 +10,6 @@ import 'package:juejin/exports.dart';
 import '../pages/article/detail.dart';
 import '../pages/home.dart';
 import '../pages/splash.dart';
-import '../widgets/webview.dart';
 
 FFRouteSettings getRouteSettings({
   required String name,
@@ -25,12 +24,12 @@ FFRouteSettings getRouteSettings({
         name: name,
         arguments: arguments,
         builder: () => ArticleDetailPage(
+          asT<String>(
+            safeArguments['id'],
+          )!,
           key: asT<Key?>(
             safeArguments['key'],
           ),
-          articleId: asT<String>(
-            safeArguments['articleId'],
-          )!,
         ),
       );
     case 'home-page':
@@ -51,19 +50,6 @@ FFRouteSettings getRouteSettings({
           key: asT<Key?>(
             safeArguments['key'],
           ),
-        ),
-      );
-    case 'webview-page':
-      return FFRouteSettings(
-        name: name,
-        arguments: arguments,
-        builder: () => WebViewPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-          uri: asT<Uri>(
-            safeArguments['uri'],
-          )!,
         ),
       );
     default:

@@ -214,7 +214,7 @@ class _ArticleWidget extends StatelessWidget {
     return Tapper(
       onTap: () => context.navigator.pushNamed(
         Routes.articleDetailPage.name,
-        arguments: Routes.articleDetailPage.d(articleId: article.articleId),
+        arguments: Routes.articleDetailPage.d(article.articleId),
       ),
       child: Container(
         padding: const EdgeInsets.all(12),

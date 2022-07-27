@@ -34,6 +34,7 @@ export 'models/loading_base.dart';
 export 'models/response_model.dart';
 
 export 'routes/juejin_routes.dart';
+export 'routes/page_route.dart';
 
 export 'utils/cache_util.dart';
 export 'utils/device_util.dart';

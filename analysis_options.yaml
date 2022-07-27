@@ -13,7 +13,7 @@ linter:
     prefer_const_declarations: true
     prefer_const_literals_to_create_immutables: true
     prefer_single_quotes: true
-    require_trailing_commas: grue
+    require_trailing_commas: true
     sort_child_properties_last: true
     sort_constructors_first: true
     sort_pub_dependencies: true

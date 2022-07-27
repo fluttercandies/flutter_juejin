@@ -6,7 +6,9 @@ export 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart'
     hide CupertinoActivityIndicator;
 
 export 'apis/content_api.dart';
+export 'apis/interact_api.dart';
 export 'apis/recommend_api.dart';
+export 'apis/passport_api.dart';
 
 export 'constants/constants.dart';
 export 'constants/resources.dart';

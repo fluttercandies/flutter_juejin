@@ -6,16 +6,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import '../extensions/num_extension.dart';
 
+import '../constants/constants.dart';
+import '../extensions/num_extension.dart';
 import '../extensions/string_extension.dart';
 import '../models/data_model.dart';
 import '../models/response_model.dart';
-
+import 'device_util.dart';
 import 'log_util.dart';
 import 'package_util.dart';
 
@@ -27,20 +30,30 @@ class HttpUtil {
   static const String _tag = '🌐 HttpUtil';
   static bool isLogging = false;
 
-  static final Dio dio = Dio()
-    ..options = dioBaseOptions
-    ..interceptors.addAll(dioInterceptors);
+  static late final Dio dio;
+  static late final PersistCookieJar cookieJar;
+  static late final CookieManager cookieManager;
+  static late final BaseOptions baseOptions = BaseOptions(
+    connectTimeout: 30000,
+    sendTimeout: 30000,
+    receiveTimeout: 30000,
+    receiveDataWhenStatusError: true,
+  );
+  static late final List<Interceptor> interceptors = [
+    cookieManager,
+    _interceptor,
+  ];
 
-  static BaseOptions get dioBaseOptions {
-    return BaseOptions(
-      connectTimeout: 30000,
-      sendTimeout: 30000,
-      receiveTimeout: 30000,
-      receiveDataWhenStatusError: true,
-    );
+  static Future<void> init() async {
+    final Directory temporaryDir = await getTemporaryDirectory();
+    final String cookiesPath = '${temporaryDir.path}/persist_cookies/';
+    Directory(cookiesPath).createSync(recursive: true);
+    cookieJar = PersistCookieJar(storage: FileStorage(cookiesPath));
+    cookieManager = CookieManager(cookieJar);
+    dio = Dio()
+      ..options = baseOptions
+      ..interceptors.addAll(interceptors);
   }
-
-  static List<Interceptor> get dioInterceptors => <Interceptor>[_interceptor];
 
   static ResponseModel<T> _successModel<T extends DataModel>() =>
       ResponseModel<T>.succeed();
@@ -62,6 +75,7 @@ class HttpUtil {
     Map<String, String>? queryParameters,
     Object? body,
     Json? headers,
+    String? contentType,
     ResponseType? responseType,
     CancelToken? cancelToken,
   }) async {
@@ -71,6 +85,7 @@ class HttpUtil {
       queryParameters: queryParameters,
       body: body,
       headers: headers,
+      contentType: contentType,
       responseType: responseType,
       cancelToken: cancelToken,
     );
@@ -83,6 +98,7 @@ class HttpUtil {
     Map<String, String>? queryParameters,
     Object? body,
     Json? headers,
+    String? contentType,
     ResponseType responseType = ResponseType.json,
     CancelToken? cancelToken,
     bool Function(Json json)? modelFilter,
@@ -93,6 +109,7 @@ class HttpUtil {
       queryParameters: queryParameters,
       body: body,
       headers: headers,
+      contentType: contentType,
       responseType: responseType,
       cancelToken: cancelToken,
       modelFilter: modelFilter,
@@ -301,15 +318,25 @@ class HttpUtil {
     Map<String, String?>? queryParameters,
     Object? body,
     Json? headers,
+    String? contentType,
     ResponseType? responseType = ResponseType.json,
     CancelToken? cancelToken,
     bool Function(Json json)? modelFilter,
   }) async {
-    if (!url.startsWith('http(s?)://')) {
+    if (!url.startsWith(RegExp(r'http(s?)://'))) {
       url = 'https://$url';
     }
-    if (body is Map && !body.containsKey('client_type')) {
-      body['client_type'] = 2606; // Indicates client type.
+    queryParameters
+      ?..putIfAbsent('app_id', () => '$appId')
+      ..putIfAbsent('app_name', () => '稀土掘金')
+      ..putIfAbsent('channel', () => 'Flutter')
+      ..putIfAbsent('device_platform', () => Platform.operatingSystem)
+      ..putIfAbsent('device_type', () => DeviceUtil.deviceModel)
+      ..putIfAbsent('os_version', () => DeviceUtil.osVersion)
+      ..putIfAbsent('version_code', () => '${PackageUtil.versionCode}')
+      ..putIfAbsent('version_name', () => PackageUtil.versionName);
+    if (body is Map) {
+      body.putIfAbsent('client_type', () => appId); // Indicates client type.
     }
     headers ??= <String, String?>{};
     // System headers.
@@ -321,9 +348,6 @@ class HttpUtil {
       (String key, dynamic value) =>
           MapEntry<String, dynamic>(key, value.toString()),
     );
-    if (effectiveHeaders.isNotEmpty) {
-      _log('$fetchType headers: $effectiveHeaders');
-    }
     final Uri replacedUri = Uri.parse(url).replace(
       queryParameters: queryParameters?.map<String, String>(
         (String key, dynamic value) =>
@@ -334,6 +358,7 @@ class HttpUtil {
       followRedirects: true,
       headers: effectiveHeaders,
       receiveDataWhenStatusError: true,
+      contentType: contentType,
       responseType: responseType,
     );
 
@@ -411,6 +436,9 @@ class HttpUtil {
     return QueuedInterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
         _log('Fetching(${options.method}) url: ${options.uri}');
+        if (options.headers.isNotEmpty) {
+          _log('Raw request headers: ${options.headers}');
+        }
         if (options.data != null) {
           _log('Raw request body: ${options.data}');
         }

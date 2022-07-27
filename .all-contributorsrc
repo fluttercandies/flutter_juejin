@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "a1017480401",
+      "name": "友人A",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58846244?v=4",
+      "profile": "https://github.com/a1017480401",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "flutter_juejin",
+  "projectOwner": "fluttercandies",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

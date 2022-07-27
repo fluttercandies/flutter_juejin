@@ -12,12 +12,13 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import '../extensions/num_extension.dart';
 
+import '../constants/constants.dart';
+import '../extensions/num_extension.dart';
 import '../extensions/string_extension.dart';
 import '../models/data_model.dart';
 import '../models/response_model.dart';
-
+import 'device_util.dart';
 import 'log_util.dart';
 import 'package_util.dart';
 
@@ -317,11 +318,20 @@ class HttpUtil {
     CancelToken? cancelToken,
     bool Function(Json json)? modelFilter,
   }) async {
-    if (!url.startsWith('http(s?)://')) {
+    if (!url.startsWith(RegExp(r'http(s?)://'))) {
       url = 'https://$url';
     }
-    if (body is Map && !body.containsKey('client_type')) {
-      body['client_type'] = 2606; // Indicates client type.
+    queryParameters
+      ?..putIfAbsent('app_id', () => '$appId')
+      ..putIfAbsent('app_name', () => '稀土掘金')
+      ..putIfAbsent('channel', () => 'Flutter')
+      ..putIfAbsent('device_platform', () => Platform.operatingSystem)
+      ..putIfAbsent('device_type', () => DeviceUtil.deviceModel)
+      ..putIfAbsent('os_version', () => DeviceUtil.osVersion)
+      ..putIfAbsent('version_code', () => '${PackageUtil.versionCode}')
+      ..putIfAbsent('version_name', () => PackageUtil.versionName);
+    if (body is Map) {
+      body.putIfAbsent('client_type', () => appId); // Indicates client type.
     }
     headers ??= <String, String?>{};
     // System headers.
@@ -333,9 +343,6 @@ class HttpUtil {
       (String key, dynamic value) =>
           MapEntry<String, dynamic>(key, value.toString()),
     );
-    if (effectiveHeaders.isNotEmpty) {
-      _log('$fetchType headers: $effectiveHeaders');
-    }
     final Uri replacedUri = Uri.parse(url).replace(
       queryParameters: queryParameters?.map<String, String>(
         (String key, dynamic value) =>
@@ -423,6 +430,9 @@ class HttpUtil {
     return QueuedInterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
         _log('Fetching(${options.method}) url: ${options.uri}');
+        if (options.headers.isNotEmpty) {
+          _log('Raw request headers: ${options.headers}');
+        }
         if (options.data != null) {
           _log('Raw request body: ${options.data}');
         }

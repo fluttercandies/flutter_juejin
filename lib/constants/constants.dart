@@ -4,4 +4,6 @@
 
 import 'dart:convert';
 
+const int appId = 2606;
+
 const JsonEncoder globalJsonEncoder = JsonEncoder.withIndent('  ');

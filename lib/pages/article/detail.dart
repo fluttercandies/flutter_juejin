@@ -2,6 +2,7 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -13,9 +14,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 @FFRoute(name: 'article-detail-page')
 class ArticleDetailPage extends StatefulWidget {
-  const ArticleDetailPage({Key? key, required this.article}) : super(key: key);
+  const ArticleDetailPage({Key? key, required this.articleId})
+      : super(key: key);
 
-  final ArticleItemModel article;
+  final String articleId;
 
   @override
   State<ArticleDetailPage> createState() => _ArticleDetailPageState();
@@ -24,7 +26,7 @@ class ArticleDetailPage extends StatefulWidget {
 class _ArticleDetailPageState extends State<ArticleDetailPage> {
   final ValueNotifier<bool> _authorInTitle = ValueNotifier<bool>(false);
 
-  String get articleId => widget.article.articleId;
+  String get articleId => widget.articleId;
 
   ArticleItemModel get detail => _detail!;
   ArticleItemModel? _detail;
@@ -193,6 +195,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             onWebResourceError: _webviewController.onWebResourceError,
             onWebViewCreated: _webviewController.onWebViewCreated,
             onProgress: _webviewController.onProgress,
+            navigationDelegate: _webviewController.navigationDelegate,
             javascriptChannels: <JavascriptChannel>{
               _webviewController.scrollHeightNotifierJavascriptChannel
             },
@@ -286,6 +289,31 @@ class NestedWebviewController {
         }
       },
     );
+  }
+
+  NavigationDelegate get navigationDelegate {
+    return ((NavigationRequest request) async {
+      Uri requestUri = Uri.parse(request.url);
+
+      if (requestUri.isScheme('HTTP') || requestUri.isScheme('HTTPS')) {
+        ///判断是不是内部链接  类似  https://juejin.cn/post/7112770927082864653
+        if (requestUri.host == Urls.domain &&
+            requestUri.path.startsWith('/post/')) {
+          String lastId = requestUri.path.split('/').last;
+          navigator.pushNamed(
+            Routes.articleDetailPage.name,
+            arguments: Routes.articleDetailPage.d(articleId: lastId),
+          );
+        } else {
+          navigator.pushNamed(
+            Routes.webviewPage.name,
+            arguments: Routes.webviewPage.d(uri: requestUri),
+          );
+        }
+      }
+
+      return NavigationDecision.prevent;
+    });
   }
 }
 

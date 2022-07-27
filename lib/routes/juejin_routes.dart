@@ -10,6 +10,7 @@ const List<String> routeNames = <String>[
   'article-detail-page',
   'home-page',
   'splash-page',
+  'webview-page',
 ];
 
 class Routes {
@@ -21,7 +22,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// ArticleDetailPage : [Key? key, ArticleItemModel(required) article]
+  /// ArticleDetailPage : [Key? key, String(required) articleId]
   static const _ArticleDetailPage articleDetailPage = _ArticleDetailPage();
 
   /// 'home-page'
@@ -41,6 +42,15 @@ class Routes {
   ///
   /// SplashPage : [Key? key]
   static const _SplashPage splashPage = _SplashPage();
+
+  /// 'webview-page'
+  ///
+  /// [name] : 'webview-page'
+  ///
+  /// [constructors] :
+  ///
+  /// WebViewPage : [Key? key, Uri(required) uri]
+  static const _WebviewPage webviewPage = _WebviewPage();
 }
 
 class _ArticleDetailPage {
@@ -50,11 +60,11 @@ class _ArticleDetailPage {
 
   Map<String, dynamic> d({
     Key? key,
-    required ArticleItemModel article,
+    required String articleId,
   }) =>
       <String, dynamic>{
         'key': key,
-        'article': article,
+        'articleId': articleId,
       };
 
   @override
@@ -87,6 +97,24 @@ class _SplashPage {
   }) =>
       <String, dynamic>{
         'key': key,
+      };
+
+  @override
+  String toString() => name;
+}
+
+class _WebviewPage {
+  const _WebviewPage();
+
+  String get name => 'webview-page';
+
+  Map<String, dynamic> d({
+    Key? key,
+    required Uri uri,
+  }) =>
+      <String, dynamic>{
+        'key': key,
+        'uri': uri,
       };
 
   @override

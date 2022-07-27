@@ -26,3 +26,21 @@ extension NullableStringExtension on String? {
 
   double? toDoubleOrNull() => this == null ? null : double.tryParse(this!);
 }
+
+/// https://gist.github.com/DemoJameson/98317a28d0cc65f63454c0329f5316ba
+///
+/// Thanks to @DemoJameson .
+extension EncryptStringExtension on String {
+  String get toEncrypted {
+    return split('')
+        .map((String e) {
+          final int ascii = codeUnitAt(0);
+          final int r = ascii % 8;
+          final int offset =
+              <int, int>{2: 7, 3: 6, 0: 5, 1: 4, 6: 3, 7: 2, 4: 1, 5: 0}[r]!;
+          return (ascii + offset - r).toRadixString(16);
+        })
+        .join()
+        .toLowerCase();
+  }
+}

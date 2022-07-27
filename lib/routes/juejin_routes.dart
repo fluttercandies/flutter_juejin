@@ -21,7 +21,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// ArticleDetailPage : [Key? key, ArticleItemModel(required) article]
+  /// ArticleDetailPage : [String(required) id, Key? key]
   static const _ArticleDetailPage articleDetailPage = _ArticleDetailPage();
 
   /// 'home-page'
@@ -48,13 +48,13 @@ class _ArticleDetailPage {
 
   String get name => 'article-detail-page';
 
-  Map<String, dynamic> d({
+  Map<String, dynamic> d(
+    String id, {
     Key? key,
-    required ArticleItemModel article,
   }) =>
       <String, dynamic>{
+        'id': id,
         'key': key,
-        'article': article,
       };
 
   @override

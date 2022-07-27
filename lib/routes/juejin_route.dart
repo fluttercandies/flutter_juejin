@@ -24,12 +24,12 @@ FFRouteSettings getRouteSettings({
         name: name,
         arguments: arguments,
         builder: () => ArticleDetailPage(
+          asT<String>(
+            safeArguments['id'],
+          )!,
           key: asT<Key?>(
             safeArguments['key'],
           ),
-          article: asT<ArticleItemModel>(
-            safeArguments['article'],
-          )!,
         ),
       );
     case 'home-page':

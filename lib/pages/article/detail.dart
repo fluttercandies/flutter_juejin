@@ -2,6 +2,7 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -9,13 +10,12 @@ import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 @FFRoute(name: 'article-detail-page')
 class ArticleDetailPage extends StatefulWidget {
-  const ArticleDetailPage({Key? key, required this.article}) : super(key: key);
+  const ArticleDetailPage(this.id, {Key? key}) : super(key: key);
 
-  final ArticleItemModel article;
+  final String id;
 
   @override
   State<ArticleDetailPage> createState() => _ArticleDetailPageState();
@@ -24,7 +24,7 @@ class ArticleDetailPage extends StatefulWidget {
 class _ArticleDetailPageState extends State<ArticleDetailPage> {
   final ValueNotifier<bool> _authorInTitle = ValueNotifier<bool>(false);
 
-  String get articleId => widget.article.articleId;
+  String get articleId => widget.id;
 
   ArticleItemModel get detail => _detail!;
   ArticleItemModel? _detail;
@@ -174,7 +174,6 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
           valueListenable: _webviewController.scrollHeightNotifier,
           builder: (BuildContext context, double scrollHeight, Widget? child) {
             return SliverToNestedScrollBoxAdapter(
-              childExtent: scrollHeight,
               onScrollOffsetChanged: (double scrollOffset) {
                 double y = scrollOffset;
                 if (Platform.isAndroid) {
@@ -183,21 +182,14 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 }
                 _webviewController.controller?.scrollTo(0, y.ceil());
               },
+              childExtent: scrollHeight,
               child: child,
             );
           },
-          child: WebView(
-            initialUrl: _webviewController.initialUrl,
-            onPageStarted: _webviewController.onPageStarted,
-            onPageFinished: _webviewController.onPageFinished,
-            onWebResourceError: _webviewController.onWebResourceError,
-            onWebViewCreated: _webviewController.onWebViewCreated,
-            onProgress: _webviewController.onProgress,
-            javascriptChannels: <JavascriptChannel>{
-              _webviewController.scrollHeightNotifierJavascriptChannel
-            },
-            javascriptMode: JavascriptMode.unrestricted,
-            backgroundColor: Colors.transparent,
+          child: JJWebView(
+            controller: _webviewController,
+            isWebViewOnly: true,
+            enableProgressBar: false,
           ),
         ),
       ],
@@ -233,89 +225,3 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     );
   }
 }
-
-class NestedWebviewController {
-  NestedWebviewController(this.initialUrl, {this.onLoadComplete});
-
-  final String initialUrl;
-  final void Function()? onLoadComplete;
-
-  WebViewController? get controller => _controller;
-  WebViewController? _controller;
-
-  final ValueNotifier<double> scrollHeightNotifier = ValueNotifier<double>(1);
-  final ValueNotifier<int> progressNotifier = ValueNotifier<int>(0);
-  WebViewStatus _status = WebViewStatus.loading;
-
-  void onWebViewCreated(WebViewController controller) {
-    _controller = controller;
-  }
-
-  void onPageStarted(String url) {
-    if (url == initialUrl || _status == WebViewStatus.failed) {
-      _status = WebViewStatus.loading;
-    }
-  }
-
-  void onPageFinished(String url) {
-    _controller?.runJavascript(removeHeaderJs);
-    if (_status != WebViewStatus.failed) {
-      onLoadComplete?.call();
-      _controller?.runJavascript(scrollHeightJs);
-    }
-  }
-
-  void onWebResourceError(WebResourceError error) {
-    LogUtil.e(error, stackTrace: StackTrace.current);
-    _status = WebViewStatus.failed;
-  }
-
-  void onProgress(int progress) {
-    progressNotifier.value = progress;
-  }
-
-  JavascriptChannel get scrollHeightNotifierJavascriptChannel {
-    return JavascriptChannel(
-      name: 'ScrollHeightNotifier',
-      onMessageReceived: (JavascriptMessage message) {
-        final String msg = message.message;
-        final double? height = double.tryParse(msg);
-        if (height != null) {
-          scrollHeightNotifier.value = height;
-          _status = WebViewStatus.completed;
-        }
-      },
-    );
-  }
-}
-
-enum WebViewStatus { loading, failed, completed }
-
-const String removeHeaderJs = '''
-document.querySelectorAll("h1, img.cover-image").forEach((e) => e.remove());
-''';
-
-const String scrollHeightJs = '''(function() {
-  var height = 0;
-  var notifier = window.ScrollHeightNotifier || window.webkit.messageHandlers.ScrollHeightNotifier;
-  if (!notifier) return;
-  function checkAndNotify() {
-    var curr = document.body.scrollHeight;
-    if (curr !== height) {
-      height = curr;
-      notifier.postMessage(height.toString());
-    }
-  }
-  var timer;
-  var ob;
-  if (window.ResizeObserver) {
-    ob = new ResizeObserver(checkAndNotify);
-    ob.observe(document.body);
-  } else {
-    timer = setTimeout(checkAndNotify, 200);
-  }
-  window.onbeforeunload = function() {
-    ob && ob.disconnect();
-    timer && clearTimeout(timer);
-  };
-})();''';

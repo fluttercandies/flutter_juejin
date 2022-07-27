@@ -1,0 +1,40 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "AlexV525",
+      "name": "Alex Li",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/15884415?v=4",
+      "profile": "https://blog.alexv525.com",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "example",
+        "ideas",
+        "maintenance",
+        "question",
+        "review"
+      ]
+    },
+    {
+      "login": "a1017480401",
+      "name": "友人A",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58846244?v=4",
+      "profile": "https://github.com/a1017480401",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "flutter_juejin",
+  "projectOwner": "fluttercandies",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

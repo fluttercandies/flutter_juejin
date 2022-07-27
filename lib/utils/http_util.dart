@@ -75,6 +75,7 @@ class HttpUtil {
     Map<String, String>? queryParameters,
     Object? body,
     Json? headers,
+    String? contentType,
     ResponseType? responseType,
     CancelToken? cancelToken,
   }) async {
@@ -84,6 +85,7 @@ class HttpUtil {
       queryParameters: queryParameters,
       body: body,
       headers: headers,
+      contentType: contentType,
       responseType: responseType,
       cancelToken: cancelToken,
     );
@@ -96,6 +98,7 @@ class HttpUtil {
     Map<String, String>? queryParameters,
     Object? body,
     Json? headers,
+    String? contentType,
     ResponseType responseType = ResponseType.json,
     CancelToken? cancelToken,
     bool Function(Json json)? modelFilter,
@@ -106,6 +109,7 @@ class HttpUtil {
       queryParameters: queryParameters,
       body: body,
       headers: headers,
+      contentType: contentType,
       responseType: responseType,
       cancelToken: cancelToken,
       modelFilter: modelFilter,
@@ -314,6 +318,7 @@ class HttpUtil {
     Map<String, String?>? queryParameters,
     Object? body,
     Json? headers,
+    String? contentType,
     ResponseType? responseType = ResponseType.json,
     CancelToken? cancelToken,
     bool Function(Json json)? modelFilter,
@@ -353,6 +358,7 @@ class HttpUtil {
       followRedirects: true,
       headers: effectiveHeaders,
       receiveDataWhenStatusError: true,
+      contentType: contentType,
       responseType: responseType,
     );
 

@@ -323,7 +323,7 @@ class HttpUtil {
     CancelToken? cancelToken,
     bool Function(Json json)? modelFilter,
   }) async {
-    if (!url.startsWith(RegExp(r'http(s?)://'))) {
+    if (!url.startsWith(urlRegExp)) {
       url = 'https://$url';
     }
     queryParameters

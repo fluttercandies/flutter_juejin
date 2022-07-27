@@ -7,3 +7,6 @@ import 'dart:convert';
 const int appId = 2606;
 
 const JsonEncoder globalJsonEncoder = JsonEncoder.withIndent('  ');
+
+const String urlScheme = r'http(s?)://';
+final RegExp urlRegExp = RegExp(urlScheme);

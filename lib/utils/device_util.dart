@@ -21,7 +21,7 @@ class DeviceUtil {
 
   static DisplayMode? _highestRefreshRateMode;
 
-  static String deviceModel = 'ME Device';
+  static String deviceModel = 'Juejin device';
   static String? devicePushToken;
   static String? deviceUuid;
   static String osName = 'Others';

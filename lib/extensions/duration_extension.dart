@@ -53,6 +53,6 @@ extension DurationExtension on Duration {
         unit += 's';
       }
     }
-    return '$count$space$unit ${localizations.ago}';
+    return '$count$space$unit$space${localizations.ago}';
   }
 }

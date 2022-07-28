@@ -96,7 +96,7 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
     if (padding != null) {
       return padding;
     }
-    EdgeInsetsGeometry? _padding = padding;
+    EdgeInsetsGeometry? effectivePadding = padding;
     if (padding == null) {
       final MediaQueryData mediaQuery = MediaQuery.of(context);
       // Automatically pad sliver with padding from MediaQuery.
@@ -105,20 +105,20 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
       final EdgeInsets mediaQueryVerticalPadding =
           mediaQuery.padding.copyWith(left: 0.0, right: 0.0);
       // Consume the main axis padding with SliverPadding.
-      _padding = scrollDirection == Axis.vertical
+      effectivePadding = scrollDirection == Axis.vertical
           ? mediaQueryVerticalPadding
           : mediaQueryHorizontalPadding;
     }
-    return _padding;
+    return effectivePadding;
   }
 
   Widget effectiveIndicatorBuilder(
     BuildContext context,
     IndicatorStatus status,
   ) {
-    final Widget? _builder = indicatorBuilder?.call(context, status);
-    if (_builder != null) {
-      return _builder;
+    final Widget? builder = indicatorBuilder?.call(context, status);
+    if (builder != null) {
+      return builder;
     }
     final Widget indicator;
     switch (status) {
@@ -324,8 +324,8 @@ class ListEmptyIndicator extends StatelessWidget {
     final String effectiveIndicatorIcon =
         indicatorIcon?.call(isError) ?? R.ASSETS_BRAND_SVG;
     Widget child;
-    String? _text = indicatorText?.call(isError);
-    _text ??= isError ? ERROR_TEXT : EMPTY_TEXT;
+    String? text = indicatorText?.call(isError);
+    text ??= isError ? ERROR_TEXT : EMPTY_TEXT;
     child = Tapper(
       onTap: isError
           ? () {
@@ -359,7 +359,7 @@ class ListEmptyIndicator extends StatelessWidget {
                 package: indicatorPackage?.call(isError),
               ),
             const Gap.v(20),
-            Text(_text),
+            Text(text),
           ],
           Gap.v(Screens.height / 6),
         ],

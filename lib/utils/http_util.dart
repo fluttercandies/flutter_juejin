@@ -33,16 +33,12 @@ class HttpUtil {
   static late final Dio dio;
   static late final PersistCookieJar cookieJar;
   static late final CookieManager cookieManager;
-  static late final BaseOptions baseOptions = BaseOptions(
+  static final BaseOptions baseOptions = BaseOptions(
     connectTimeout: 30000,
     sendTimeout: 30000,
     receiveTimeout: 30000,
     receiveDataWhenStatusError: true,
   );
-  static late final List<Interceptor> interceptors = [
-    cookieManager,
-    _interceptor,
-  ];
 
   static Future<void> init() async {
     final Directory temporaryDir = await getTemporaryDirectory();
@@ -52,7 +48,7 @@ class HttpUtil {
     cookieManager = CookieManager(cookieJar);
     dio = Dio()
       ..options = baseOptions
-      ..interceptors.addAll(interceptors);
+      ..interceptors.addAll([cookieManager, _interceptor]);
   }
 
   static ResponseModel<T> _successModel<T extends DataModel>() =>

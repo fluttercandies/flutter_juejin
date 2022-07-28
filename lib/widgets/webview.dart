@@ -26,14 +26,16 @@ class JJWebView extends StatefulWidget {
   final bool enableProgressBar;
 
   static Future<void> open({
+    Key? key,
     required String url,
     bool replacement = false,
-    bool isWebViewOnly = false,
+    bool enableProgressBar = true,
   }) {
     final PageRoute route = defaultPageRoute(
       builder: (BuildContext context) => JJWebView(
+        key: key,
         url: url,
-        isWebViewOnly: isWebViewOnly,
+        enableProgressBar: enableProgressBar,
       ),
     );
     if (replacement) {

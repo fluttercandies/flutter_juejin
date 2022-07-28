@@ -9,7 +9,7 @@ import '../utils/log_util.dart';
 import 'logo.dart';
 
 class JJErrorWidget extends StatelessWidget {
-  const JJErrorWidget(this.details, {Key? key}) : super(key: key);
+  const JJErrorWidget._(this.details, {Key? key}) : super(key: key);
 
   final FlutterErrorDetails details;
 
@@ -19,7 +19,7 @@ class JJErrorWidget extends StatelessWidget {
         'Error has been delivered to the ErrorWidget: ${d.exception}',
         stackTrace: d.stack,
       );
-      return JJErrorWidget(d);
+      return JJErrorWidget._(d);
     };
   }
 
@@ -38,38 +38,34 @@ class JJErrorWidget extends StatelessWidget {
             0.1,
           ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const FractionallySizedBox(widthFactor: 0.25, child: JJLogo()),
-            const SizedBox(height: 20),
-            Text(
-              'Exceptions when building the part of your screen...',
-              style: TextStyle(
-                color: Theme.of(context).textTheme.caption!.color,
-                fontSize: 20,
+        child: DefaultTextStyle.merge(
+          style: TextStyle(color: Theme.of(context).textTheme.caption?.color),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const FractionallySizedBox(widthFactor: 0.25, child: JJLogo()),
+              const SizedBox(height: 20),
+              const Text(
+                'Exceptions when building the part of your screen...',
+                style: TextStyle(fontSize: 20),
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              details.exception.toString(),
-              style: TextStyle(
-                color: Theme.of(context).textTheme.caption!.color,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              const SizedBox(height: 10),
+              Text(
+                details.exception.toString(),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              details.stack.toString(),
-              style: TextStyle(
-                color: Theme.of(context).textTheme.caption!.color,
-                fontSize: 13,
+              const SizedBox(height: 10),
+              Text(
+                details.stack.toString(),
+                style: const TextStyle(fontSize: 13),
+                maxLines: 10,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 10,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

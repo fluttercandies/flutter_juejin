@@ -29,24 +29,21 @@ class LoadingBase<T extends DataModel> extends LoadingMoreBase<T> {
   int page = 1;
   String? lastId;
   bool canRequestMore = true;
-  bool forceRefresh = false;
 
   @override
   bool get hasMore => canRequestMore;
 
   @override
-  Future<bool> refresh([bool clearBeforeRequest = false]) async {
+  Future<bool> refresh([bool notifyStateChanged = false]) async {
     canRequestMore = true;
     page = 1;
     lastId = null;
-    forceRefresh = !clearBeforeRequest;
     onRefresh?.call();
-    final bool result = await super.refresh(clearBeforeRequest);
-    forceRefresh = false;
-    return result;
+    return super.refresh(notifyStateChanged);
   }
 
   @override
+  // ignore: avoid_renaming_method_parameters
   Future<bool> loadData([bool isLoadMoreAction = false]) async {
     try {
       final int newPage = isLoadMoreAction ? page + 1 : page;

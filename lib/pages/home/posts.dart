@@ -114,14 +114,14 @@ class _PostItemWidget extends StatelessWidget {
         child: Text.rich(
           TextSpan(
             children: <TextSpan>[
-              const TextSpan(text: '... '),
-              const TextSpan(
+              TextSpan(text: '... '),
+              TextSpan(
                 text: '展开',
                 style: TextStyle(color: themeColorLight),
               ),
             ],
           ),
-          style: const TextStyle(height: 1.2),
+          style: TextStyle(height: 1.2),
         ),
       ),
       specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),
@@ -208,7 +208,7 @@ class _PostItemWidget extends StatelessWidget {
             ),
           ),
         ),
-        const Gap.h(8),
+        const Gap.h(4),
         Text('等人赞过', style: context.textTheme.caption),
       ],
     );

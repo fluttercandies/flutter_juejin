@@ -69,9 +69,9 @@ class VersionCommand extends JJCommand {
 
   Future<void> _handleVersionUpdate() async {
     final YamlMap yamlMap = await obtainYamlFromPath(path.current);
-    final List<String> _rawVersions = (yamlMap['version'] as String).split('+');
-    final String oldVersion = _rawVersions.first;
-    final int oldBuildNumber = int.parse(_rawVersions.last);
+    final List<String> rawVersions = (yamlMap['version'] as String).split('+');
+    final String oldVersion = rawVersions.first;
+    final int oldBuildNumber = int.parse(rawVersions.last);
     final String newVersion = _version ?? oldVersion;
     final int newBuildNumber;
     if (_buildNumber != null) {

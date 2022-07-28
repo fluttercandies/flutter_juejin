@@ -33,7 +33,7 @@ class PullToRefreshHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget _widget;
+    Widget widget;
     if (info == null) {
       return const SliverToBoxAdapter();
     }
@@ -68,9 +68,9 @@ class PullToRefreshHeader extends StatelessWidget {
     }
 
     if (mode == RefreshIndicatorMode.done) {
-      _widget = const SizedBox.expand();
+      widget = const SizedBox.expand();
     } else {
-      _widget = Row(
+      widget = Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           AnimatedSwitcher(
@@ -88,10 +88,10 @@ class PullToRefreshHeader extends StatelessWidget {
       );
     }
 
-    _widget = SizedBox(height: dragOffset, child: _widget);
+    widget = SizedBox(height: dragOffset, child: widget);
 
     if (mode == RefreshIndicatorMode.error) {
-      _widget = Tapper(
+      widget = Tapper(
         onTap: () => info?.pullToRefreshNotificationState.show(),
         child: SizedBox(
           height: dragOffset,
@@ -103,7 +103,7 @@ class PullToRefreshHeader extends StatelessWidget {
     return SliverToBoxAdapter(
       child: DefaultTextStyle(
         style: _effectiveTextStyle(context),
-        child: _widget,
+        child: widget,
       ),
     );
   }

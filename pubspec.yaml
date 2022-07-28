@@ -40,6 +40,7 @@ dev_dependencies:
   archive: ^3.3.0
   args: ^2.3.1
   build_runner: ^2.2.0
+  crypto: ^3.0.2
   flutter_lints: ^2.0.0
   json_serializable: ^6.3.1
   path: ^1.8.1

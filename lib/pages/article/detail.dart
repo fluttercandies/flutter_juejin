@@ -129,9 +129,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
               ),
             ),
           ),
-          Container(
-            child: Text('${detail.userInteract.isFollow ? '已' : '未'}关注'),
-          ),
+          Text('${detail.userInteract.isFollow ? '已' : '未'}关注'),
         ],
       ),
     );

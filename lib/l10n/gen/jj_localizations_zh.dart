@@ -54,4 +54,70 @@ class JJLocalizationsZh extends JJLocalizations {
 
   @override
   String get webViewTitle => '网页链接';
+
+  @override
+  String get home => '首页';
+
+  @override
+  String get hots => '沸点';
+
+  @override
+  String get profile => '我';
+
+  @override
+  String get login => '登入';
+
+  @override
+  String get register => '注册';
+
+  @override
+  String get likes => '点赞';
+
+  @override
+  String get like => '点赞';
+
+  @override
+  String get comment => '评论';
+
+  @override
+  String get saved => '收藏';
+
+  @override
+  String get following => '关注';
+
+  @override
+  String get unfollow => '未关注';
+
+  @override
+  String get ads => '广告';
+
+  @override
+  String get readMore => '展开';
+
+  @override
+  String get hotsLikeCounts => '人赞';
+
+  @override
+  String get postLikeCounts => '等人赞过';
+
+  @override
+  String get views => '阅读';
+
+  @override
+  String get years => '年';
+
+  @override
+  String get months => '月';
+
+  @override
+  String get days => '天';
+
+  @override
+  String get hours => '小时';
+
+  @override
+  String get minutes => '分钟';
+
+  @override
+  String get ago => '前';
 }

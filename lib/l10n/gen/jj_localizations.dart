@@ -189,6 +189,138 @@ abstract class JJLocalizations {
   /// In en, this message translates to:
   /// **'Web page'**
   String get webViewTitle;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @hots.
+  ///
+  /// In en, this message translates to:
+  /// **'Hots'**
+  String get hots;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
+
+  /// No description provided for @likes.
+  ///
+  /// In en, this message translates to:
+  /// **'Likes'**
+  String get likes;
+
+  /// No description provided for @like.
+  ///
+  /// In en, this message translates to:
+  /// **'Like'**
+  String get like;
+
+  /// No description provided for @comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get comment;
+
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
+  /// No description provided for @following.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get following;
+
+  /// No description provided for @unfollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get unfollow;
+
+  /// No description provided for @ads.
+  ///
+  /// In en, this message translates to:
+  /// **'Ads'**
+  String get ads;
+
+  /// No description provided for @readMore.
+  ///
+  /// In en, this message translates to:
+  /// **'See more'**
+  String get readMore;
+
+  /// No description provided for @hotsLikeCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'people likes'**
+  String get hotsLikeCounts;
+
+  /// No description provided for @postLikeCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'and others liked'**
+  String get postLikeCounts;
+
+  /// No description provided for @views.
+  ///
+  /// In en, this message translates to:
+  /// **'views'**
+  String get views;
+
+  /// No description provided for @years.
+  ///
+  /// In en, this message translates to:
+  /// **'year'**
+  String get years;
+
+  /// No description provided for @months.
+  ///
+  /// In en, this message translates to:
+  /// **'month'**
+  String get months;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get days;
+
+  /// No description provided for @hours.
+  ///
+  /// In en, this message translates to:
+  /// **'hour'**
+  String get hours;
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'minute'**
+  String get minutes;
+
+  /// No description provided for @ago.
+  ///
+  /// In en, this message translates to:
+  /// **'ago'**
+  String get ago;
 }
 
 class _JJLocalizationsDelegate extends LocalizationsDelegate<JJLocalizations> {

@@ -109,18 +109,18 @@ class _PostItemWidget extends StatelessWidget {
     return ExtendedText(
       postInfo.content,
       maxLines: 3,
-      overflowWidget: const TextOverflowWidget(
+      overflowWidget: TextOverflowWidget(
         child: Text.rich(
           TextSpan(
             children: <TextSpan>[
-              TextSpan(text: '... '),
+              const TextSpan(text: '... '),
               TextSpan(
-                text: '展开',
-                style: TextStyle(color: themeColorLight),
+                text: context.l10n.readMore,
+                style: const TextStyle(color: themeColorLight),
               ),
             ],
           ),
-          style: TextStyle(height: 1.2),
+          style: const TextStyle(height: 1.2),
         ),
       ),
       specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),
@@ -144,7 +144,7 @@ class _PostItemWidget extends StatelessWidget {
             children: <Widget>[
               Image.asset(R.ASSETS_ICON_POST_HOT_COMMENT_PNG, height: 20),
               Text(
-                '${comment.commentInfo.diggCount}人赞',
+                '${comment.commentInfo.diggCount}${context.l10n.hotsLikeCounts}',
                 style: context.textTheme.caption,
               ),
             ],
@@ -208,7 +208,7 @@ class _PostItemWidget extends StatelessWidget {
           ),
         ),
         const Gap.h(4),
-        Text('等人赞过', style: context.textTheme.caption),
+        Text(context.l10n.postLikeCounts, style: context.textTheme.caption),
       ],
     );
   }

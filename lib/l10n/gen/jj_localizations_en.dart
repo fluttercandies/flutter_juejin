@@ -54,4 +54,70 @@ class JJLocalizationsEn extends JJLocalizations {
 
   @override
   String get webViewTitle => 'Web page';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get hots => 'Hots';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get register => 'Register';
+
+  @override
+  String get likes => 'Likes';
+
+  @override
+  String get like => 'Like';
+
+  @override
+  String get comment => 'Comment';
+
+  @override
+  String get saved => 'Saved';
+
+  @override
+  String get following => 'Following';
+
+  @override
+  String get unfollow => 'Follow';
+
+  @override
+  String get ads => 'Ads';
+
+  @override
+  String get readMore => 'See more';
+
+  @override
+  String get hotsLikeCounts => 'people likes';
+
+  @override
+  String get postLikeCounts => 'and others liked';
+
+  @override
+  String get views => 'views';
+
+  @override
+  String get years => 'year';
+
+  @override
+  String get months => 'month';
+
+  @override
+  String get days => 'day';
+
+  @override
+  String get hours => 'hour';
+
+  @override
+  String get minutes => 'minute';
+
+  @override
+  String get ago => 'ago';
 }

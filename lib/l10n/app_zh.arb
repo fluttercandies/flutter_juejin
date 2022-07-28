@@ -18,5 +18,28 @@
   "listRefreshSucceed": "刷新成功",
   "listRefreshFailed": "刷新失败",
 
-  "webViewTitle": "网页链接"
+  "webViewTitle": "网页链接",
+
+  "home": "首页",
+  "hots": "沸点",
+  "profile": "我",
+  "login": "登入",
+  "register": "注册",
+  "likes": "点赞",
+  "like": "点赞",
+  "comment": "评论",
+  "saved": "收藏",
+  "following": "关注",
+  "unfollow": "未关注",
+  "ads": "广告",
+  "readMore": "展开",
+  "hotsLikeCounts": "人赞",
+  "postLikeCounts": "等人赞过",
+  "views": "阅读",
+  "years": "年",
+  "months": "月",
+  "days": "天",
+  "hours": "小时",
+  "minutes": "分钟",
+  "ago": "前"
 }

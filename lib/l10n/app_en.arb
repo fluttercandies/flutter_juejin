@@ -18,5 +18,28 @@
   "listRefreshSucceed": "Refreshed with new contents",
   "listRefreshFailed": "Failed to refresh",
 
-  "webViewTitle": "Web page"
+  "webViewTitle": "Web page",
+
+  "home": "Home",
+  "hots": "Hots",
+  "profile": "Profile",
+  "login": "Login",
+  "register": "Register",
+  "likes": "Likes",
+  "like": "Like",
+  "comment": "Comment",
+  "saved": "Saved",
+  "following": "Following",
+  "unfollow": "Follow",
+  "ads": "Ads",
+  "readMore": "See more",
+  "hotsLikeCounts": "people likes",
+  "postLikeCounts": "and others liked",
+  "views": "views",
+  "years": "year",
+  "months": "month",
+  "days": "day",
+  "hours": "hour",
+  "minutes": "minute",
+  "ago": "ago"
 }

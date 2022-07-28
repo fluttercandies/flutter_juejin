@@ -47,23 +47,19 @@ class PullToRefreshHeader extends StatelessWidget {
       case RefreshIndicatorMode.snap:
       case RefreshIndicatorMode.refresh:
         isRefreshingMode = true;
-        text = '正在刷新...';
-        break;
-      case RefreshIndicatorMode.canceled:
-      case RefreshIndicatorMode.drag:
-        text = '下拉刷新';
+        text = context.l10n.listRefreshing;
         break;
       case RefreshIndicatorMode.armed:
-        text = '松手以刷新';
+        text = context.l10n.listRefreshArmed;
         break;
       case RefreshIndicatorMode.done:
-        text = '刷新成功';
+        text = context.l10n.listRefreshSucceed;
         break;
       case RefreshIndicatorMode.error:
-        text = '刷新失败';
+        text = context.l10n.listRefreshFailed;
         break;
       default:
-        text = '下拉刷新';
+        text = context.l10n.listRefreshWaiting;
         break;
     }
 
@@ -95,7 +91,7 @@ class PullToRefreshHeader extends StatelessWidget {
         onTap: () => info?.pullToRefreshNotificationState.show(),
         child: SizedBox(
           height: dragOffset,
-          child: const Center(child: Text('刷新失败，点击重试')),
+          child: Center(child: Text(context.l10n.listNetworkErrorClickRetry)),
         ),
       );
     }

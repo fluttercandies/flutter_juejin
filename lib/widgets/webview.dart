@@ -49,7 +49,9 @@ class JJWebView extends StatefulWidget {
 }
 
 class _JJWebViewState extends State<JJWebView> {
-  final ValueNotifier<String> _title = ValueNotifier<String>('网页链接');
+  late final ValueNotifier<String> _title = ValueNotifier<String>(
+    overlayContext.l10n.webViewTitle,
+  );
   late NestedWebviewController _webviewController =
       widget.controller ?? newWebViewController;
   late Widget _webView = newWebView;

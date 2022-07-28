@@ -29,6 +29,8 @@ export 'internals/methods.dart';
 export 'internals/special_text.dart';
 export 'internals/urls.dart';
 
+export 'l10n/gen/jj_localizations.dart';
+
 export 'models/data_model.dart';
 export 'models/loading_base.dart';
 export 'models/response_model.dart';

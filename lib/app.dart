@@ -5,7 +5,6 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:oktoast/oktoast.dart';
 
 import 'exports.dart';
@@ -48,7 +47,6 @@ class JJAppState extends State<JJApp> {
   Widget build(BuildContext context) {
     return _buildOKToast(
       child: MaterialApp(
-        title: '掘金',
         theme: ThemeData(
           primarySwatch: themeColorLight.swatch,
         ),
@@ -62,6 +60,7 @@ class JJAppState extends State<JJApp> {
           JJ.routeObserver,
           JJNavigatorObserver(),
         ],
+        onGenerateTitle: (BuildContext c) => c.l10n.appTitle,
         onGenerateRoute: (RouteSettings settings) => onGenerateRoute(
           settings: settings,
           getRouteSettings: getRouteSettings,
@@ -69,18 +68,14 @@ class JJAppState extends State<JJApp> {
             alignment: Alignment.center,
             color: Colors.black,
             child: Text(
-              '${settings.name ?? 'Unknown'} route not found.',
+              '${settings.name ?? context.l10n.exceptionRouteUnknown}'
+              '${context.l10n.exceptionRouteNotFound}',
               style: const TextStyle(color: Colors.white, inherit: false),
             ),
           ),
         ),
-        locale: const Locale('zh'),
-        localizationsDelegates: const <LocalizationsDelegate>[
-          GlobalWidgetsLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const <Locale>[Locale('zh')],
+        localizationsDelegates: JJLocalizations.localizationsDelegates,
+        supportedLocales: JJLocalizations.supportedLocales,
         builder: (BuildContext context, Widget? child) => Stack(
           children: <Widget>[
             child!,

@@ -3,6 +3,7 @@
 // LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:juejin/exports.dart';
 
 import '../constants/styles.dart';
 import '../utils/log_util.dart';
@@ -45,8 +46,8 @@ class JJErrorWidget extends StatelessWidget {
             children: <Widget>[
               const FractionallySizedBox(widthFactor: 0.25, child: JJLogo()),
               const SizedBox(height: 20),
-              const Text(
-                'Exceptions when building the part of your screen...',
+              Text(
+                context.l10n.exceptionErrorWidget,
                 style: TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 10),

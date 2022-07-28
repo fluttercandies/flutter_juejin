@@ -1,0 +1,7 @@
+arb-dir: lib/l10n
+output-class: JJLocalizations
+output-dir: lib/l10n/gen
+output-localization-file: jj_localizations.dart
+template-arb-file: app_en.arb
+synthetic-package: false
+untranslated-messages-file: lib/l10n/gen/jj_localizations_untranslated.txt

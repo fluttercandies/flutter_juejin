@@ -2,6 +2,7 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
+    - 'lib/l10n/gen/*.dart'
     - "lib/models/**.g.dart"
     - "lib/routes/juejin_route**.dart"
 

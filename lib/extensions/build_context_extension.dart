@@ -4,7 +4,11 @@
 
 import 'package:flutter/material.dart';
 
+import '../l10n/gen/jj_localizations.dart';
+
 extension BuildContextExtension on BuildContext {
+  JJLocalizations get l10n => JJLocalizations.of(this)!;
+
   NavigatorState get navigator => Navigator.of(this);
 
   ThemeData get theme => Theme.of(this);

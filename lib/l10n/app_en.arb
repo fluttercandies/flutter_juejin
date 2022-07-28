@@ -1,0 +1,22 @@
+{
+  "@@locale": "en",
+  "appTitle": "Juejin",
+
+  "exceptionError": "error",
+  "exceptionFailed": "failed",
+  "exceptionErrorWidget": "Exception thrown during building this widget...",
+  "exceptionRouteNotFound": " route not found。",
+  "exceptionRouteUnknown": "Unknown",
+
+  "listEmpty": "It's empty here.",
+  "listLoadingMore": "Loading more content...",
+  "listNetworkErrorClickRetry": "Network exceptions thrown. Click to retry.",
+  "listNoMoreToLoad": "Nothing left.",
+  "listRefreshing": "Refreshing...",
+  "listRefreshWaiting": "Pull down more to refresh",
+  "listRefreshArmed": "Release to refresh",
+  "listRefreshSucceed": "Refreshed with new contents",
+  "listRefreshFailed": "Failed to refresh",
+
+  "webViewTitle": "Web page"
+}

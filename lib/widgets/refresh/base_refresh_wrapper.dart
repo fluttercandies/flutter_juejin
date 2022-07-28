@@ -11,6 +11,7 @@ import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart'
 
 import '../../constants/resources.dart';
 import '../../constants/screens.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../models/data_model.dart';
 import '../../models/loading_base.dart';
 import '../gaps.dart';
@@ -269,7 +270,11 @@ class ListMoreIndicator extends StatelessWidget {
             duration: kTabScrollDuration,
             width: isRequesting ? 10 : 0,
           ),
-          Text(isRequesting ? '加载中...' : '已经到底啦~'),
+          Text(
+            isRequesting
+                ? context.l10n.listLoadingMore
+                : context.l10n.listNoMoreToLoad,
+          ),
         ],
       ),
     );
@@ -316,16 +321,15 @@ class ListEmptyIndicator extends StatelessWidget {
   final TextStyle? textStyle;
   final VoidCallback? onTap;
 
-  static const String EMPTY_TEXT = '空空如也';
-  static const String ERROR_TEXT = '网络出错了~点此重试';
-
   @override
   Widget build(BuildContext context) {
     final String effectiveIndicatorIcon =
         indicatorIcon?.call(isError) ?? R.ASSETS_BRAND_SVG;
     Widget child;
     String? text = indicatorText?.call(isError);
-    text ??= isError ? ERROR_TEXT : EMPTY_TEXT;
+    text ??= isError
+        ? context.l10n.listNetworkErrorClickRetry
+        : context.l10n.listEmpty;
     child = Tapper(
       onTap: isError
           ? () {

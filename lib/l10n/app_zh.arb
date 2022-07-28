@@ -1,0 +1,22 @@
+{
+  "@@locale": "zh",
+  "appTitle": "掘金",
+
+  "exceptionError": "错误",
+  "exceptionFailed": "失败",
+  "exceptionErrorWidget": "构建时遇到未知错误...",
+  "exceptionRouteNotFound": "路由。",
+  "exceptionRouteUnknown": "未知",
+
+  "listEmpty": "空空如也",
+  "listLoadingMore": "加载中...",
+  "listNetworkErrorClickRetry": "网络出错了~点此重试",
+  "listNoMoreToLoad": "已经到底啦~",
+  "listRefreshing": "正在刷新...",
+  "listRefreshWaiting": "下拉更多以刷新",
+  "listRefreshArmed": "松手以刷新",
+  "listRefreshSucceed": "刷新成功",
+  "listRefreshFailed": "刷新失败",
+
+  "webViewTitle": "网页链接"
+}

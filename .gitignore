@@ -33,6 +33,7 @@ release/
 .pub/
 /build/
 pubspec.lock
+lib/l10n/gen/jj_localizations_untranslated.txt
 
 # Web related
 lib/generated_plugin_registrant.dart

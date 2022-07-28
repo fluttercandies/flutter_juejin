@@ -85,7 +85,13 @@ class _ArticleWidget extends StatelessWidget {
               color: context.theme.dividerColor,
             ),
           ),
-          Expanded(child: Text(article.articleInfo.createTime)),
+          Expanded(
+            child: Text(
+              DateTime.now()
+                  .difference(article.articleInfo.createTime)
+                  .differenceString(context.l10n),
+            ),
+          ),
         ],
       ),
     );
@@ -253,7 +259,11 @@ class _AdvertiseWidget extends StatelessWidget {
               color: context.theme.dividerColor,
             ),
           ),
-          Text(ad.createTime),
+          Text(
+            DateTime.now()
+                .difference(ad.createTime)
+                .differenceString(context.l10n),
+          ),
           const Spacer(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),

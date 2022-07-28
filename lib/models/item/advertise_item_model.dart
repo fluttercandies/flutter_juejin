@@ -73,10 +73,8 @@ class AdvertiseItemModel extends DataModel {
   final int status;
   final UserInfoModel itemUserInfo;
 
-  String get createTime {
-    return DateTime.now()
-        .difference((int.parse(ctime) * 1000).toDateTimeInMilliseconds)
-        .differenceString;
+  DateTime get createTime {
+    return ((int.tryParse(ctime) ?? 0) * 1000).toDateTimeInMilliseconds;
   }
 
   @override

@@ -121,10 +121,8 @@ class PostInfo extends DataModel {
   final int auditStatus;
   final String themeId;
 
-  String get createTime {
-    return DateTime.now()
-        .difference((int.parse(ctime) * 1000).toDateTimeInMilliseconds)
-        .differenceString;
+  DateTime get createTime {
+    return ((int.tryParse(ctime) ?? 0) * 1000).toDateTimeInMilliseconds;
   }
 
   @override

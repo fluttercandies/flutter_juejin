@@ -79,7 +79,11 @@ class _PostItemWidget extends StatelessWidget {
             child: Text(info, maxLines: 1, overflow: TextOverflow.ellipsis),
           ),
           if (info.isNotEmpty) const Text(' · '),
-          Text(postInfo.createTime),
+          Text(
+            DateTime.now()
+                .difference(postInfo.createTime)
+                .differenceString(context.l10n),
+          ),
         ],
       ),
     );

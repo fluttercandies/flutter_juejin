@@ -38,6 +38,18 @@
   "unfollowText": "未关注",
   "views": "阅读",
 
-  "signInOrUp": "登录/注册"
+  "signInOrUp": "登录/注册",
 
+
+  "durationYear":"年",
+  "durationYears":"年",
+  "durationMonth":"月",
+  "durationMonths":"月",
+  "durationDay":"天",
+  "durationDays":"天",
+  "durationHour":"小时",
+  "durationHours":"小时",
+  "durationMinute":"分钟",
+  "durationMinutes":"分钟",
+  "durationAgo":"前"
 }

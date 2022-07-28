@@ -38,5 +38,17 @@
   "unfollowText": "Follow",
   "views": "Views",
 
-  "signInOrUp": "Sign in/Sign up"
+  "signInOrUp": "Sign in/Sign up",
+
+  "durationYear":" year",
+  "durationYears":" years",
+  "durationMonth":" month",
+  "durationMonths":" months",
+  "durationDay":" day",
+  "durationDays":" days",
+  "durationHour":" hour",
+  "durationHours":" hours",
+  "durationMinute":" minute",
+  "durationMinutes":" minutes",
+  "durationAgo":" ago"
 }

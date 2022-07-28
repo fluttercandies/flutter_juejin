@@ -119,11 +119,7 @@ class _PostItemWidget extends StatelessWidget {
             children: <TextSpan>[
               const TextSpan(text: '... '),
               TextSpan(
-<<<<<<< HEAD
-                text: context.l10n.readMore,
-=======
                 text: context.l10n.unfold,
->>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
                 style: const TextStyle(color: themeColorLight),
               ),
             ],
@@ -152,14 +148,10 @@ class _PostItemWidget extends StatelessWidget {
             children: <Widget>[
               Image.asset(R.ASSETS_ICON_POST_HOT_COMMENT_PNG, height: 20),
               Text(
-<<<<<<< HEAD
-                '${comment.commentInfo.diggCount}${context.l10n.hotsLikeCounts}',
-=======
                 context.l10n.numLikes.replaceFirst(
                   '{num}',
                   '${comment.commentInfo.diggCount}',
                 ),
->>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
                 style: context.textTheme.caption,
               ),
             ],
@@ -223,11 +215,7 @@ class _PostItemWidget extends StatelessWidget {
           ),
         ),
         const Gap.h(4),
-<<<<<<< HEAD
-        Text(context.l10n.postLikeCounts, style: context.textTheme.caption),
-=======
         Text(context.l10n.liked, style: context.textTheme.caption),
->>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
       ],
     );
   }

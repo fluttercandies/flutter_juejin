@@ -22,19 +22,19 @@
 
   "tabHome":"Home",
   "tabPins":"Pins",
-  "tabMe":"Me",
+  "tabMe":"Profile",
 
   "like": "Like",
   "comment": "Comment",
-  "unfold": "Unfold",
+  "unfold": "See more",
   "ad": "Ad",
   "likes": "Likes",
   "comments": "Comments",
   "favourites": "Favourites",
-  "follows": "Follows",
+  "following": "Following",
   "numLikes": "{num} likes",
   "liked": "and others liked",
-  "followingText": "Unfollow",
+  "followingText": "Following",
   "unfollowText": "Follow",
   "views": "Views",
 

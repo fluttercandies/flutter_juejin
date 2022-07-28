@@ -93,7 +93,13 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   color: context.theme.dividerColor.withOpacity(.05),
                 ),
                 child: Text(
+<<<<<<< HEAD
                   detail.userInteract.isFollow ? context.l10n.following: context.l10n.unfollow,
+=======
+                  detail.userInteract.isFollow
+                      ? context.l10n.followingText
+                      : context.l10n.unfollowText,
+>>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
                   style: context.textTheme.caption,
                 ),
               ),
@@ -129,7 +135,15 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
               ),
             ),
           ),
+<<<<<<< HEAD
           Text(detail.userInteract.isFollow ? context.l10n.following: context.l10n.unfollow),
+=======
+          Text(
+            detail.userInteract.isFollow
+                ? context.l10n.followingText
+                : context.l10n.unfollowText,
+          ),
+>>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
         ],
       ),
     );

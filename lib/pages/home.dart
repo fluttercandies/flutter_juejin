@@ -46,17 +46,29 @@ class _HomePageState extends State<HomePage> {
         BottomNavigationBarItem(
           icon: const Icon(Icons.home_outlined),
           activeIcon: const Icon(Icons.home),
+<<<<<<< HEAD
           label: context.l10n.home,
+=======
+          label: context.l10n.tabHome,
+>>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.local_fire_department_outlined),
           activeIcon: const Icon(Icons.local_fire_department),
+<<<<<<< HEAD
           label: context.l10n.hots,
+=======
+          label: context.l10n.tabPins,
+>>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.manage_accounts_outlined),
           activeIcon: const Icon(Icons.manage_accounts),
+<<<<<<< HEAD
           label: context.l10n.profile,
+=======
+          label: context.l10n.tabMe,
+>>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
         ),
       ],
     );

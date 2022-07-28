@@ -28,7 +28,7 @@ jobs:
       - name: Prepare dependencies
         run: flutter pub get
       - name: Analyse the repo
-        run: flutter analyze lib example/lib
+        run: flutter analyze lib
 
   test_iOS:
     needs: analyze

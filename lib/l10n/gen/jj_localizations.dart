@@ -190,41 +190,23 @@ abstract class JJLocalizations {
   /// **'Web page'**
   String get webViewTitle;
 
-  /// No description provided for @home.
+  /// No description provided for @tabHome.
   ///
   /// In en, this message translates to:
   /// **'Home'**
-  String get home;
+  String get tabHome;
 
-  /// No description provided for @hots.
+  /// No description provided for @tabPins.
   ///
   /// In en, this message translates to:
-  /// **'Hots'**
-  String get hots;
+  /// **'Pins'**
+  String get tabPins;
 
-  /// No description provided for @profile.
+  /// No description provided for @tabMe.
   ///
   /// In en, this message translates to:
-  /// **'Profile'**
-  String get profile;
-
-  /// No description provided for @login.
-  ///
-  /// In en, this message translates to:
-  /// **'Login'**
-  String get login;
-
-  /// No description provided for @register.
-  ///
-  /// In en, this message translates to:
-  /// **'Register'**
-  String get register;
-
-  /// No description provided for @likes.
-  ///
-  /// In en, this message translates to:
-  /// **'Likes'**
-  String get likes;
+  /// **'Me'**
+  String get tabMe;
 
   /// No description provided for @like.
   ///
@@ -238,89 +220,143 @@ abstract class JJLocalizations {
   /// **'Comment'**
   String get comment;
 
-  /// No description provided for @saved.
+  /// No description provided for @unfold.
   ///
   /// In en, this message translates to:
-  /// **'Saved'**
-  String get saved;
+  /// **'Unfold'**
+  String get unfold;
 
-  /// No description provided for @following.
+  /// No description provided for @ad.
   ///
   /// In en, this message translates to:
-  /// **'Following'**
-  String get following;
+  /// **'Ad'**
+  String get ad;
 
-  /// No description provided for @unfollow.
+  /// No description provided for @likes.
   ///
   /// In en, this message translates to:
-  /// **'Follow'**
-  String get unfollow;
+  /// **'Likes'**
+  String get likes;
 
-  /// No description provided for @ads.
+  /// No description provided for @comments.
   ///
   /// In en, this message translates to:
-  /// **'Ads'**
-  String get ads;
+  /// **'Comments'**
+  String get comments;
 
-  /// No description provided for @readMore.
+  /// No description provided for @favourites.
   ///
   /// In en, this message translates to:
-  /// **'See more'**
-  String get readMore;
+  /// **'Favourites'**
+  String get favourites;
 
-  /// No description provided for @hotsLikeCounts.
+  /// No description provided for @follows.
   ///
   /// In en, this message translates to:
-  /// **'people likes'**
-  String get hotsLikeCounts;
+  /// **'Follows'**
+  String get follows;
 
-  /// No description provided for @postLikeCounts.
+  /// No description provided for @numLikes.
+  ///
+  /// In en, this message translates to:
+  /// **'{num} likes'**
+  String get numLikes;
+
+  /// No description provided for @liked.
   ///
   /// In en, this message translates to:
   /// **'and others liked'**
-  String get postLikeCounts;
+  String get liked;
+
+  /// No description provided for @followingText.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow'**
+  String get followingText;
+
+  /// No description provided for @unfollowText.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get unfollowText;
 
   /// No description provided for @views.
   ///
   /// In en, this message translates to:
-  /// **'views'**
+  /// **'Views'**
   String get views;
 
-  /// No description provided for @years.
+  /// No description provided for @signInOrUp.
   ///
   /// In en, this message translates to:
-  /// **'year'**
-  String get years;
+  /// **'Sign in/Sign up'**
+  String get signInOrUp;
 
-  /// No description provided for @months.
+  /// No description provided for @durationYear.
   ///
   /// In en, this message translates to:
-  /// **'month'**
-  String get months;
+  /// **' year'**
+  String get durationYear;
 
-  /// No description provided for @days.
+  /// No description provided for @durationYears.
   ///
   /// In en, this message translates to:
-  /// **'day'**
-  String get days;
+  /// **' years'**
+  String get durationYears;
 
-  /// No description provided for @hours.
+  /// No description provided for @durationMonth.
   ///
   /// In en, this message translates to:
-  /// **'hour'**
-  String get hours;
+  /// **' month'**
+  String get durationMonth;
 
-  /// No description provided for @minutes.
+  /// No description provided for @durationMonths.
   ///
   /// In en, this message translates to:
-  /// **'minute'**
-  String get minutes;
+  /// **' months'**
+  String get durationMonths;
 
-  /// No description provided for @ago.
+  /// No description provided for @durationDay.
   ///
   /// In en, this message translates to:
-  /// **'ago'**
-  String get ago;
+  /// **' day'**
+  String get durationDay;
+
+  /// No description provided for @durationDays.
+  ///
+  /// In en, this message translates to:
+  /// **' days'**
+  String get durationDays;
+
+  /// No description provided for @durationHour.
+  ///
+  /// In en, this message translates to:
+  /// **' hour'**
+  String get durationHour;
+
+  /// No description provided for @durationHours.
+  ///
+  /// In en, this message translates to:
+  /// **' hours'**
+  String get durationHours;
+
+  /// No description provided for @durationMinute.
+  ///
+  /// In en, this message translates to:
+  /// **' minute'**
+  String get durationMinute;
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **' minutes'**
+  String get durationMinutes;
+
+  /// No description provided for @durationAgo.
+  ///
+  /// In en, this message translates to:
+  /// **' ago'**
+  String get durationAgo;
 }
 
 class _JJLocalizationsDelegate extends LocalizationsDelegate<JJLocalizations> {

@@ -56,22 +56,13 @@ class JJLocalizationsZh extends JJLocalizations {
   String get webViewTitle => '网页链接';
 
   @override
-  String get home => '首页';
+  String get tabHome => '首页';
 
   @override
-  String get hots => '沸点';
+  String get tabPins => '沸点';
 
   @override
-  String get profile => '我';
-
-  @override
-  String get login => '登入';
-
-  @override
-  String get register => '注册';
-
-  @override
-  String get likes => '点赞';
+  String get tabMe => '我';
 
   @override
   String get like => '点赞';
@@ -80,44 +71,71 @@ class JJLocalizationsZh extends JJLocalizations {
   String get comment => '评论';
 
   @override
-  String get saved => '收藏';
+  String get unfold => '展开';
 
   @override
-  String get following => '关注';
+  String get ad => '广告';
 
   @override
-  String get unfollow => '未关注';
+  String get likes => '点赞';
 
   @override
-  String get ads => '广告';
+  String get comments => '评论';
 
   @override
-  String get readMore => '展开';
+  String get favourites => '收藏';
 
   @override
-  String get hotsLikeCounts => '人赞';
+  String get follows => '关注';
 
   @override
-  String get postLikeCounts => '等人赞过';
+  String get numLikes => '{num}人赞';
+
+  @override
+  String get liked => '等人赞过';
+
+  @override
+  String get followingText => '已关注';
+
+  @override
+  String get unfollowText => '未关注';
 
   @override
   String get views => '阅读';
 
   @override
-  String get years => '年';
+  String get signInOrUp => '登录/注册';
 
   @override
-  String get months => '月';
+  String get durationYear => '年';
 
   @override
-  String get days => '天';
+  String get durationYears => '年';
 
   @override
-  String get hours => '小时';
+  String get durationMonth => '月';
 
   @override
-  String get minutes => '分钟';
+  String get durationMonths => '月';
 
   @override
-  String get ago => '前';
+  String get durationDay => '天';
+
+  @override
+  String get durationDays => '天';
+
+  @override
+  String get durationHour => '小时';
+
+  @override
+  String get durationHours => '小时';
+
+  @override
+  String get durationMinute => '分钟';
+
+  @override
+  String get durationMinutes => '分钟';
+
+  @override
+  String get durationAgo => '前';
 }

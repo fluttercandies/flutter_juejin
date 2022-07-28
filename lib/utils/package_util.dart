@@ -29,7 +29,7 @@ class PackageUtil {
       versionCode = int.parse(version.last);
     } else {
       versionName = packageInfo.version;
-      versionCode = int.parse(packageInfo.buildNumber);
+      versionCode = int.tryParse(packageInfo.buildNumber) ?? 1;
     }
     LogUtil.d(
       'Package info: ${const JsonEncoder.withIndent('  ').convert(

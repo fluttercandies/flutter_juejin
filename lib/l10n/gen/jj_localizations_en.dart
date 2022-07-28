@@ -56,22 +56,13 @@ class JJLocalizationsEn extends JJLocalizations {
   String get webViewTitle => 'Web page';
 
   @override
-  String get home => 'Home';
+  String get tabHome => 'Home';
 
   @override
-  String get hots => 'Hots';
+  String get tabPins => 'Pins';
 
   @override
-  String get profile => 'Profile';
-
-  @override
-  String get login => 'Login';
-
-  @override
-  String get register => 'Register';
-
-  @override
-  String get likes => 'Likes';
+  String get tabMe => 'Me';
 
   @override
   String get like => 'Like';
@@ -80,44 +71,71 @@ class JJLocalizationsEn extends JJLocalizations {
   String get comment => 'Comment';
 
   @override
-  String get saved => 'Saved';
+  String get unfold => 'Unfold';
 
   @override
-  String get following => 'Following';
+  String get ad => 'Ad';
 
   @override
-  String get unfollow => 'Follow';
+  String get likes => 'Likes';
 
   @override
-  String get ads => 'Ads';
+  String get comments => 'Comments';
 
   @override
-  String get readMore => 'See more';
+  String get favourites => 'Favourites';
 
   @override
-  String get hotsLikeCounts => 'people likes';
+  String get follows => 'Follows';
 
   @override
-  String get postLikeCounts => 'and others liked';
+  String get numLikes => '{num} likes';
 
   @override
-  String get views => 'views';
+  String get liked => 'and others liked';
 
   @override
-  String get years => 'year';
+  String get followingText => 'Unfollow';
 
   @override
-  String get months => 'month';
+  String get unfollowText => 'Follow';
 
   @override
-  String get days => 'day';
+  String get views => 'Views';
 
   @override
-  String get hours => 'hour';
+  String get signInOrUp => 'Sign in/Sign up';
 
   @override
-  String get minutes => 'minute';
+  String get durationYear => ' year';
 
   @override
-  String get ago => 'ago';
+  String get durationYears => ' years';
+
+  @override
+  String get durationMonth => ' month';
+
+  @override
+  String get durationMonths => ' months';
+
+  @override
+  String get durationDay => ' day';
+
+  @override
+  String get durationDays => ' days';
+
+  @override
+  String get durationHour => ' hour';
+
+  @override
+  String get durationHours => ' hours';
+
+  @override
+  String get durationMinute => ' minute';
+
+  @override
+  String get durationMinutes => ' minutes';
+
+  @override
+  String get durationAgo => ' ago';
 }

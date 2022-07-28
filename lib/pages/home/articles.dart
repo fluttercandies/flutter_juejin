@@ -85,7 +85,13 @@ class _ArticleWidget extends StatelessWidget {
               color: context.theme.dividerColor,
             ),
           ),
-          Expanded(child: Text(article.articleInfo.createTime)),
+          Expanded(
+            child: Text(
+              DateTime.now()
+                  .difference(article.articleInfo.createTime)
+                  .differenceString(context.l10n),
+            ),
+          ),
         ],
       ),
     );
@@ -253,7 +259,11 @@ class _AdvertiseWidget extends StatelessWidget {
               color: context.theme.dividerColor,
             ),
           ),
-          Text(ad.createTime),
+          Text(
+            DateTime.now()
+                .difference(ad.createTime)
+                .differenceString(context.l10n),
+          ),
           const Spacer(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
@@ -261,7 +271,11 @@ class _AdvertiseWidget extends StatelessWidget {
               borderRadius: RadiusConstants.r2,
               color: context.theme.dividerColor.withOpacity(.05),
             ),
+<<<<<<< HEAD
             child: Text(context.l10n.ads, style: context.textTheme.caption),
+=======
+            child: Text(context.l10n.ad, style: context.textTheme.caption),
+>>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
           ),
         ],
       ),

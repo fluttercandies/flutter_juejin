@@ -22,18 +22,20 @@
 
   "tabHome":"Home",
   "tabPins":"Pins",
-  "tabMy":"My",
+  "tabMe":"Me",
 
-  "unfold": "Unfold",
-  "ad": "Ad",
   "like": "Like",
   "comment": "Comment",
-  "favourite": "Favourite",
-  "follow": "Follow",
-  "likes": " likes",
+  "unfold": "Unfold",
+  "ad": "Ad",
+  "likes": "Likes",
+  "comments": "Comments",
+  "favourites": "Favourites",
+  "follows": "Follows",
+  "numLikes": "{num} likes",
   "liked": "and others liked",
-  "followed": "Followed",
-  "unfollowed": "Unfollowed",
+  "followingText": "Unfollow",
+  "unfollowText": "Follow",
   "views": "Views",
 
   "signInOrUp": "Sign in/Sign up"

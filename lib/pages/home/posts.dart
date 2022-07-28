@@ -144,7 +144,10 @@ class _PostItemWidget extends StatelessWidget {
             children: <Widget>[
               Image.asset(R.ASSETS_ICON_POST_HOT_COMMENT_PNG, height: 20),
               Text(
-                '${comment.commentInfo.diggCount}${context.l10n.likes}',
+                context.l10n.numLikes.replaceFirst(
+                  '{num}',
+                  '${comment.commentInfo.diggCount}',
+                ),
                 style: context.textTheme.caption,
               ),
             ],

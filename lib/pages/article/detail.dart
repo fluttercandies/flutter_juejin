@@ -94,8 +94,8 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 ),
                 child: Text(
                   detail.userInteract.isFollow
-                      ? context.l10n.followed
-                      : context.l10n.unfollowed,
+                      ? context.l10n.followingText
+                      : context.l10n.unfollowText,
                   style: context.textTheme.caption,
                 ),
               ),
@@ -133,8 +133,8 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
           ),
           Text(
             detail.userInteract.isFollow
-                ? context.l10n.followed
-                : context.l10n.unfollowed,
+                ? context.l10n.followingText
+                : context.l10n.unfollowText,
           ),
         ],
       ),

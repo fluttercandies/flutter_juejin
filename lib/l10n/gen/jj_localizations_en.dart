@@ -62,13 +62,7 @@ class JJLocalizationsEn extends JJLocalizations {
   String get tabPins => 'Pins';
 
   @override
-  String get tabMy => 'My';
-
-  @override
-  String get unfold => 'Unfold';
-
-  @override
-  String get ad => 'Ad';
+  String get tabMe => 'Me';
 
   @override
   String get like => 'Like';
@@ -77,22 +71,34 @@ class JJLocalizationsEn extends JJLocalizations {
   String get comment => 'Comment';
 
   @override
-  String get favourite => 'Favourite';
+  String get unfold => 'Unfold';
 
   @override
-  String get follow => 'Follow';
+  String get ad => 'Ad';
 
   @override
-  String get likes => ' likes';
+  String get likes => 'Likes';
+
+  @override
+  String get comments => 'Comments';
+
+  @override
+  String get favourites => 'Favourites';
+
+  @override
+  String get follows => 'Follows';
+
+  @override
+  String get numLikes => '{num} likes';
 
   @override
   String get liked => 'and others liked';
 
   @override
-  String get followed => 'Followed';
+  String get followingText => 'Unfollow';
 
   @override
-  String get unfollowed => 'Unfollowed';
+  String get unfollowText => 'Follow';
 
   @override
   String get views => 'Views';

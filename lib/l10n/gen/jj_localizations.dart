@@ -202,23 +202,11 @@ abstract class JJLocalizations {
   /// **'Pins'**
   String get tabPins;
 
-  /// No description provided for @tabMy.
+  /// No description provided for @tabMe.
   ///
   /// In en, this message translates to:
-  /// **'My'**
-  String get tabMy;
-
-  /// No description provided for @unfold.
-  ///
-  /// In en, this message translates to:
-  /// **'Unfold'**
-  String get unfold;
-
-  /// No description provided for @ad.
-  ///
-  /// In en, this message translates to:
-  /// **'Ad'**
-  String get ad;
+  /// **'Me'**
+  String get tabMe;
 
   /// No description provided for @like.
   ///
@@ -232,23 +220,47 @@ abstract class JJLocalizations {
   /// **'Comment'**
   String get comment;
 
-  /// No description provided for @favourite.
+  /// No description provided for @unfold.
   ///
   /// In en, this message translates to:
-  /// **'Favourite'**
-  String get favourite;
+  /// **'Unfold'**
+  String get unfold;
 
-  /// No description provided for @follow.
+  /// No description provided for @ad.
   ///
   /// In en, this message translates to:
-  /// **'Follow'**
-  String get follow;
+  /// **'Ad'**
+  String get ad;
 
   /// No description provided for @likes.
   ///
   /// In en, this message translates to:
-  /// **' likes'**
+  /// **'Likes'**
   String get likes;
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
+  /// No description provided for @favourites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourites'**
+  String get favourites;
+
+  /// No description provided for @follows.
+  ///
+  /// In en, this message translates to:
+  /// **'Follows'**
+  String get follows;
+
+  /// No description provided for @numLikes.
+  ///
+  /// In en, this message translates to:
+  /// **'{num} likes'**
+  String get numLikes;
 
   /// No description provided for @liked.
   ///
@@ -256,17 +268,17 @@ abstract class JJLocalizations {
   /// **'and others liked'**
   String get liked;
 
-  /// No description provided for @followed.
+  /// No description provided for @followingText.
   ///
   /// In en, this message translates to:
-  /// **'Followed'**
-  String get followed;
+  /// **'Unfollow'**
+  String get followingText;
 
-  /// No description provided for @unfollowed.
+  /// No description provided for @unfollowText.
   ///
   /// In en, this message translates to:
-  /// **'Unfollowed'**
-  String get unfollowed;
+  /// **'Follow'**
+  String get unfollowText;
 
   /// No description provided for @views.
   ///

@@ -85,9 +85,9 @@ class _MinePageState extends State<MinePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          counter(0, context.l10n.like),
-          counter(0, context.l10n.favourite),
-          counter(0, context.l10n.follow)
+          counter(0, context.l10n.likes),
+          counter(0, context.l10n.favourites),
+          counter(0, context.l10n.follows)
         ],
       ),
     );

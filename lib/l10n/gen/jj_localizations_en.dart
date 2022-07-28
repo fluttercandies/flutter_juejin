@@ -105,4 +105,37 @@ class JJLocalizationsEn extends JJLocalizations {
 
   @override
   String get signInOrUp => 'Sign in/Sign up';
+
+  @override
+  String get durationYear => ' year';
+
+  @override
+  String get durationYears => ' years';
+
+  @override
+  String get durationMonth => ' month';
+
+  @override
+  String get durationMonths => ' months';
+
+  @override
+  String get durationDay => ' day';
+
+  @override
+  String get durationDays => ' days';
+
+  @override
+  String get durationHour => ' hour';
+
+  @override
+  String get durationHours => ' hours';
+
+  @override
+  String get durationMinute => ' minute';
+
+  @override
+  String get durationMinutes => ' minutes';
+
+  @override
+  String get durationAgo => ' ago';
 }

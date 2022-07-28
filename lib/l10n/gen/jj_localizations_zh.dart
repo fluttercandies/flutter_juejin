@@ -105,4 +105,37 @@ class JJLocalizationsZh extends JJLocalizations {
 
   @override
   String get signInOrUp => '登录/注册';
+
+  @override
+  String get durationYear => '年';
+
+  @override
+  String get durationYears => '年';
+
+  @override
+  String get durationMonth => '月';
+
+  @override
+  String get durationMonths => '月';
+
+  @override
+  String get durationDay => '天';
+
+  @override
+  String get durationDays => '天';
+
+  @override
+  String get durationHour => '小时';
+
+  @override
+  String get durationHours => '小时';
+
+  @override
+  String get durationMinute => '分钟';
+
+  @override
+  String get durationMinutes => '分钟';
+
+  @override
+  String get durationAgo => '前';
 }

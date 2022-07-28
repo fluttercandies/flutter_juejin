@@ -291,6 +291,72 @@ abstract class JJLocalizations {
   /// In en, this message translates to:
   /// **'Sign in/Sign up'**
   String get signInOrUp;
+
+  /// No description provided for @durationYear.
+  ///
+  /// In en, this message translates to:
+  /// **' year'**
+  String get durationYear;
+
+  /// No description provided for @durationYears.
+  ///
+  /// In en, this message translates to:
+  /// **' years'**
+  String get durationYears;
+
+  /// No description provided for @durationMonth.
+  ///
+  /// In en, this message translates to:
+  /// **' month'**
+  String get durationMonth;
+
+  /// No description provided for @durationMonths.
+  ///
+  /// In en, this message translates to:
+  /// **' months'**
+  String get durationMonths;
+
+  /// No description provided for @durationDay.
+  ///
+  /// In en, this message translates to:
+  /// **' day'**
+  String get durationDay;
+
+  /// No description provided for @durationDays.
+  ///
+  /// In en, this message translates to:
+  /// **' days'**
+  String get durationDays;
+
+  /// No description provided for @durationHour.
+  ///
+  /// In en, this message translates to:
+  /// **' hour'**
+  String get durationHour;
+
+  /// No description provided for @durationHours.
+  ///
+  /// In en, this message translates to:
+  /// **' hours'**
+  String get durationHours;
+
+  /// No description provided for @durationMinute.
+  ///
+  /// In en, this message translates to:
+  /// **' minute'**
+  String get durationMinute;
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **' minutes'**
+  String get durationMinutes;
+
+  /// No description provided for @durationAgo.
+  ///
+  /// In en, this message translates to:
+  /// **' ago'**
+  String get durationAgo;
 }
 
 class _JJLocalizationsDelegate extends LocalizationsDelegate<JJLocalizations> {

@@ -28,7 +28,7 @@ jobs:
       - name: Prepare dependencies
         run: flutter pub get
       - name: Analyse the repo
-        run: flutter analyze lib example/lib
+        run: flutter analyze lib
 
   test_iOS:
     needs: analyze
@@ -50,7 +50,7 @@ jobs:
       - run: dart --version
       - run: flutter --version
       - run: flutter pub get
-      - run: cd example; flutter build ios --no-codesign
+      - run: flutter build ios --no-codesign
 
   test_android:
     needs: analyze
@@ -72,4 +72,4 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       - run: sudo echo "y" | sudo $ANDROID_HOME/tools/bin/sdkmanager "ndk;21.4.7075529"
-      - run: cd example; flutter build apk --debug
+      - run: flutter build apk --debug

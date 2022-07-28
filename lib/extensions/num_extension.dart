@@ -19,24 +19,6 @@ extension NumExtension<T extends num> on T {
 }
 
 extension IntExtension on int {
-  /// 通过时间戳返回 `9小时15分6秒` 格式的时间字符串
-  String get durationString {
-    final Duration duration = Duration(seconds: this);
-    if (this >= 3600) {
-      final Duration hour = Duration(hours: duration.inHours);
-      final Duration minute = Duration(minutes: duration.inMinutes) - hour;
-      final Duration second =
-          Duration(seconds: duration.inSeconds) - hour - minute;
-      return '${hour.inHours}小时${minute.inMinutes}分${second.inSeconds}秒';
-    } else if (this >= 60 && this < 3600) {
-      final Duration minute = Duration(minutes: duration.inMinutes);
-      final Duration second = Duration(seconds: duration.inSeconds) - minute;
-      return '${minute.inMinutes}分${second.inSeconds}秒';
-    } else {
-      return '$this秒';
-    }
-  }
-
   String get fileSizeFromBytes {
     const int kb = 1024;
     const int mb = 1024 * kb;

@@ -29,6 +29,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "shirne",
+      "name": "shirne",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2263157?v=4",
+      "profile": "https://www.shirne.com/",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

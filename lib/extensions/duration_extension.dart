@@ -4,28 +4,27 @@
 
 import 'dart:math' as math;
 
+import 'package:flutter/widgets.dart';
+
+import 'build_context_extension.dart';
+
 extension DurationExtension on Duration {
   Future<void> get delay => Future<void>.delayed(this);
 
-  String get differenceString {
-    final int count;
-    final String unit;
+  String differenceString(BuildContext context) {
+    final localization = context.l10n;
     if (this >= const Duration(days: 365)) {
-      count = inDays ~/ 365;
-      unit = '年';
-    } else if (this >= const Duration(days: 30)) {
-      count = inDays ~/ 30;
-      unit = '月';
-    } else if (this >= const Duration(days: 1)) {
-      count = inDays;
-      unit = '天';
-    } else if (this >= const Duration(hours: 1)) {
-      count = inHours;
-      unit = '小时';
-    } else {
-      count = math.max(1, inMinutes);
-      unit = '分钟';
+      return localization.durationYears(inDays ~/ 365);
     }
-    return '$count$unit前';
+    if (this >= const Duration(days: 30)) {
+      return localization.durationMonths(inDays ~/ 30);
+    }
+    if (this >= const Duration(days: 1)) {
+      return localization.durationDays(inDays);
+    }
+    if (this >= const Duration(hours: 1)) {
+      return localization.durationHours(inHours);
+    }
+    return localization.durationMinutes(math.max(1, inMinutes));
   }
 }

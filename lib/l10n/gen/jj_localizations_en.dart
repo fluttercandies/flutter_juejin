@@ -1,6 +1,6 @@
 
 
-
+import 'package:intl/intl.dart' as intl;
 import 'jj_localizations.dart';
 
 /// The translations for English (`en`).
@@ -11,13 +11,24 @@ class JJLocalizationsEn extends JJLocalizations {
   String get appTitle => 'Juejin';
 
   @override
+  String get exceptionAuthenticationExpired => 'Authentication has expired, please login manually.';
+
+  @override
   String get exceptionError => 'error';
+
+  @override
+  String get exceptionErrorWidget => 'Exception thrown during building this widget...';
 
   @override
   String get exceptionFailed => 'failed';
 
   @override
-  String get exceptionErrorWidget => 'Exception thrown during building this widget...';
+  String get exceptionPoorNetwork => 'Poor network condition, please retry later.';
+
+  @override
+  String exceptionRequest(Object message) {
+    return 'Request error: (-1 $message)';
+  }
 
   @override
   String get exceptionRouteNotFound => ' route not found。';
@@ -54,4 +65,119 @@ class JJLocalizationsEn extends JJLocalizations {
 
   @override
   String get webViewTitle => 'Web page';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navPins => 'Pins';
+
+  @override
+  String get navMe => 'Me';
+
+  @override
+  String get actionLike => 'Like';
+
+  @override
+  String get actionComment => 'Comment';
+
+  @override
+  String get actionMore => 'More';
+
+  @override
+  String get advertiseAbbr => 'Ad';
+
+  @override
+  String articleViews(int num) {
+    return '$num views';
+  }
+
+  @override
+  String get pinLiked => 'and others liked';
+
+  @override
+  String pinHotCommentLikes(int num) {
+    return '$num likes';
+  }
+
+  @override
+  String get userLikes => 'Likes';
+
+  @override
+  String get userFavorites => 'Favorites';
+
+  @override
+  String get userFollows => 'Follows';
+
+  @override
+  String get userComments => 'Comments';
+
+  @override
+  String get userFollowing => 'Following';
+
+  @override
+  String get userNotFollow => 'Not follow';
+
+  @override
+  String get userSignInOrUp => 'Sign in/Sign up';
+
+  @override
+  String durationYears(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'year',
+      other: 'years',
+    );
+
+    return '$pluralString ago';
+  }
+
+  @override
+  String durationMonths(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'month',
+      other: 'months',
+    );
+
+    return '$pluralString ago';
+  }
+
+  @override
+  String durationDays(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'day',
+      other: 'days',
+    );
+
+    return '$pluralString ago';
+  }
+
+  @override
+  String durationHours(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'hour',
+      other: 'hours',
+    );
+
+    return '$pluralString ago';
+  }
+
+  @override
+  String durationMinutes(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'minute',
+      other: 'minutes',
+    );
+
+    return '$pluralString ago';
+  }
 }

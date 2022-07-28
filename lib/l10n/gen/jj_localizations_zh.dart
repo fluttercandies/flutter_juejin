@@ -1,6 +1,6 @@
 
 
-
+import 'package:intl/intl.dart' as intl;
 import 'jj_localizations.dart';
 
 /// The translations for Chinese (`zh`).
@@ -11,13 +11,24 @@ class JJLocalizationsZh extends JJLocalizations {
   String get appTitle => '掘金';
 
   @override
+  String get exceptionAuthenticationExpired => '身份已失效，请重新登录';
+
+  @override
   String get exceptionError => '错误';
+
+  @override
+  String get exceptionErrorWidget => '构建时遇到未知错误...';
 
   @override
   String get exceptionFailed => '失败';
 
   @override
-  String get exceptionErrorWidget => '构建时遇到未知错误...';
+  String get exceptionPoorNetwork => '网络状况差，请稍后重试';
+
+  @override
+  String exceptionRequest(Object message) {
+    return '请求失败：(-1 $message)';
+  }
 
   @override
   String get exceptionRouteNotFound => '路由。';
@@ -54,4 +65,104 @@ class JJLocalizationsZh extends JJLocalizations {
 
   @override
   String get webViewTitle => '网页链接';
+
+  @override
+  String get navHome => '首页';
+
+  @override
+  String get navPins => '沸点';
+
+  @override
+  String get navMe => '我';
+
+  @override
+  String get actionLike => '赞';
+
+  @override
+  String get actionComment => '评论';
+
+  @override
+  String get actionMore => '展开';
+
+  @override
+  String get advertiseAbbr => '广告';
+
+  @override
+  String articleViews(int num) {
+    return '阅读 $num';
+  }
+
+  @override
+  String get pinLiked => '等人赞过';
+
+  @override
+  String pinHotCommentLikes(int num) {
+    return '$num人赞';
+  }
+
+  @override
+  String get userLikes => '点赞';
+
+  @override
+  String get userFavorites => '收藏';
+
+  @override
+  String get userFollows => '关注';
+
+  @override
+  String get userComments => '评论';
+
+  @override
+  String get userFollowing => '已关注';
+
+  @override
+  String get userNotFollow => '未关注';
+
+  @override
+  String get userSignInOrUp => '登录/注册';
+
+  @override
+  String durationYears(num many) {
+    return intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      other: '年前',
+    );
+  }
+
+  @override
+  String durationMonths(num many) {
+    return intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      other: '月前',
+    );
+  }
+
+  @override
+  String durationDays(num many) {
+    return intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      other: '天前',
+    );
+  }
+
+  @override
+  String durationHours(num many) {
+    return intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      other: '小时前',
+    );
+  }
+
+  @override
+  String durationMinutes(num many) {
+    return intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      other: '分钟前',
+    );
+  }
 }

@@ -18,41 +18,31 @@ extension DurationExtension on Duration {
     final Locale currentLocale = Locale(Intl.shortLocale(Platform.localeName));
     final JJLocalizations localizations = lookupJJLocalizations(currentLocale);
     String space = '';
-    if (localizations.localeName.toLowerCase() == 'en') {
-      space = ' ';
-    }
 
     if (this >= const Duration(days: 365)) {
       count = inDays ~/ 365;
       unit = localizations.years;
-      if (localizations.localeName.toLowerCase() == 'en' && count > 1) {
-        unit += 's';
-      }
     } else if (this >= const Duration(days: 30)) {
       count = inDays ~/ 30;
       unit = localizations.months;
-      if (localizations.localeName.toLowerCase() == 'en' && count > 1) {
-        unit += 's';
-      }
     } else if (this >= const Duration(days: 1)) {
       count = inDays;
       unit = localizations.days;
-      if (localizations.localeName.toLowerCase() == 'en' && count > 1) {
-        unit += 's';
-      }
     } else if (this >= const Duration(hours: 1)) {
       count = inHours;
       unit = localizations.hours;
-      if (localizations.localeName.toLowerCase() == 'en' && count > 1) {
-        unit += 's';
-      }
     } else {
       count = math.max(1, inMinutes);
       unit = localizations.months;
-      if (localizations.localeName.toLowerCase() == 'en' && count > 1) {
+    }
+
+    if (localizations.localeName.toLowerCase() == 'en') {
+      if (count > 1) {
         unit += 's';
       }
+      space = ' ';
     }
+
     return '$count$space$unit$space${localizations.ago}';
   }
 }

@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
         BottomNavigationBarItem(
           icon: const Icon(Icons.manage_accounts_outlined),
           activeIcon: const Icon(Icons.manage_accounts),
-          label: context.l10n.tabMy,
+          label: context.l10n.tabMe,
         ),
       ],
     );

@@ -35,6 +35,7 @@ dependencies:
   url_launcher: ^6.1.5
   visibility_detector: ^0.3.3
   webview_flutter: ^3.0.4
+  flutter_inappwebview: ^5.4.3+7
 
 dev_dependencies:
   archive: ^3.3.0

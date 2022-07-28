@@ -9,6 +9,7 @@ import 'dart:ui' as ui;
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
+import 'package:juejin/widgets/inwebview.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 @FFRoute(name: 'article-detail-page')
@@ -33,7 +34,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 
   UserInfoModel get userInfo => detail.authorUserInfo;
 
-  late NestedWebviewController _webviewController;
+  late NestedInWebViewController _webviewController;
   bool _hasContentLoaded = false;
 
   @override
@@ -56,7 +57,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
           'Loading $url for article $articleId...',
           tag: '📃 Article WebView',
         );
-        _webviewController = NestedWebviewController(
+        _webviewController = NestedInWebViewController(
           url,
           onLoadComplete: () => safeSetState(() => _hasContentLoaded = true),
         );
@@ -178,13 +179,13 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   // https://github.com/flutter/flutter/issues/75841
                   y *= ui.window.devicePixelRatio;
                 }
-                _webviewController.controller?.scrollTo(0, y.ceil());
+                _webviewController.controller?.scrollTo(x: 0, y: y.ceil());
               },
               childExtent: scrollHeight,
               child: child,
             );
           },
-          child: JJWebView(
+          child: JJInWebView(
             controller: _webviewController,
             isWebViewOnly: true,
             enableProgressBar: false,

@@ -18,5 +18,23 @@
   "listRefreshSucceed": "Refreshed with new contents",
   "listRefreshFailed": "Failed to refresh",
 
-  "webViewTitle": "Web page"
+  "webViewTitle": "Web page",
+
+  "tabHome":"Home",
+  "tabHot":"Hot",
+  "tabMy":"My",
+
+  "unfold": "Unfold",
+  "ad": "Ad",
+  "like": "Like",
+  "comment": "Comment",
+  "favourite": "Favourite",
+  "follow": "Follow",
+  "likes": " likes",
+  "liked": "and others liked",
+  "followed": "Followed",
+  "unfollowed": "Unfollowed",
+  "views": "Views",
+
+  "signInOrUp": "Sign in/Sign up"
 }

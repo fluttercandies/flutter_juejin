@@ -189,6 +189,96 @@ abstract class JJLocalizations {
   /// In en, this message translates to:
   /// **'Web page'**
   String get webViewTitle;
+
+  /// No description provided for @tabHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get tabHome;
+
+  /// No description provided for @tabHot.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot'**
+  String get tabHot;
+
+  /// No description provided for @tabMy.
+  ///
+  /// In en, this message translates to:
+  /// **'My'**
+  String get tabMy;
+
+  /// No description provided for @unfold.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfold'**
+  String get unfold;
+
+  /// No description provided for @ad.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad'**
+  String get ad;
+
+  /// No description provided for @like.
+  ///
+  /// In en, this message translates to:
+  /// **'Like'**
+  String get like;
+
+  /// No description provided for @comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get comment;
+
+  /// No description provided for @favourite.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourite'**
+  String get favourite;
+
+  /// No description provided for @follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get follow;
+
+  /// No description provided for @likes.
+  ///
+  /// In en, this message translates to:
+  /// **' likes'**
+  String get likes;
+
+  /// No description provided for @liked.
+  ///
+  /// In en, this message translates to:
+  /// **'and others liked'**
+  String get liked;
+
+  /// No description provided for @followed.
+  ///
+  /// In en, this message translates to:
+  /// **'Followed'**
+  String get followed;
+
+  /// No description provided for @unfollowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollowed'**
+  String get unfollowed;
+
+  /// No description provided for @views.
+  ///
+  /// In en, this message translates to:
+  /// **'Views'**
+  String get views;
+
+  /// No description provided for @signInOrUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in/Sign up'**
+  String get signInOrUp;
 }
 
 class _JJLocalizationsDelegate extends LocalizationsDelegate<JJLocalizations> {

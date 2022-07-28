@@ -42,21 +42,21 @@ class _HomePageState extends State<HomePage> {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
       onTap: _selectIndex,
-      items: const <BottomNavigationBarItem>[
+      items:  <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          activeIcon: Icon(Icons.home),
-          label: '首页',
+          icon: const Icon(Icons.home_outlined),
+          activeIcon:const  Icon(Icons.home),
+          label: context.l10n.tabHome,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.local_fire_department_outlined),
-          activeIcon: Icon(Icons.local_fire_department),
-          label: '沸点',
+          icon: const Icon(Icons.local_fire_department_outlined),
+          activeIcon:const  Icon(Icons.local_fire_department),
+          label: context.l10n.tabHot,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.manage_accounts_outlined),
-          activeIcon: Icon(Icons.manage_accounts),
-          label: '我',
+          icon: const Icon(Icons.manage_accounts_outlined),
+          activeIcon:const  Icon(Icons.manage_accounts),
+          label: context.l10n.tabMy,
         ),
       ],
     );

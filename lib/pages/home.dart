@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
 import 'home/articles.dart';
+import 'home/mine.dart';
 import 'home/posts.dart';
 
 @FFRoute(name: 'home-page')
@@ -26,42 +27,48 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Widget _buildBody(BuildContext context) {
+    return MediaQuery.removePadding(
+      context: context,
+      removeBottom: true,
+      child: LazyIndexedStack(
+        index: _currentIndex,
+        children: const <Widget>[ArticlesPage(), PostsPage(), MinePage()],
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      onTap: _selectIndex,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          activeIcon: Icon(Icons.home),
+          label: '首页',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.local_fire_department_outlined),
+          activeIcon: Icon(Icons.local_fire_department),
+          label: '沸点',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.manage_accounts_outlined),
+          activeIcon: Icon(Icons.manage_accounts),
+          label: '我',
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(
-            child: LazyIndexedStack(
-              index: _currentIndex,
-              children: const <Widget>[
-                ArticlesPage(),
-                PostsPage(),
-                SizedBox.shrink(),
-              ],
-            ),
-          ),
-          BottomNavigationBar(
-            currentIndex: _currentIndex,
-            onTap: _selectIndex,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                activeIcon: Icon(Icons.home),
-                label: '首页',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.local_fire_department_outlined),
-                activeIcon: Icon(Icons.local_fire_department),
-                label: '沸点',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.manage_accounts_outlined),
-                activeIcon: Icon(Icons.manage_accounts),
-                label: '我',
-              ),
-            ],
-          ),
+          Expanded(child: _buildBody(context)),
+          _buildBottomNavigationBar(context),
         ],
       ),
     );

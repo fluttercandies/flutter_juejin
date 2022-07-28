@@ -37,7 +37,6 @@ class _ArticlesPageState extends State<ArticlesPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      bottom: false,
       child: Column(
         children: <Widget>[
           const Padding(

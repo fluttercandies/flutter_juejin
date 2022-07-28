@@ -23,7 +23,6 @@ class _PostsPageState extends State<PostsPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      bottom: false,
       child: Column(
         children: <Widget>[
           const Padding(

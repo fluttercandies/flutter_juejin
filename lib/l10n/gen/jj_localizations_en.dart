@@ -76,22 +76,10 @@ class JJLocalizationsEn extends JJLocalizations {
   String get navMe => 'Me';
 
   @override
-  String actionLike(num many) {
-    return intl.Intl.pluralLogic(
-      many,
-      locale: localeName,
-      zero: 'Like',
-    );
-  }
+  String get actionLike => 'Like';
 
   @override
-  String actionComment(num many) {
-    return intl.Intl.pluralLogic(
-      many,
-      locale: localeName,
-      zero: 'Comment',
-    );
-  }
+  String get actionComment => 'Comment';
 
   @override
   String get actionMore => 'More';

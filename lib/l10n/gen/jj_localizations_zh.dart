@@ -76,22 +76,10 @@ class JJLocalizationsZh extends JJLocalizations {
   String get navMe => '我';
 
   @override
-  String actionLike(num many) {
-    return intl.Intl.pluralLogic(
-      many,
-      locale: localeName,
-      zero: '赞',
-    );
-  }
+  String get actionLike => '赞';
 
   @override
-  String actionComment(num many) {
-    return intl.Intl.pluralLogic(
-      many,
-      locale: localeName,
-      zero: '评论',
-    );
-  }
+  String get actionComment => '评论';
 
   @override
   String get actionMore => '展开';

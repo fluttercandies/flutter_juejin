@@ -229,14 +229,14 @@ abstract class JJLocalizations {
   /// No description provided for @actionLike.
   ///
   /// In en, this message translates to:
-  /// **'{many, plural, =0{Like}other{}}'**
-  String actionLike(num many);
+  /// **'Like'**
+  String get actionLike;
 
   /// No description provided for @actionComment.
   ///
   /// In en, this message translates to:
-  /// **'{many, plural, =0{Comment}other{}}'**
-  String actionComment(num many);
+  /// **'Comment'**
+  String get actionComment;
 
   /// No description provided for @actionMore.
   ///

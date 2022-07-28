@@ -28,14 +28,8 @@
   "navPins": "Pins",
   "navMe": "Me",
 
-  "actionLike": "{many, plural, =0{Like}other{}}",
-  "@actionLike": {
-    "placeholders": {"many": {"type": "int"}}
-  },
-  "actionComment": "{many, plural, =0{Comment}other{}}",
-  "@actionComment": {
-    "placeholders": {"many": {"type": "int"}}
-  },
+  "actionLike": "Like",
+  "actionComment": "Comment",
   "actionMore": "More",
   "advertiseAbbr": "Ad",
 

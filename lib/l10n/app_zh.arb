@@ -27,8 +27,8 @@
   "navPins": "沸点",
   "navMe": "我",
 
-  "actionLike": "{many, plural, =0{赞}other{}}",
-  "actionComment": "{many, plural, =0{评论}other{}}",
+  "actionLike": "赞",
+  "actionComment": "评论",
   "actionMore": "展开",
   "advertiseAbbr": "广告",
 

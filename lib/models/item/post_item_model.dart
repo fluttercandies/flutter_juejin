@@ -5,8 +5,8 @@
 part of '../data_model.dart';
 
 @JsonSerializable()
-class PostItemModel extends DataModel {
-  const PostItemModel({
+class PinItemModel extends DataModel {
+  const PinItemModel({
     required this.msgId,
     required this.msgInfo,
     required this.authorUserInfo,
@@ -18,18 +18,18 @@ class PostItemModel extends DataModel {
     required this.diggUser,
   });
 
-  factory PostItemModel.fromJson(Map<String, dynamic> json) =>
-      _$PostItemModelFromJson(json);
+  factory PinItemModel.fromJson(Map<String, dynamic> json) =>
+      _$PinItemModelFromJson(json);
 
   final String msgId;
   @JsonKey(name: 'msg_Info')
-  final PostInfo msgInfo;
+  final PinInfo msgInfo;
   final UserInfoModel authorUserInfo;
   @JsonKey(readValue: _readTopic)
-  final PostTopic? topic;
+  final PinTopic? topic;
   final UserInteract userInteract;
   final UserOrg org;
-  final PostTheme theme;
+  final PinTheme theme;
   @JsonKey(readValue: _readHotComment)
   final HotComment? hotComment;
   @JsonKey(defaultValue: [])
@@ -51,7 +51,7 @@ class PostItemModel extends DataModel {
   }
 
   @override
-  Map<String, dynamic> toJson() => _$PostItemModelToJson(this);
+  Map<String, dynamic> toJson() => _$PinItemModelToJson(this);
 
   @override
   List<Object?> get props => <Object?>[
@@ -68,8 +68,8 @@ class PostItemModel extends DataModel {
 }
 
 @JsonSerializable()
-class PostInfo extends DataModel {
-  const PostInfo({
+class PinInfo extends DataModel {
+  const PinInfo({
     required this.id,
     required this.msgId,
     required this.userId,
@@ -94,8 +94,8 @@ class PostInfo extends DataModel {
     required this.themeId,
   });
 
-  factory PostInfo.fromJson(Map<String, dynamic> json) =>
-      _$PostInfoFromJson(json);
+  factory PinInfo.fromJson(Map<String, dynamic> json) =>
+      _$PinInfoFromJson(json);
 
   final int id;
   final String msgId;
@@ -121,14 +121,14 @@ class PostInfo extends DataModel {
   final int auditStatus;
   final String themeId;
 
-  String get createTime {
+  String createTimeString(BuildContext context) {
     return DateTime.now()
         .difference((int.parse(ctime) * 1000).toDateTimeInMilliseconds)
-        .differenceString;
+        .differenceString(context);
   }
 
   @override
-  Map<String, dynamic> toJson() => _$PostInfoToJson(this);
+  Map<String, dynamic> toJson() => _$PinInfoToJson(this);
 
   @override
   List<Object?> get props => <Object?>[
@@ -158,8 +158,8 @@ class PostInfo extends DataModel {
 }
 
 @JsonSerializable()
-class PostTopic extends DataModel {
-  const PostTopic({
+class PinTopic extends DataModel {
+  const PinTopic({
     required this.topicId,
     required this.title,
     required this.description,
@@ -175,8 +175,8 @@ class PostTopic extends DataModel {
     required this.recRank,
   });
 
-  factory PostTopic.fromJson(Map<String, dynamic> json) =>
-      _$PostTopicFromJson(json);
+  factory PinTopic.fromJson(Map<String, dynamic> json) =>
+      _$PinTopicFromJson(json);
 
   final String topicId;
   final String title;
@@ -196,7 +196,7 @@ class PostTopic extends DataModel {
   final int recRank;
 
   @override
-  Map<String, dynamic> toJson() => _$PostTopicToJson(this);
+  Map<String, dynamic> toJson() => _$PinTopicToJson(this);
 
   @override
   List<Object?> get props => <Object?>[
@@ -217,8 +217,8 @@ class PostTopic extends DataModel {
 }
 
 @JsonSerializable()
-class PostTheme extends DataModel {
-  const PostTheme({
+class PinTheme extends DataModel {
+  const PinTheme({
     required this.themeId,
     required this.name,
     required this.cover,
@@ -237,8 +237,8 @@ class PostTheme extends DataModel {
     required this.lotteryEndTime,
   });
 
-  factory PostTheme.fromJson(Map<String, dynamic> json) =>
-      _$PostThemeFromJson(json);
+  factory PinTheme.fromJson(Map<String, dynamic> json) =>
+      _$PinThemeFromJson(json);
 
   final String themeId;
   final String name;
@@ -261,7 +261,7 @@ class PostTheme extends DataModel {
   final int lotteryEndTime;
 
   @override
-  Map<String, dynamic> toJson() => _$PostThemeToJson(this);
+  Map<String, dynamic> toJson() => _$PinThemeToJson(this);
 
   @override
   List<Object?> get props => <Object>[

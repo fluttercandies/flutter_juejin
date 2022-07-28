@@ -114,10 +114,11 @@ class UserInfoModel extends DataModel {
         Text(userName),
         const SizedBox(width: 4),
         buildLevelImage(width: levelWidth, height: levelHeight),
-        if (userGrowthInfo.vipLevel > 0) Padding(
-          padding: const EdgeInsetsDirectional.only(start: 4),
-          child: buildVipImage(size: levelHeight * 1.375),
-        ),
+        if (userGrowthInfo.vipLevel > 0)
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: 4),
+            child: buildVipImage(size: levelHeight * 1.375),
+          ),
       ],
     );
   }
@@ -279,6 +280,9 @@ class UserInteract extends DataModel {
   final bool isDigg;
   final bool isFollow;
   final bool isCollect;
+
+  String followText(BuildContext context) =>
+      isFollow ? context.l10n.userFollowing : context.l10n.userNotFollow;
 
   @override
   Map<String, dynamic> toJson() => _$UserInteractToJson(this);

@@ -106,17 +106,23 @@ abstract class JJLocalizations {
   /// **'error'**
   String get exceptionError;
 
+  /// No description provided for @exceptionErrorWidget.
+  ///
+  /// In en, this message translates to:
+  /// **'Exception thrown during building this widget...'**
+  String get exceptionErrorWidget;
+
   /// No description provided for @exceptionFailed.
   ///
   /// In en, this message translates to:
   /// **'failed'**
   String get exceptionFailed;
 
-  /// No description provided for @exceptionErrorWidget.
+  /// No description provided for @exceptionRequest.
   ///
   /// In en, this message translates to:
-  /// **'Exception thrown during building this widget...'**
-  String get exceptionErrorWidget;
+  /// **'Request error: (-1 {message})'**
+  String exceptionRequest(Object message);
 
   /// No description provided for @exceptionRouteNotFound.
   ///
@@ -190,107 +196,137 @@ abstract class JJLocalizations {
   /// **'Web page'**
   String get webViewTitle;
 
-  /// No description provided for @tabHome.
+  /// No description provided for @navHome.
   ///
   /// In en, this message translates to:
   /// **'Home'**
-  String get tabHome;
+  String get navHome;
 
-  /// No description provided for @tabPins.
+  /// No description provided for @navPins.
   ///
   /// In en, this message translates to:
   /// **'Pins'**
-  String get tabPins;
+  String get navPins;
 
-  /// No description provided for @tabMe.
+  /// No description provided for @navMe.
   ///
   /// In en, this message translates to:
   /// **'Me'**
-  String get tabMe;
+  String get navMe;
 
-  /// No description provided for @like.
+  /// No description provided for @actionLike.
   ///
   /// In en, this message translates to:
   /// **'Like'**
-  String get like;
+  String get actionLike;
 
-  /// No description provided for @comment.
+  /// No description provided for @actionComment.
   ///
   /// In en, this message translates to:
   /// **'Comment'**
-  String get comment;
+  String get actionComment;
 
-  /// No description provided for @unfold.
+  /// No description provided for @actionMore.
   ///
   /// In en, this message translates to:
-  /// **'Unfold'**
-  String get unfold;
+  /// **'More'**
+  String get actionMore;
 
-  /// No description provided for @ad.
+  /// No description provided for @advertiseAbbr.
   ///
   /// In en, this message translates to:
   /// **'Ad'**
-  String get ad;
+  String get advertiseAbbr;
 
-  /// No description provided for @likes.
+  /// No description provided for @articleViews.
   ///
   /// In en, this message translates to:
-  /// **'Likes'**
-  String get likes;
+  /// **'{num} views'**
+  String articleViews(int num);
 
-  /// No description provided for @comments.
-  ///
-  /// In en, this message translates to:
-  /// **'Comments'**
-  String get comments;
-
-  /// No description provided for @favourites.
-  ///
-  /// In en, this message translates to:
-  /// **'Favourites'**
-  String get favourites;
-
-  /// No description provided for @follows.
-  ///
-  /// In en, this message translates to:
-  /// **'Follows'**
-  String get follows;
-
-  /// No description provided for @numLikes.
-  ///
-  /// In en, this message translates to:
-  /// **'{num} likes'**
-  String get numLikes;
-
-  /// No description provided for @liked.
+  /// No description provided for @pinLiked.
   ///
   /// In en, this message translates to:
   /// **'and others liked'**
-  String get liked;
+  String get pinLiked;
 
-  /// No description provided for @followingText.
+  /// No description provided for @pinHotCommentLikes.
   ///
   /// In en, this message translates to:
-  /// **'Unfollow'**
-  String get followingText;
+  /// **'{num} likes'**
+  String pinHotCommentLikes(int num);
 
-  /// No description provided for @unfollowText.
+  /// No description provided for @userLikes.
   ///
   /// In en, this message translates to:
-  /// **'Follow'**
-  String get unfollowText;
+  /// **'Likes'**
+  String get userLikes;
 
-  /// No description provided for @views.
+  /// No description provided for @userFavorites.
   ///
   /// In en, this message translates to:
-  /// **'Views'**
-  String get views;
+  /// **'Favorites'**
+  String get userFavorites;
 
-  /// No description provided for @signInOrUp.
+  /// No description provided for @userFollows.
+  ///
+  /// In en, this message translates to:
+  /// **'Follows'**
+  String get userFollows;
+
+  /// No description provided for @userComments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get userComments;
+
+  /// No description provided for @userFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get userFollowing;
+
+  /// No description provided for @userNotFollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not follow'**
+  String get userNotFollow;
+
+  /// No description provided for @userSignInOrUp.
   ///
   /// In en, this message translates to:
   /// **'Sign in/Sign up'**
-  String get signInOrUp;
+  String get userSignInOrUp;
+
+  /// No description provided for @durationYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{many,plural, =1{year}other{years}} ago'**
+  String durationYears(num many);
+
+  /// No description provided for @durationMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{many,plural, =1{month}other{months}} ago'**
+  String durationMonths(num many);
+
+  /// No description provided for @durationDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{many,plural, =1{day}other{days}} ago'**
+  String durationDays(num many);
+
+  /// No description provided for @durationHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{many,plural, =1{hour}other{hours}} ago'**
+  String durationHours(num many);
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{many,plural, =1{minute}other{minutes}} ago'**
+  String durationMinutes(num many);
 }
 
 class _JJLocalizationsDelegate extends LocalizationsDelegate<JJLocalizations> {

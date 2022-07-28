@@ -44,8 +44,8 @@ class _MinePageState extends State<MinePage> {
 
   Widget _buildUsername(BuildContext context) {
     return Text(
-      context.l10n.signInOrUp,
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      context.l10n.userSignInOrUp,
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
     );
   }
 
@@ -85,9 +85,9 @@ class _MinePageState extends State<MinePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          counter(0, context.l10n.likes),
-          counter(0, context.l10n.favourites),
-          counter(0, context.l10n.follows)
+          counter(0, context.l10n.userLikes),
+          counter(0, context.l10n.userFavorites),
+          counter(0, context.l10n.userFollows)
         ],
       ),
     );

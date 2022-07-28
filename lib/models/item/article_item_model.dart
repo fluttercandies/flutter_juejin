@@ -129,10 +129,10 @@ class ArticleInfo extends DataModel {
   final String markContent;
   final int displayCount;
 
-  String get createTime {
+  String createTimeString(BuildContext context) {
     return DateTime.now()
         .difference((int.parse(ctime) * 1000).toDateTimeInMilliseconds)
-        .differenceString;
+        .differenceString(context);
   }
 
   String slicedCoverImage({num width = 330, String extension = 'jpg'}) {

@@ -93,9 +93,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   color: context.theme.dividerColor.withOpacity(.05),
                 ),
                 child: Text(
-                  detail.userInteract.isFollow
-                      ? context.l10n.followingText
-                      : context.l10n.unfollowText,
+                  detail.userInteract.followText(context),
                   style: context.textTheme.caption,
                 ),
               ),
@@ -123,19 +121,15 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 children: <Widget>[
                   userInfo.buildNameAndLevel(),
                   Text(
-                    '${articleInfo.createTime} · '
-                    '${context.l10n.views} ${articleInfo.viewCount}',
+                    '${articleInfo.createTimeString(context)} · '
+                    '${context.l10n.articleViews(articleInfo.viewCount)}',
                     style: context.textTheme.caption,
                   ),
                 ],
               ),
             ),
           ),
-          Text(
-            detail.userInteract.isFollow
-                ? context.l10n.followingText
-                : context.l10n.unfollowText,
-          ),
+          Text(detail.userInteract.followText(context)),
         ],
       ),
     );

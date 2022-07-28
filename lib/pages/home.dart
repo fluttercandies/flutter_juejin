@@ -8,7 +8,7 @@ import 'package:juejin/exports.dart';
 
 import 'home/articles.dart';
 import 'home/mine.dart';
-import 'home/posts.dart';
+import 'home/pins.dart';
 
 @FFRoute(name: 'home-page')
 class HomePage extends StatefulWidget {
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       removeBottom: true,
       child: LazyIndexedStack(
         index: _currentIndex,
-        children: const <Widget>[ArticlesPage(), PostsPage(), MinePage()],
+        children: const <Widget>[ArticlesPage(), PinsPage(), MinePage()],
       ),
     );
   }
@@ -46,17 +46,17 @@ class _HomePageState extends State<HomePage> {
         BottomNavigationBarItem(
           icon: const Icon(Icons.home_outlined),
           activeIcon: const Icon(Icons.home),
-          label: context.l10n.tabHome,
+          label: context.l10n.navHome,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.local_fire_department_outlined),
           activeIcon: const Icon(Icons.local_fire_department),
-          label: context.l10n.tabPins,
+          label: context.l10n.navPins,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.manage_accounts_outlined),
           activeIcon: const Icon(Icons.manage_accounts),
-          label: context.l10n.tabMe,
+          label: context.l10n.navMe,
         ),
       ],
     );

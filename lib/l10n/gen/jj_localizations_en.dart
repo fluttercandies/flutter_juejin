@@ -1,6 +1,6 @@
 
 
-
+import 'package:intl/intl.dart' as intl;
 import 'jj_localizations.dart';
 
 /// The translations for English (`en`).
@@ -14,10 +14,15 @@ class JJLocalizationsEn extends JJLocalizations {
   String get exceptionError => 'error';
 
   @override
+  String get exceptionErrorWidget => 'Exception thrown during building this widget...';
+
+  @override
   String get exceptionFailed => 'failed';
 
   @override
-  String get exceptionErrorWidget => 'Exception thrown during building this widget...';
+  String exceptionRequest(Object message) {
+    return 'Request error: (-1 $message)';
+  }
 
   @override
   String get exceptionRouteNotFound => ' route not found。';
@@ -56,53 +61,117 @@ class JJLocalizationsEn extends JJLocalizations {
   String get webViewTitle => 'Web page';
 
   @override
-  String get tabHome => 'Home';
+  String get navHome => 'Home';
 
   @override
-  String get tabPins => 'Pins';
+  String get navPins => 'Pins';
 
   @override
-  String get tabMe => 'Me';
+  String get navMe => 'Me';
 
   @override
-  String get like => 'Like';
+  String get actionLike => 'Like';
 
   @override
-  String get comment => 'Comment';
+  String get actionComment => 'Comment';
 
   @override
-  String get unfold => 'Unfold';
+  String get actionMore => 'More';
 
   @override
-  String get ad => 'Ad';
+  String get advertiseAbbr => 'Ad';
 
   @override
-  String get likes => 'Likes';
+  String articleViews(int num) {
+    return '$num views';
+  }
 
   @override
-  String get comments => 'Comments';
+  String get pinLiked => 'and others liked';
 
   @override
-  String get favourites => 'Favourites';
+  String pinHotCommentLikes(int num) {
+    return '$num likes';
+  }
 
   @override
-  String get follows => 'Follows';
+  String get userLikes => 'Likes';
 
   @override
-  String get numLikes => '{num} likes';
+  String get userFavorites => 'Favorites';
 
   @override
-  String get liked => 'and others liked';
+  String get userFollows => 'Follows';
 
   @override
-  String get followingText => 'Unfollow';
+  String get userComments => 'Comments';
 
   @override
-  String get unfollowText => 'Follow';
+  String get userFollowing => 'Following';
 
   @override
-  String get views => 'Views';
+  String get userNotFollow => 'Not follow';
 
   @override
-  String get signInOrUp => 'Sign in/Sign up';
+  String get userSignInOrUp => 'Sign in/Sign up';
+
+  @override
+  String durationYears(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'year',
+      other: 'years',
+    );
+
+    return '$pluralString ago';
+  }
+
+  @override
+  String durationMonths(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'month',
+      other: 'months',
+    );
+
+    return '$pluralString ago';
+  }
+
+  @override
+  String durationDays(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'day',
+      other: 'days',
+    );
+
+    return '$pluralString ago';
+  }
+
+  @override
+  String durationHours(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'hour',
+      other: 'hours',
+    );
+
+    return '$pluralString ago';
+  }
+
+  @override
+  String durationMinutes(num many) {
+    final String pluralString = intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      one: 'minute',
+      other: 'minutes',
+    );
+
+    return '$pluralString ago';
+  }
 }

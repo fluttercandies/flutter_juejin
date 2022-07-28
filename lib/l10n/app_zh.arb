@@ -2,9 +2,11 @@
   "@@locale": "zh",
   "appTitle": "掘金",
 
+  "exceptionAuthenticationExpired": "身份已失效，请重新登录",
   "exceptionError": "错误",
   "exceptionErrorWidget": "构建时遇到未知错误...",
   "exceptionFailed": "失败",
+  "exceptionPoorNetwork": "网络状况差，请稍后重试",
   "exceptionRequest": "请求失败：(-1 {message})",
   "exceptionRouteNotFound": "路由。",
   "exceptionRouteUnknown": "未知",
@@ -25,8 +27,8 @@
   "navPins": "沸点",
   "navMe": "我",
 
-  "actionLike": "点赞",
-  "actionComment": "评论",
+  "actionLike": "{many, plural, =0{赞}other{}}",
+  "actionComment": "{many, plural, =0{评论}other{}}",
   "actionMore": "展开",
   "advertiseAbbr": "广告",
 
@@ -43,9 +45,9 @@
   "userNotFollow": "未关注",
   "userSignInOrUp": "登录/注册",
 
-  "durationYears": "{many,plural, =other{年前}}",
-  "durationMonths": "{many,plural, =other{月前}}",
-  "durationDays": "{many,plural, =other{天前}}",
-  "durationHours": "{many,plural, =other{小时前}}",
-  "durationMinutes": "{many,plural, =other{分钟前}}"
+  "durationYears": "{many, plural, =other{年前}}",
+  "durationMonths": "{many, plural, =other{月前}}",
+  "durationDays": "{many, plural, =other{天前}}",
+  "durationHours": "{many, plural, =other{小时前}}",
+  "durationMinutes": "{many, plural, =other{分钟前}}"
 }

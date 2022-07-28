@@ -100,6 +100,12 @@ abstract class JJLocalizations {
   /// **'Juejin'**
   String get appTitle;
 
+  /// No description provided for @exceptionAuthenticationExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication has expired, please login manually.'**
+  String get exceptionAuthenticationExpired;
+
   /// No description provided for @exceptionError.
   ///
   /// In en, this message translates to:
@@ -117,6 +123,12 @@ abstract class JJLocalizations {
   /// In en, this message translates to:
   /// **'failed'**
   String get exceptionFailed;
+
+  /// No description provided for @exceptionPoorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor network condition, please retry later.'**
+  String get exceptionPoorNetwork;
 
   /// No description provided for @exceptionRequest.
   ///
@@ -217,14 +229,14 @@ abstract class JJLocalizations {
   /// No description provided for @actionLike.
   ///
   /// In en, this message translates to:
-  /// **'Like'**
-  String get actionLike;
+  /// **'{many, plural, =0{Like}other{}}'**
+  String actionLike(num many);
 
   /// No description provided for @actionComment.
   ///
   /// In en, this message translates to:
-  /// **'Comment'**
-  String get actionComment;
+  /// **'{many, plural, =0{Comment}other{}}'**
+  String actionComment(num many);
 
   /// No description provided for @actionMore.
   ///
@@ -301,31 +313,31 @@ abstract class JJLocalizations {
   /// No description provided for @durationYears.
   ///
   /// In en, this message translates to:
-  /// **'{many,plural, =1{year}other{years}} ago'**
+  /// **'{many, plural, =1{year}other{years}} ago'**
   String durationYears(num many);
 
   /// No description provided for @durationMonths.
   ///
   /// In en, this message translates to:
-  /// **'{many,plural, =1{month}other{months}} ago'**
+  /// **'{many, plural, =1{month}other{months}} ago'**
   String durationMonths(num many);
 
   /// No description provided for @durationDays.
   ///
   /// In en, this message translates to:
-  /// **'{many,plural, =1{day}other{days}} ago'**
+  /// **'{many, plural, =1{day}other{days}} ago'**
   String durationDays(num many);
 
   /// No description provided for @durationHours.
   ///
   /// In en, this message translates to:
-  /// **'{many,plural, =1{hour}other{hours}} ago'**
+  /// **'{many, plural, =1{hour}other{hours}} ago'**
   String durationHours(num many);
 
   /// No description provided for @durationMinutes.
   ///
   /// In en, this message translates to:
-  /// **'{many,plural, =1{minute}other{minutes}} ago'**
+  /// **'{many, plural, =1{minute}other{minutes}} ago'**
   String durationMinutes(num many);
 }
 

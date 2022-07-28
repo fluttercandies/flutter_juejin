@@ -11,6 +11,9 @@ class JJLocalizationsEn extends JJLocalizations {
   String get appTitle => 'Juejin';
 
   @override
+  String get exceptionAuthenticationExpired => 'Authentication has expired, please login manually.';
+
+  @override
   String get exceptionError => 'error';
 
   @override
@@ -18,6 +21,9 @@ class JJLocalizationsEn extends JJLocalizations {
 
   @override
   String get exceptionFailed => 'failed';
+
+  @override
+  String get exceptionPoorNetwork => 'Poor network condition, please retry later.';
 
   @override
   String exceptionRequest(Object message) {
@@ -70,10 +76,22 @@ class JJLocalizationsEn extends JJLocalizations {
   String get navMe => 'Me';
 
   @override
-  String get actionLike => 'Like';
+  String actionLike(num many) {
+    return intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      zero: 'Like',
+    );
+  }
 
   @override
-  String get actionComment => 'Comment';
+  String actionComment(num many) {
+    return intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      zero: 'Comment',
+    );
+  }
 
   @override
   String get actionMore => 'More';

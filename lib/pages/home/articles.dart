@@ -139,7 +139,7 @@ class _ArticleWidget extends StatelessWidget {
       children: <Widget>[
         const Icon(Icons.thumb_up_alt_outlined),
         const Gap.h(4),
-        Text(count == 0 ? context.l10n.actionLike : '$count'),
+        Text(context.l10n.actionLike(count)),
       ],
     );
   }
@@ -150,7 +150,7 @@ class _ArticleWidget extends StatelessWidget {
       children: <Widget>[
         const Icon(Icons.message_outlined),
         const Gap.h(4),
-        Text(count == 0 ? context.l10n.actionComment : '$count'),
+        Text(context.l10n.actionComment(count)),
       ],
     );
   }

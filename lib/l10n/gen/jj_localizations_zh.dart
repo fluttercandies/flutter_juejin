@@ -11,6 +11,9 @@ class JJLocalizationsZh extends JJLocalizations {
   String get appTitle => '掘金';
 
   @override
+  String get exceptionAuthenticationExpired => '身份已失效，请重新登录';
+
+  @override
   String get exceptionError => '错误';
 
   @override
@@ -18,6 +21,9 @@ class JJLocalizationsZh extends JJLocalizations {
 
   @override
   String get exceptionFailed => '失败';
+
+  @override
+  String get exceptionPoorNetwork => '网络状况差，请稍后重试';
 
   @override
   String exceptionRequest(Object message) {
@@ -70,10 +76,22 @@ class JJLocalizationsZh extends JJLocalizations {
   String get navMe => '我';
 
   @override
-  String get actionLike => '点赞';
+  String actionLike(num many) {
+    return intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      zero: '赞',
+    );
+  }
 
   @override
-  String get actionComment => '评论';
+  String actionComment(num many) {
+    return intl.Intl.pluralLogic(
+      many,
+      locale: localeName,
+      zero: '评论',
+    );
+  }
 
   @override
   String get actionMore => '展开';

@@ -11,6 +11,8 @@ import 'package:dio/dio.dart' show DioError, DioErrorType;
 import 'package:flutter/foundation.dart';
 import 'package:oktoast/oktoast.dart' show ToastPosition;
 
+import '../extensions/build_context_extension.dart';
+import '../internals/instance.dart';
 import '../utils/log_util.dart';
 import '../utils/toast_util.dart';
 import 'data_model.dart';
@@ -200,6 +202,7 @@ Future<void> tryCatchResponse<T extends DataModel>({
   ToastPosition? failedToastPosition,
   ToastPosition? errorToastPosition,
 }) async {
+  final localizations = overlayContext.l10n;
   try {
     final ResponseModel<T> res = await request;
     if (res.isSucceed) {
@@ -220,7 +223,7 @@ Future<void> tryCatchResponse<T extends DataModel>({
     if (showToastOnFailed) {
       if (res.msg.contains(ResponseModel.errorInternalRequest)) {
         showToastWithPosition(
-          '网络状况差，请稍后重试...',
+          localizations.exceptionPoorNetwork,
           position: failedToastPosition,
         );
       } else {
@@ -233,7 +236,7 @@ Future<void> tryCatchResponse<T extends DataModel>({
       // 处理 401 的操作。
       if (e.type == DioErrorType.response) {
         if (e.response?.statusCode == HttpStatus.unauthorized) {
-          showToast('身份已失效，请重新登录');
+          showToast(localizations.exceptionAuthenticationExpired);
           LogUtil.w(
             'Token has been expired during the request: '
             '${e.requestOptions.uri}',
@@ -257,7 +260,7 @@ Future<void> tryCatchResponse<T extends DataModel>({
     }
     if (showToastOnError) {
       showErrorToastWithPosition(
-        '请求失败 (-1 $e)',
+        localizations.exceptionRequest(e),
         position: errorToastPosition,
       );
     }

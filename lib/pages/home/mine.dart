@@ -43,9 +43,9 @@ class _MinePageState extends State<MinePage> {
   }
 
   Widget _buildUsername(BuildContext context) {
-    return const Text(
-      '登录/注册',
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+    return Text(
+      context.l10n.userSignInOrUp,
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
     );
   }
 
@@ -84,7 +84,11 @@ class _MinePageState extends State<MinePage> {
       padding: const EdgeInsets.symmetric(horizontal: 14),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [counter(0, '点赞'), counter(0, '收藏'), counter(0, '关注')],
+        children: [
+          counter(0, context.l10n.userLikes),
+          counter(0, context.l10n.userFavorites),
+          counter(0, context.l10n.userFollows)
+        ],
       ),
     );
   }

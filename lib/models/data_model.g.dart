@@ -370,24 +370,24 @@ Map<String, dynamic> _$CommentReplyToJson(CommentReply instance) =>
       'burry_count': instance.buryCount,
     };
 
-PostItemModel _$PostItemModelFromJson(Map<String, dynamic> json) =>
-    PostItemModel(
+PinItemModel _$PinItemModelFromJson(Map<String, dynamic> json) =>
+    PinItemModel(
       msgId: json['msg_id'] as String,
-      msgInfo: PostInfo.fromJson(json['msg_Info'] as Map<String, dynamic>),
+      msgInfo: PinInfo.fromJson(json['msg_Info'] as Map<String, dynamic>),
       authorUserInfo: UserInfoModel.fromJson(
           json['author_user_info'] as Map<String, dynamic>),
-      topic: PostItemModel._readTopic(json, 'topic') == null
+      topic: PinItemModel._readTopic(json, 'topic') == null
           ? null
-          : PostTopic.fromJson(
-              PostItemModel._readTopic(json, 'topic') as Map<String, dynamic>),
+          : PinTopic.fromJson(
+              PinItemModel._readTopic(json, 'topic') as Map<String, dynamic>),
       userInteract:
           UserInteract.fromJson(json['user_interact'] as Map<String, dynamic>),
       org: UserOrg.fromJson(json['org'] as Map<String, dynamic>),
-      theme: PostTheme.fromJson(json['theme'] as Map<String, dynamic>),
-      hotComment: PostItemModel._readHotComment(json, 'hot_comment') == null
+      theme: PinTheme.fromJson(json['theme'] as Map<String, dynamic>),
+      hotComment: PinItemModel._readHotComment(json, 'hot_comment') == null
           ? null
           : HotComment.fromJson(
-              PostItemModel._readHotComment(json, 'hot_comment')
+              PinItemModel._readHotComment(json, 'hot_comment')
                   as Map<String, dynamic>),
       diggUser: (json['digg_user'] as List<dynamic>?)
               ?.map((e) => UserInfoModel.fromJson(e as Map<String, dynamic>))
@@ -395,7 +395,7 @@ PostItemModel _$PostItemModelFromJson(Map<String, dynamic> json) =>
           [],
     );
 
-Map<String, dynamic> _$PostItemModelToJson(PostItemModel instance) =>
+Map<String, dynamic> _$PinItemModelToJson(PinItemModel instance) =>
     <String, dynamic>{
       'msg_id': instance.msgId,
       'msg_Info': instance.msgInfo.toJson(),
@@ -408,7 +408,7 @@ Map<String, dynamic> _$PostItemModelToJson(PostItemModel instance) =>
       'digg_user': instance.diggUser.map((e) => e.toJson()).toList(),
     };
 
-PostInfo _$PostInfoFromJson(Map<String, dynamic> json) => PostInfo(
+PinInfo _$PinInfoFromJson(Map<String, dynamic> json) => PinInfo(
       id: json['id'] as int,
       msgId: json['msg_id'] as String,
       userId: json['user_id'] as String,
@@ -436,7 +436,7 @@ PostInfo _$PostInfoFromJson(Map<String, dynamic> json) => PostInfo(
       themeId: json['theme_id'] as String,
     );
 
-Map<String, dynamic> _$PostInfoToJson(PostInfo instance) => <String, dynamic>{
+Map<String, dynamic> _$PinInfoToJson(PinInfo instance) => <String, dynamic>{
       'id': instance.id,
       'msg_id': instance.msgId,
       'user_id': instance.userId,
@@ -461,7 +461,7 @@ Map<String, dynamic> _$PostInfoToJson(PostInfo instance) => <String, dynamic>{
       'theme_id': instance.themeId,
     };
 
-PostTopic _$PostTopicFromJson(Map<String, dynamic> json) => PostTopic(
+PinTopic _$PinTopicFromJson(Map<String, dynamic> json) => PinTopic(
       topicId: json['topic_id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
@@ -483,7 +483,7 @@ PostTopic _$PostTopicFromJson(Map<String, dynamic> json) => PostTopic(
       recRank: json['rec_rank'] as int,
     );
 
-Map<String, dynamic> _$PostTopicToJson(PostTopic instance) => <String, dynamic>{
+Map<String, dynamic> _$PinTopicToJson(PinTopic instance) => <String, dynamic>{
       'topic_id': instance.topicId,
       'title': instance.title,
       'description': instance.description,
@@ -499,7 +499,7 @@ Map<String, dynamic> _$PostTopicToJson(PostTopic instance) => <String, dynamic>{
       'rec_rank': instance.recRank,
     };
 
-PostTheme _$PostThemeFromJson(Map<String, dynamic> json) => PostTheme(
+PinTheme _$PinThemeFromJson(Map<String, dynamic> json) => PinTheme(
       themeId: json['theme_id'] as String,
       name: json['name'] as String,
       cover: json['cover'] as String,
@@ -521,7 +521,7 @@ PostTheme _$PostThemeFromJson(Map<String, dynamic> json) => PostTheme(
       lotteryEndTime: json['lottery_end_time'] as int,
     );
 
-Map<String, dynamic> _$PostThemeToJson(PostTheme instance) => <String, dynamic>{
+Map<String, dynamic> _$PinThemeToJson(PinTheme instance) => <String, dynamic>{
       'theme_id': instance.themeId,
       'name': instance.name,
       'cover': instance.cover,

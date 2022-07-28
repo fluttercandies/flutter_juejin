@@ -12,7 +12,7 @@ class RecommendAPI {
 
   static const String _api = '${Urls.apiHost}/recommend_api/v1';
   static const String _articles = '$_api/article';
-  static const String _posts = '$_api/short_msg';
+  static const String _pins = '$_api/short_msg';
 
   static Future<ResponseModel<FeedModel>> getAllFeedArticles({
     String? lastId,
@@ -29,13 +29,13 @@ class RecommendAPI {
     );
   }
 
-  static Future<ResponseModel<PostItemModel>> getRecommendPosts({
+  static Future<ResponseModel<PinItemModel>> getRecommendPins({
     String? lastId,
     int limit = 20,
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,
-      url: '$_posts/recommend',
+      url: '$_pins/recommend',
       body: <String, dynamic>{
         'cursor': cursorFromLastIdAndLimit(lastId, limit),
         'limit': limit,

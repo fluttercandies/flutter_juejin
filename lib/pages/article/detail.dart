@@ -93,7 +93,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   color: context.theme.dividerColor.withOpacity(.05),
                 ),
                 child: Text(
-                  '${detail.userInteract.isFollow ? '已' : '未'}关注',
+                  detail.userInteract.followText(context),
                   style: context.textTheme.caption,
                 ),
               ),
@@ -121,15 +121,15 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 children: <Widget>[
                   userInfo.buildNameAndLevel(),
                   Text(
-                    '${articleInfo.createTime} · '
-                    '阅读 ${articleInfo.viewCount}',
+                    '${articleInfo.createTimeString(context)} · '
+                    '${context.l10n.articleViews(articleInfo.viewCount)}',
                     style: context.textTheme.caption,
                   ),
                 ],
               ),
             ),
           ),
-          Text('${detail.userInteract.isFollow ? '已' : '未'}关注'),
+          Text(detail.userInteract.followText(context)),
         ],
       ),
     );

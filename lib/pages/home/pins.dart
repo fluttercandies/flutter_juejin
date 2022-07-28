@@ -6,16 +6,16 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
-class PostsPage extends StatefulWidget {
-  const PostsPage({Key? key}) : super(key: key);
+class PinsPage extends StatefulWidget {
+  const PinsPage({Key? key}) : super(key: key);
 
   @override
-  State<PostsPage> createState() => _PostsPageState();
+  State<PinsPage> createState() => _PinsPageState();
 }
 
-class _PostsPageState extends State<PostsPage> {
-  late final LoadingBase<PostItemModel> _lb = LoadingBase(
-    request: (_, String? lastId) => RecommendAPI.getRecommendPosts(
+class _PinsPageState extends State<PinsPage> {
+  late final LoadingBase<PinItemModel> _lb = LoadingBase(
+    request: (_, String? lastId) => RecommendAPI.getRecommendPins(
       lastId: lastId,
     ),
   );
@@ -33,7 +33,7 @@ class _PostsPageState extends State<PostsPage> {
             child: RefreshListWrapper(
               loadingBase: _lb,
               padding: const EdgeInsets.symmetric(vertical: 8),
-              itemBuilder: (PostItemModel model) => _PostItemWidget(
+              itemBuilder: (PinItemModel model) => _PinItemWidget(
                 model,
                 key: ValueKey<String>(model.msgId),
               ),
@@ -46,18 +46,18 @@ class _PostsPageState extends State<PostsPage> {
   }
 }
 
-class _PostItemWidget extends StatelessWidget {
-  const _PostItemWidget(this.post, {Key? key}) : super(key: key);
+class _PinItemWidget extends StatelessWidget {
+  const _PinItemWidget(this.pin, {Key? key}) : super(key: key);
 
-  final PostItemModel post;
+  final PinItemModel pin;
 
-  UserInfoModel get user => post.authorUserInfo;
+  UserInfoModel get user => pin.authorUserInfo;
 
-  PostInfo get postInfo => post.msgInfo;
+  PinInfo get pinInfo => pin.msgInfo;
 
-  HotComment? get hotComment => post.hotComment;
+  HotComment? get hotComment => pin.hotComment;
 
-  PostTopic? get topic => post.topic;
+  PinTopic? get topic => pin.topic;
 
   Widget _buildInfo(BuildContext context) {
     final StringBuffer sb = StringBuffer();
@@ -79,7 +79,7 @@ class _PostItemWidget extends StatelessWidget {
             child: Text(info, maxLines: 1, overflow: TextOverflow.ellipsis),
           ),
           if (info.isNotEmpty) const Text(' · '),
-          Text(postInfo.createTime),
+          Text(pinInfo.createTimeString(context)),
         ],
       ),
     );
@@ -107,20 +107,20 @@ class _PostItemWidget extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     return ExtendedText(
-      postInfo.content,
+      pinInfo.content,
       maxLines: 3,
-      overflowWidget: const TextOverflowWidget(
+      overflowWidget: TextOverflowWidget(
         child: Text.rich(
           TextSpan(
             children: <TextSpan>[
-              TextSpan(text: '... '),
+              const TextSpan(text: '... '),
               TextSpan(
-                text: '展开',
-                style: TextStyle(color: themeColorLight),
+                text: context.l10n.actionMore,
+                style: const TextStyle(color: themeColorLight),
               ),
             ],
           ),
-          style: TextStyle(height: 1.2),
+          style: const TextStyle(height: 1.2),
         ),
       ),
       specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),
@@ -144,7 +144,7 @@ class _PostItemWidget extends StatelessWidget {
             children: <Widget>[
               Image.asset(R.ASSETS_ICON_POST_HOT_COMMENT_PNG, height: 20),
               Text(
-                '${comment.commentInfo.diggCount}人赞',
+                context.l10n.pinHotCommentLikes(comment.commentInfo.diggCount),
                 style: context.textTheme.caption,
               ),
             ],
@@ -179,7 +179,7 @@ class _PostItemWidget extends StatelessWidget {
 
   Widget _buildPraisedUsers(BuildContext context) {
     const double size = 22, offset = 4;
-    final List<UserInfoModel> users = post.diggUser;
+    final List<UserInfoModel> users = pin.diggUser;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -208,7 +208,7 @@ class _PostItemWidget extends StatelessWidget {
           ),
         ),
         const Gap.h(4),
-        Text('等人赞过', style: context.textTheme.caption),
+        Text(context.l10n.pinLiked, style: context.textTheme.caption),
       ],
     );
   }
@@ -232,7 +232,7 @@ class _PostItemWidget extends StatelessWidget {
           Row(
             children: <Widget>[
               if (topic != null) _buildTopic(context),
-              if (post.diggUser.isNotEmpty) ...<Widget>[
+              if (pin.diggUser.isNotEmpty) ...<Widget>[
                 const Spacer(),
                 _buildPraisedUsers(context),
               ],

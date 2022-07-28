@@ -137,7 +137,7 @@ class _ArticleWidget extends StatelessWidget {
       children: <Widget>[
         const Icon(Icons.thumb_up_alt_outlined),
         const Gap.h(4),
-        Text(count == 0 ? '点赞' : '$count'),
+        Text(count == 0 ? context.l10n.like : '$count'),
       ],
     );
   }
@@ -148,7 +148,7 @@ class _ArticleWidget extends StatelessWidget {
       children: <Widget>[
         const Icon(Icons.message_outlined),
         const Gap.h(4),
-        Text(count == 0 ? '评论' : '$count'),
+        Text(count == 0 ? context.l10n.comment : '$count'),
       ],
     );
   }
@@ -261,7 +261,7 @@ class _AdvertiseWidget extends StatelessWidget {
               borderRadius: RadiusConstants.r2,
               color: context.theme.dividerColor.withOpacity(.05),
             ),
-            child: Text('广告', style: context.textTheme.caption),
+            child: Text(context.l10n.ad, style: context.textTheme.caption),
           ),
         ],
       ),

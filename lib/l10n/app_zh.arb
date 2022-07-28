@@ -18,5 +18,24 @@
   "listRefreshSucceed": "刷新成功",
   "listRefreshFailed": "刷新失败",
 
-  "webViewTitle": "网页链接"
+  "webViewTitle": "网页链接",
+
+  "tabHome":"首页",
+  "tabHot":"沸点",
+  "tabMy":"我",
+
+  "unfold": "展开",
+  "ad": "广告",
+  "like": "点赞",
+  "comment": "评论",
+  "favourite": "收藏",
+  "follow": "关注",
+  "likes": "人赞",
+  "liked": "等人赞过",
+  "followed": "已关注",
+  "unfollowed": "未关注",
+  "views": "阅读",
+
+  "signInOrUp": "登录/注册"
+
 }

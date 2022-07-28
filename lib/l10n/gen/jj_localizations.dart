@@ -205,7 +205,7 @@ abstract class JJLocalizations {
   /// No description provided for @tabMe.
   ///
   /// In en, this message translates to:
-  /// **'Me'**
+  /// **'Profile'**
   String get tabMe;
 
   /// No description provided for @like.
@@ -223,7 +223,7 @@ abstract class JJLocalizations {
   /// No description provided for @unfold.
   ///
   /// In en, this message translates to:
-  /// **'Unfold'**
+  /// **'See more'**
   String get unfold;
 
   /// No description provided for @ad.
@@ -250,11 +250,11 @@ abstract class JJLocalizations {
   /// **'Favourites'**
   String get favourites;
 
-  /// No description provided for @follows.
+  /// No description provided for @following.
   ///
   /// In en, this message translates to:
-  /// **'Follows'**
-  String get follows;
+  /// **'Following'**
+  String get following;
 
   /// No description provided for @numLikes.
   ///
@@ -271,7 +271,7 @@ abstract class JJLocalizations {
   /// No description provided for @followingText.
   ///
   /// In en, this message translates to:
-  /// **'Unfollow'**
+  /// **'Following'**
   String get followingText;
 
   /// No description provided for @unfollowText.

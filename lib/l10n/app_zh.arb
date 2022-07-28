@@ -31,7 +31,7 @@
   "likes": "点赞",
   "comments": "评论",
   "favourites": "收藏",
-  "follows": "关注",
+  "following": "关注",
   "numLikes": "{num}人赞",
   "liked": "等人赞过",
   "followingText": "已关注",

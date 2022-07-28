@@ -86,7 +86,7 @@ class JJLocalizationsZh extends JJLocalizations {
   String get favourites => '收藏';
 
   @override
-  String get follows => '关注';
+  String get following => '关注';
 
   @override
   String get numLikes => '{num}人赞';

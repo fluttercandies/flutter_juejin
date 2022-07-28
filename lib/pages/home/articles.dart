@@ -271,11 +271,7 @@ class _AdvertiseWidget extends StatelessWidget {
               borderRadius: RadiusConstants.r2,
               color: context.theme.dividerColor.withOpacity(.05),
             ),
-<<<<<<< HEAD
-            child: Text(context.l10n.ads, style: context.textTheme.caption),
-=======
             child: Text(context.l10n.ad, style: context.textTheme.caption),
->>>>>>> 05159907f8991c1e5638891f48cc8154828bef98
           ),
         ],
       ),

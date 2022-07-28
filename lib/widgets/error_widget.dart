@@ -3,9 +3,9 @@
 // LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:juejin/exports.dart';
 
 import '../constants/styles.dart';
+import '../extensions/build_context_extension.dart';
 import '../utils/log_util.dart';
 import 'logo.dart';
 
@@ -48,7 +48,7 @@ class JJErrorWidget extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 context.l10n.exceptionErrorWidget,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 10),
               Text(

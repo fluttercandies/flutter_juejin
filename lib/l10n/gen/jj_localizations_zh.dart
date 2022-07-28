@@ -59,7 +59,7 @@ class JJLocalizationsZh extends JJLocalizations {
   String get tabHome => '首页';
 
   @override
-  String get tabHot => '沸点';
+  String get tabPins => '沸点';
 
   @override
   String get tabMy => '我';

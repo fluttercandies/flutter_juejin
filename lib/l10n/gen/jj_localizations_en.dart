@@ -59,7 +59,7 @@ class JJLocalizationsEn extends JJLocalizations {
   String get tabHome => 'Home';
 
   @override
-  String get tabHot => 'Hot';
+  String get tabPins => 'Pins';
 
   @override
   String get tabMy => 'My';

@@ -196,11 +196,11 @@ abstract class JJLocalizations {
   /// **'Home'**
   String get tabHome;
 
-  /// No description provided for @tabHot.
+  /// No description provided for @tabPins.
   ///
   /// In en, this message translates to:
-  /// **'Hot'**
-  String get tabHot;
+  /// **'Pins'**
+  String get tabPins;
 
   /// No description provided for @tabMy.
   ///

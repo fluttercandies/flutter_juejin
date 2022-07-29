@@ -4,8 +4,8 @@
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart' show DioError, DioErrorType;
+import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'exports.dart';

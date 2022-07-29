@@ -208,7 +208,6 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
     return PullToRefreshNotification(
       onRefresh: loadingBase.refresh,
       maxDragOffset: maxDragOffset,
-      pullBackCurve: Curves.linear,
       pullBackDuration: const Duration(milliseconds: 200),
       child: child,
     );

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
-import 'dart:math' as math;
-
 import 'package:flutter/widgets.dart';
 
 import 'build_context_extension.dart';
@@ -25,6 +23,6 @@ extension DurationExtension on Duration {
     if (this >= const Duration(hours: 1)) {
       return localization.durationHours(inHours);
     }
-    return localization.durationMinutes(math.max(1, inMinutes));
+    return localization.durationMinutes(inMinutes);
   }
 }

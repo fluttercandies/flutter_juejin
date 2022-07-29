@@ -49,6 +49,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "DemoJameson",
+      "name": "DemoJameson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/181192?v=4",
+      "profile": "http://www.demojameson.com",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -68,7 +68,7 @@
   "@durationHours": {
     "placeholders": {"many": {"type": "int"}}
   },
-  "durationMinutes": "{many, plural, =0{moment}=1{1 minute}other{{many} minutes}} ago",
+  "durationMinutes": "{many, plural, =0{Just now}=1{1 minute ago}other{{many} minutes ago}}",
   "@durationMinutes": {
     "placeholders": {"many": {"type": "int"}}
   }

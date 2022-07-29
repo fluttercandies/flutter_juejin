@@ -20,8 +20,6 @@ class JJApp extends StatefulWidget {
 }
 
 class JJAppState extends State<JJApp> with WidgetsBindingObserver {
-  Brightness get platformBrightness => WidgetsBinding.instance.window.platformBrightness;
-
   Widget _buildOKToast({required Widget child}) {
     return OKToast(
       duration: const Duration(seconds: 3),
@@ -34,8 +32,9 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
   }
 
   Widget _buildAnnotatedRegion({required Widget child}) {
+    final Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: platformBrightness.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      value: brightness.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: child,
     );
   }

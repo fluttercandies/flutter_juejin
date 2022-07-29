@@ -25,6 +25,6 @@ extension DurationExtension on Duration {
     if (this >= const Duration(hours: 1)) {
       return localization.durationHours(inHours);
     }
-    return localization.durationMinutes(math.max(1, inMinutes));
+    return localization.durationMinutes(math.max(0, inMinutes));
   }
 }

@@ -126,7 +126,7 @@ class JJLocalizationsZh extends JJLocalizations {
     return intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      other: '$many 年前',
+      other: '$many年前',
     );
   }
 
@@ -135,7 +135,7 @@ class JJLocalizationsZh extends JJLocalizations {
     return intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      other: '$many 月前',
+      other: '$many月前',
     );
   }
 
@@ -144,7 +144,7 @@ class JJLocalizationsZh extends JJLocalizations {
     return intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      other: '$many 天前',
+      other: '$many天前',
     );
   }
 
@@ -153,7 +153,7 @@ class JJLocalizationsZh extends JJLocalizations {
     return intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      other: '$many 小时前',
+      other: '$many小时前',
     );
   }
 
@@ -163,7 +163,7 @@ class JJLocalizationsZh extends JJLocalizations {
       many,
       locale: localeName,
       zero: '刚刚',
-      other: '$many 分钟前',
+      other: '$many分钟前',
     );
   }
 }

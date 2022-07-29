@@ -337,7 +337,7 @@ abstract class JJLocalizations {
   /// No description provided for @durationMinutes.
   ///
   /// In en, this message translates to:
-  /// **'{many, plural, =0{moment}=1{1 minute}other{{many} minutes}} ago'**
+  /// **'{many, plural, =0{Just now}=1{1 minute ago}other{{many} minutes ago}}'**
   String durationMinutes(num many);
 }
 

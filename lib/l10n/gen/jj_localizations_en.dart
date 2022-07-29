@@ -171,14 +171,12 @@ class JJLocalizationsEn extends JJLocalizations {
 
   @override
   String durationMinutes(num many) {
-    final String pluralString = intl.Intl.pluralLogic(
+    return intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      zero: 'moment',
-      one: '1 minute',
-      other: '$many minutes',
+      zero: 'Just now',
+      one: '1 minute ago',
+      other: '$many minutes ago',
     );
-
-    return '$pluralString ago';
   }
 }

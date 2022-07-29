@@ -9,7 +9,6 @@ import 'dart:ui' as ui;
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
-import 'package:juejin/widgets/inwebview.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 @FFRoute(name: 'article-detail-page')
@@ -34,7 +33,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 
   UserInfoModel get userInfo => detail.authorUserInfo;
 
-  late NestedInWebViewController _webviewController;
+  late NestedWebViewController _controller;
   bool _hasContentLoaded = false;
 
   @override
@@ -57,9 +56,12 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
           'Loading $url for article $articleId...',
           tag: '📃 Article WebView',
         );
-        _webviewController = NestedInWebViewController(
+        _controller = NestedWebViewController(
           url,
-          onLoadComplete: () => safeSetState(() => _hasContentLoaded = true),
+          onLoadComplete: () => Future.delayed(
+            const Duration(milliseconds: 150),
+            () => safeSetState(() => _hasContentLoaded = true),
+          ),
         );
       }),
       reportType: (_) => 'fetch article $articleId detail',
@@ -170,7 +172,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             ),
           ),
         ValueListenableBuilder<double>(
-          valueListenable: _webviewController.scrollHeightNotifier,
+          valueListenable: _controller.scrollHeightNotifier,
           builder: (BuildContext context, double scrollHeight, Widget? child) {
             return SliverToNestedScrollBoxAdapter(
               onScrollOffsetChanged: (double scrollOffset) {
@@ -179,14 +181,14 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   // https://github.com/flutter/flutter/issues/75841
                   y *= ui.window.devicePixelRatio;
                 }
-                _webviewController.controller?.scrollTo(x: 0, y: y.ceil());
+                _controller.controller?.scrollTo(x: 0, y: y.ceil());
               },
               childExtent: scrollHeight,
               child: child,
             );
           },
-          child: JJInWebView(
-            controller: _webviewController,
+          child: JJWebView(
+            controller: _controller,
             isWebViewOnly: true,
             enableProgressBar: false,
           ),

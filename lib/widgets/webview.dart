@@ -3,9 +3,9 @@
 // LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:juejin/exports.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class JJWebView extends StatefulWidget {
   const JJWebView({
@@ -18,7 +18,7 @@ class JJWebView extends StatefulWidget {
         super(key: key);
 
   final String? url;
-  final NestedWebviewController? controller;
+  final NestedWebViewController? controller;
 
   /// Whether to wrap [WebView] with other common controls.
   final bool isWebViewOnly;
@@ -44,6 +44,8 @@ class JJWebView extends StatefulWidget {
     return navigator.push(route);
   }
 
+  static const String _tag = '🌐 WebView';
+
   @override
   State<JJWebView> createState() => _JJWebViewState();
 }
@@ -52,7 +54,7 @@ class _JJWebViewState extends State<JJWebView> {
   late final ValueNotifier<String> _title = ValueNotifier<String>(
     overlayContext.l10n.webViewTitle,
   );
-  late NestedWebviewController _webviewController =
+  late NestedWebViewController _controller =
       widget.controller ?? newWebViewController;
   late Widget _webView = newWebView;
 
@@ -60,10 +62,10 @@ class _JJWebViewState extends State<JJWebView> {
   void didUpdateWidget(JJWebView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.url != oldWidget.url) {
-      _webviewController = newWebViewController;
+      _controller = newWebViewController;
     }
     if (widget.controller != oldWidget.controller) {
-      _webviewController = widget.controller ?? newWebViewController;
+      _controller = widget.controller ?? newWebViewController;
     }
     if (widget.url != oldWidget.url ||
         widget.controller != oldWidget.controller ||
@@ -73,32 +75,49 @@ class _JJWebViewState extends State<JJWebView> {
     }
   }
 
-  NestedWebviewController get newWebViewController {
-    return NestedWebviewController(
-      widget.url!,
-      onLoadComplete: () async {
-        final String? title = await _webviewController.controller?.getTitle();
-        if (title != null) {
-          safeSetState(() => _title.value = title);
-        }
-      },
-    );
+  NestedWebViewController get newWebViewController {
+    return NestedWebViewController(widget.url!);
   }
 
   Widget get newWebView {
-    Widget w = WebView(
-      initialUrl: _webviewController.initialUrl,
-      onPageStarted: _webviewController.onPageStarted,
-      onPageFinished: _webviewController.onPageFinished,
-      onWebResourceError: _webviewController.onWebResourceError,
-      onWebViewCreated: _webviewController.onWebViewCreated,
-      onProgress: _webviewController.onProgress,
-      navigationDelegate: _webviewController.navigationDelegate,
-      javascriptMode: JavascriptMode.unrestricted,
-      backgroundColor: Colors.transparent,
-      javascriptChannels: <JavascriptChannel>{
-        _webviewController.scrollHeightNotifierJavascriptChannel,
-      },
+    Widget w = InAppWebView(
+      initialOptions: InAppWebViewGroupOptions(
+        crossPlatform: InAppWebViewOptions(
+          applicationNameForUserAgent: 'Xitu Juejin Flutter',
+          mediaPlaybackRequiresUserGesture: false,
+          useShouldOverrideUrlLoading: true,
+          useOnLoadResource: true,
+          transparentBackground: true,
+        ),
+        android: AndroidInAppWebViewOptions(
+          disableDefaultErrorPage: true,
+          forceDark: AndroidForceDark.FORCE_DARK_AUTO,
+          mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+          safeBrowsingEnabled: false,
+          useHybridComposition: true,
+        ),
+        ios: IOSInAppWebViewOptions(
+          allowsInlineMediaPlayback: true,
+          automaticallyAdjustsScrollIndicatorInsets: true,
+          isFraudulentWebsiteWarningEnabled: false,
+          sharedCookiesEnabled: true,
+        ),
+      ),
+      initialUrlRequest: URLRequest(
+        url: Uri.parse(_controller.initialUrl),
+      ),
+      onConsoleMessage: (_, ConsoleMessage message) => LogUtil.d(
+        'Console message: $message',
+        tag: JJWebView._tag,
+      ),
+      onCreateWindow: (_, __) => Future.value(false),
+      onLoadError: _controller.onLoadError,
+      onLoadStart: _controller.onLoadStart,
+      onLoadStop: _controller.onLoadStop,
+      onProgressChanged: _controller.onProgressChanged,
+      onTitleChanged: (_, String? s) => _title.value = s ?? _title.value,
+      onWebViewCreated: _controller.onWebViewCreated,
+      shouldOverrideUrlLoading: _controller.shouldOverrideUrlLoading,
     );
     if (widget.enableProgressBar) {
       w = Stack(
@@ -107,7 +126,7 @@ class _JJWebViewState extends State<JJWebView> {
           Positioned.fill(
             bottom: null,
             child: ValueListenableBuilder<int>(
-              valueListenable: _webviewController.progressNotifier,
+              valueListenable: _controller.progressNotifier,
               builder: (_, int progress, __) => FractionallySizedBox(
                 widthFactor: progress / 100,
                 child: Container(color: themeColorLight, height: 1),
@@ -154,91 +173,94 @@ class _JJWebViewState extends State<JJWebView> {
   }
 }
 
-class NestedWebviewController {
-  NestedWebviewController(this.initialUrl, {this.onLoadComplete});
+class NestedWebViewController {
+  NestedWebViewController(this.initialUrl, {this.onLoadComplete});
 
   final String initialUrl;
   final void Function()? onLoadComplete;
 
-  WebViewController? get controller => _controller;
-  WebViewController? _controller;
+  InAppWebViewController? get controller => _controller;
+  InAppWebViewController? _controller;
 
   final ValueNotifier<double> scrollHeightNotifier = ValueNotifier<double>(1);
   final ValueNotifier<int> progressNotifier = ValueNotifier<int>(0);
   WebViewStatus _status = WebViewStatus.loading;
 
-  void onWebViewCreated(WebViewController controller) {
+  void onWebViewCreated(InAppWebViewController controller) {
     _controller = controller;
+    _controller?.addJavaScriptHandler(
+      handlerName: 'JJHeightNotifier',
+      callback: (List<dynamic> arguments) async {
+        final int height = int.parse(arguments.first);
+        scrollHeightNotifier.value = height.toDouble();
+      },
+    );
   }
 
-  void onPageStarted(String url) {
-    if (url == initialUrl || _status == WebViewStatus.failed) {
+  void onLoadStart(InAppWebViewController controller, Uri? uri) {
+    if (uri?.toString() == initialUrl || _status == WebViewStatus.failed) {
       _status = WebViewStatus.loading;
     }
   }
 
-  void onPageFinished(String url) {
-    if (url.contains('/appview/post/')) {
-      _controller?.runJavascript(removeHeaderJs);
+  Future<void> onLoadStop(InAppWebViewController controller, Uri? uri) async {
+    if (uri.toString().contains('/appview/post/')) {
+      await _controller?.evaluateJavascript(source: removeHeaderJs);
     }
     if (_status != WebViewStatus.failed) {
+      await _controller?.evaluateJavascript(source: scrollHeightJs);
       onLoadComplete?.call();
-      _controller?.runJavascript(scrollHeightJs);
     }
   }
 
-  void onWebResourceError(WebResourceError error) {
-    LogUtil.e(error, stackTrace: StackTrace.current);
+  void onLoadError(
+    InAppWebViewController controller,
+    Uri? uri,
+    int code,
+    String message,
+  ) {
+    LogUtil.e(
+      'WebView onLoadError:\n'
+      ' - [$uri]\n'
+      ' - ($code) $message',
+      stackTrace: StackTrace.current,
+      tag: JJWebView._tag,
+    );
     _status = WebViewStatus.failed;
   }
 
-  void onProgress(int progress) {
+  void onProgressChanged(InAppWebViewController controller, int progress) {
     progressNotifier.value = progress;
   }
 
-  NavigationDelegate get navigationDelegate {
-    return ((NavigationRequest request) async {
-      final String url = request.url;
-      if (url == 'about:blank') {
-        return NavigationDecision.prevent;
-      }
-      if (url.startsWith(urlRegExp)) {
-        final Uri uri = Uri.parse(request.url);
-        if (uri.host == Urls.domain) {
-          final List<String> path =
-              uri.path.split('/').where((String e) => e.isNotEmpty).toList();
-          if (path.isNotEmpty) {
-            if (path.first == 'post') {
-              navigator.pushNamed(
-                Routes.articleDetailPage.name,
-                arguments: Routes.articleDetailPage.d(path.last),
-              );
-              return NavigationDecision.prevent;
-            }
+  Future<NavigationActionPolicy> shouldOverrideUrlLoading(
+    InAppWebViewController controller,
+    NavigationAction navigationAction,
+  ) async {
+    final Uri? uri = navigationAction.request.url;
+    if (uri == null) {
+      return NavigationActionPolicy.CANCEL;
+    }
+    if (uri.scheme == 'http' || uri.scheme == 'https') {
+      if (uri.host == Urls.domain) {
+        final List<String> path =
+            uri.path.split('/').where((String e) => e.isNotEmpty).toList();
+        if (path.isNotEmpty) {
+          if (path.first == 'post') {
+            navigator.pushNamed(
+              Routes.articleDetailPage.name,
+              arguments: Routes.articleDetailPage.d(path.last),
+            );
+            return NavigationActionPolicy.CANCEL;
           }
         }
-        return NavigationDecision.navigate;
       }
-      if (await canLaunchUrlString(url)) {
-        launchUrlString(url);
-        return NavigationDecision.prevent;
-      }
-      return NavigationDecision.navigate;
-    });
-  }
-
-  JavascriptChannel get scrollHeightNotifierJavascriptChannel {
-    return JavascriptChannel(
-      name: 'ScrollHeightNotifier',
-      onMessageReceived: (JavascriptMessage message) {
-        final String msg = message.message;
-        final double? height = double.tryParse(msg);
-        if (height != null) {
-          scrollHeightNotifier.value = height;
-          _status = WebViewStatus.completed;
-        }
-      },
-    );
+      return NavigationActionPolicy.ALLOW;
+    }
+    if (await canLaunchUrl(uri)) {
+      launchUrl(uri);
+    }
+    return NavigationActionPolicy.CANCEL;
   }
 }
 
@@ -250,15 +272,22 @@ document.querySelectorAll("h1, img.cover-image").forEach((e) => e.remove());
 
 const String scrollHeightJs = '''(function() {
   var height = 0;
-  var notifier = window.ScrollHeightNotifier || window.webkit.messageHandlers.ScrollHeightNotifier;
-  if (!notifier) return;
+  var hasNotifier = window.flutter_inappwebview && window.flutter_inappwebview.callHandler;
+  if (!hasNotifier) {
+    return;
+  }
+
   function checkAndNotify() {
     var curr = document.body.scrollHeight;
     if (curr !== height) {
       height = curr;
-      notifier.postMessage(height.toString());
+      window.flutter_inappwebview.callHandler(
+        'JJHeightNotifier',
+        height.toString()
+      );
     }
   }
+
   var timer;
   var ob;
   if (window.ResizeObserver) {

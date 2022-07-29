@@ -20,6 +20,25 @@ class JJApp extends StatefulWidget {
 }
 
 class JJAppState extends State<JJApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   Widget _buildOKToast({required Widget child}) {
     return OKToast(
       duration: const Duration(seconds: 3),
@@ -77,7 +96,7 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
             color: Colors.black,
             child: Text(
               '${settings.name ?? context.l10n.exceptionRouteUnknown}'
-                  '${context.l10n.exceptionRouteNotFound}',
+              '${context.l10n.exceptionRouteNotFound}',
               style: const TextStyle(color: Colors.white, inherit: false),
             ),
           ),
@@ -92,24 +111,5 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangePlatformBrightness() {
-    if (mounted) {
-      setState(() {});
-    }
   }
 }

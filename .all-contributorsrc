@@ -40,6 +40,15 @@
         "bug",
         "translation"
       ]
+    },
+    {
+      "login": "MrDgbot",
+      "name": "MrDgbot",
+      "avatar_url": "https://avatars.githubusercontent.com/u/60038945?v=4",
+      "profile": "https://github.com/MrDgbot",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

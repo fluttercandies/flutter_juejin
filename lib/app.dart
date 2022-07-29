@@ -5,6 +5,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 
 import 'exports.dart';
@@ -18,7 +19,26 @@ class JJApp extends StatefulWidget {
   State<JJApp> createState() => JJAppState();
 }
 
-class JJAppState extends State<JJApp> {
+class JJAppState extends State<JJApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   Widget _buildOKToast({required Widget child}) {
     return OKToast(
       duration: const Duration(seconds: 3),
@@ -26,6 +46,13 @@ class JJAppState extends State<JJApp> {
         offset: -MediaQueryData.fromWindow(ui.window).size.height / 12,
       ),
       radius: 5,
+      child: child,
+    );
+  }
+
+  Widget _buildAnnotatedRegion(BuildContext context, Widget child) {
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: context.brightness.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: child,
     );
   }
@@ -78,7 +105,7 @@ class JJAppState extends State<JJApp> {
         supportedLocales: JJLocalizations.supportedLocales,
         builder: (BuildContext context, Widget? child) => Stack(
           children: <Widget>[
-            child!,
+            _buildAnnotatedRegion(context, child!),
             _buildBottomPaddingVerticalShield(context),
           ],
         ),

@@ -31,10 +31,9 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
     );
   }
 
-  Widget _buildAnnotatedRegion({required Widget child}) {
-    final Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
+  Widget _buildAnnotatedRegion(BuildContext context, Widget child) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: brightness.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      value: context.brightness.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: child,
     );
   }
@@ -53,6 +52,49 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
   }
 
   @override
+  Widget build(BuildContext context) {
+    return _buildOKToast(
+      child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: themeColorLight.swatch,
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: themeColorLight.swatch,
+        ),
+        initialRoute: Routes.splashPage.name,
+        navigatorKey: JJ.navigatorKey,
+        navigatorObservers: <NavigatorObserver>[
+          JJ.routeObserver,
+          JJNavigatorObserver(),
+        ],
+        onGenerateTitle: (BuildContext c) => c.l10n.appTitle,
+        onGenerateRoute: (RouteSettings settings) => onGenerateRoute(
+          settings: settings,
+          getRouteSettings: getRouteSettings,
+          notFoundPageBuilder: () => Container(
+            alignment: Alignment.center,
+            color: Colors.black,
+            child: Text(
+              '${settings.name ?? context.l10n.exceptionRouteUnknown}'
+                  '${context.l10n.exceptionRouteNotFound}',
+              style: const TextStyle(color: Colors.white, inherit: false),
+            ),
+          ),
+        ),
+        localizationsDelegates: JJLocalizations.localizationsDelegates,
+        supportedLocales: JJLocalizations.supportedLocales,
+        builder: (BuildContext context, Widget? child) => Stack(
+          children: <Widget>[
+            _buildAnnotatedRegion(context, child!),
+            _buildBottomPaddingVerticalShield(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
@@ -60,8 +102,8 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    super.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -69,50 +111,5 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
     if (mounted) {
       setState(() {});
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildOKToast(
-      child: _buildAnnotatedRegion(
-        child: MaterialApp(
-          theme: ThemeData(
-            primarySwatch: themeColorLight.swatch,
-          ),
-          darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            primarySwatch: themeColorLight.swatch,
-          ),
-          initialRoute: Routes.splashPage.name,
-          navigatorKey: JJ.navigatorKey,
-          navigatorObservers: <NavigatorObserver>[
-            JJ.routeObserver,
-            JJNavigatorObserver(),
-          ],
-          onGenerateTitle: (BuildContext c) => c.l10n.appTitle,
-          onGenerateRoute: (RouteSettings settings) => onGenerateRoute(
-            settings: settings,
-            getRouteSettings: getRouteSettings,
-            notFoundPageBuilder: () => Container(
-              alignment: Alignment.center,
-              color: Colors.black,
-              child: Text(
-                '${settings.name ?? context.l10n.exceptionRouteUnknown}'
-                '${context.l10n.exceptionRouteNotFound}',
-                style: const TextStyle(color: Colors.white, inherit: false),
-              ),
-            ),
-          ),
-          localizationsDelegates: JJLocalizations.localizationsDelegates,
-          supportedLocales: JJLocalizations.supportedLocales,
-          builder: (BuildContext context, Widget? child) => Stack(
-            children: <Widget>[
-              child!,
-              _buildBottomPaddingVerticalShield(context),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

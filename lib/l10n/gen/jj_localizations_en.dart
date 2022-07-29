@@ -126,8 +126,8 @@ class JJLocalizationsEn extends JJLocalizations {
     final String pluralString = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      one: 'year',
-      other: 'years',
+      one: '1 year',
+      other: '$many years',
     );
 
     return '$pluralString ago';
@@ -138,8 +138,8 @@ class JJLocalizationsEn extends JJLocalizations {
     final String pluralString = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      one: 'month',
-      other: 'months',
+      one: '1 month',
+      other: '$many months',
     );
 
     return '$pluralString ago';
@@ -150,8 +150,8 @@ class JJLocalizationsEn extends JJLocalizations {
     final String pluralString = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      one: 'day',
-      other: 'days',
+      one: '1 day',
+      other: '$many days',
     );
 
     return '$pluralString ago';
@@ -162,8 +162,8 @@ class JJLocalizationsEn extends JJLocalizations {
     final String pluralString = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      one: 'hour',
-      other: 'hours',
+      one: '1 hour',
+      other: '$many hours',
     );
 
     return '$pluralString ago';
@@ -171,13 +171,12 @@ class JJLocalizationsEn extends JJLocalizations {
 
   @override
   String durationMinutes(num many) {
-    final String pluralString = intl.Intl.pluralLogic(
+    return intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      one: 'minute',
-      other: 'minutes',
+      zero: 'Just now',
+      one: '1 minute ago',
+      other: '$many minutes ago',
     );
-
-    return '$pluralString ago';
   }
 }

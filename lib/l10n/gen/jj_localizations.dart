@@ -244,6 +244,12 @@ abstract class JJLocalizations {
   /// **'More'**
   String get actionMore;
 
+  /// No description provided for @actionFold.
+  ///
+  /// In en, this message translates to:
+  /// **'Fold'**
+  String get actionFold;
+
   /// No description provided for @advertiseAbbr.
   ///
   /// In en, this message translates to:

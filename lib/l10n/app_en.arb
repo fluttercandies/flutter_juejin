@@ -31,6 +31,7 @@
   "actionLike": "Like",
   "actionComment": "Comment",
   "actionMore": "More",
+  "actionFold": "Fold",
   "advertiseAbbr": "Ad",
 
   "articleViews": "{num} views",

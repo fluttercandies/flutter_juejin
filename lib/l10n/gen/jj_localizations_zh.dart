@@ -85,6 +85,9 @@ class JJLocalizationsZh extends JJLocalizations {
   String get actionMore => '展开';
 
   @override
+  String get actionFold => '收起';
+
+  @override
   String get advertiseAbbr => '广告';
 
   @override

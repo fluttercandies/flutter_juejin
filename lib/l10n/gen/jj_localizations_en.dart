@@ -85,6 +85,9 @@ class JJLocalizationsEn extends JJLocalizations {
   String get actionMore => 'More';
 
   @override
+  String get actionFold => 'Fold';
+
+  @override
   String get advertiseAbbr => 'Ad';
 
   @override

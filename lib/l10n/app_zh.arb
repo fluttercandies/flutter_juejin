@@ -30,6 +30,7 @@
   "actionLike": "赞",
   "actionComment": "评论",
   "actionMore": "展开",
+  "actionFold": "收起",
   "advertiseAbbr": "广告",
 
   "articleViews": "阅读 {num}",

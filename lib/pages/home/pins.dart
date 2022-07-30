@@ -3,6 +3,7 @@
 // LICENSE file.
 
 import 'package:extended_text/extended_text.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
@@ -106,25 +107,7 @@ class _PinItemWidget extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    return ExtendedText(
-      pinInfo.content,
-      maxLines: 3,
-      overflowWidget: TextOverflowWidget(
-        child: Text.rich(
-          TextSpan(
-            children: <TextSpan>[
-              const TextSpan(text: '... '),
-              TextSpan(
-                text: context.l10n.actionMore,
-                style: const TextStyle(color: themeColorLight),
-              ),
-            ],
-          ),
-          style: const TextStyle(height: 1.2),
-        ),
-      ),
-      specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),
-    );
+    return ReadMoreWrapper(pinInfo.content);
   }
 
   Widget _buildHotComment(BuildContext context) {
@@ -240,6 +223,69 @@ class _PinItemWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ReadMoreWrapper extends StatefulWidget {
+  const ReadMoreWrapper(this.content, {Key? key}) : super(key: key);
+  final String content;
+
+  @override
+  State<ReadMoreWrapper> createState() => _ReadMoreWrapperState();
+}
+
+class _ReadMoreWrapperState extends State<ReadMoreWrapper> {
+  bool readAll = false;
+
+  _moreTap() {
+    setState(() {
+      readAll = !readAll;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ExtendedText(
+          widget.content,
+          maxLines: readAll ? 100 : 3,
+          onSpecialTextTap: (val) {
+            if (val is TopicText) {}
+          },
+          overflowWidget: TextOverflowWidget(
+            child: Text.rich(
+              TextSpan(
+                children: <TextSpan>[
+                  const TextSpan(text: '... '),
+                  TextSpan(
+                    text: context.l10n.actionMore,
+                    style: const TextStyle(color: themeColorLight),
+                    recognizer: TapGestureRecognizer()..onTap = _moreTap,
+                  ),
+                ],
+              ),
+              style: const TextStyle(height: 1.2),
+            ),
+          ),
+          specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),
+        ),
+        if (readAll)
+          GestureDetector(
+            onTap: _moreTap,
+            child: Semantics(
+              button: true,
+              label: context.l10n.actionFold,
+              child: Text(
+                context.l10n.actionFold,
+                style: const TextStyle(color: themeColorLight),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

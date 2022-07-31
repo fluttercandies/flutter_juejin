@@ -7,6 +7,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
+const _pinContentMaxLines = 3;
+
 class PinsPage extends StatefulWidget {
   const PinsPage({Key? key}) : super(key: key);
 
@@ -106,10 +108,6 @@ class _PinItemWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context) {
-    return ReadMoreWrapper(pinInfo.content);
-  }
-
   Widget _buildHotComment(BuildContext context) {
     final HotComment comment = hotComment!;
     return Container(
@@ -206,7 +204,7 @@ class _PinItemWidget extends StatelessWidget {
         children: <Widget>[
           _buildUser(context),
           const Gap.v(10),
-          _buildContent(context),
+          _PinContentWidget(pinInfo.content),
           const Gap.v(10),
           if (hotComment != null) ...<Widget>[
             _buildHotComment(context),
@@ -227,20 +225,21 @@ class _PinItemWidget extends StatelessWidget {
   }
 }
 
-class ReadMoreWrapper extends StatefulWidget {
-  const ReadMoreWrapper(this.content, {Key? key}) : super(key: key);
+/// Pins content widget to fold or expand the content
+class _PinContentWidget extends StatefulWidget {
+  const _PinContentWidget(this.content, {Key? key}) : super(key: key);
   final String content;
 
   @override
-  State<ReadMoreWrapper> createState() => _ReadMoreWrapperState();
+  State<_PinContentWidget> createState() => _PinContentWidgetState();
 }
 
-class _ReadMoreWrapperState extends State<ReadMoreWrapper> {
-  bool readAll = false;
+class _PinContentWidgetState extends State<_PinContentWidget> {
+  bool isExpanding = false;
 
-  _moreTap() {
+  void _moreTap() {
     setState(() {
-      readAll = !readAll;
+      isExpanding = !isExpanding;
     });
   }
 
@@ -252,7 +251,7 @@ class _ReadMoreWrapperState extends State<ReadMoreWrapper> {
       children: [
         ExtendedText(
           widget.content,
-          maxLines: readAll ? 100 : 3,
+          maxLines: isExpanding ? null : _pinContentMaxLines,
           onSpecialTextTap: (val) {
             if (val is TopicText) {}
           },
@@ -273,7 +272,7 @@ class _ReadMoreWrapperState extends State<ReadMoreWrapper> {
           ),
           specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),
         ),
-        if (readAll)
+        if (isExpanding)
           GestureDetector(
             onTap: _moreTap,
             child: Semantics(

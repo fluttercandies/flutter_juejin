@@ -228,6 +228,7 @@ class _PinItemWidget extends StatelessWidget {
 /// Pins content widget to fold or expand the content
 class _PinContentWidget extends StatefulWidget {
   const _PinContentWidget(this.content, {Key? key}) : super(key: key);
+
   final String content;
 
   @override

@@ -3,8 +3,11 @@
 // LICENSE file.
 
 import 'package:extended_text/extended_text.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
+
+const _pinContentMaxLines = 3;
 
 class PinsPage extends StatefulWidget {
   const PinsPage({Key? key}) : super(key: key);
@@ -105,28 +108,6 @@ class _PinItemWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context) {
-    return ExtendedText(
-      pinInfo.content,
-      maxLines: 3,
-      overflowWidget: TextOverflowWidget(
-        child: Text.rich(
-          TextSpan(
-            children: <TextSpan>[
-              const TextSpan(text: '... '),
-              TextSpan(
-                text: context.l10n.actionMore,
-                style: const TextStyle(color: themeColorLight),
-              ),
-            ],
-          ),
-          style: const TextStyle(height: 1.2),
-        ),
-      ),
-      specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),
-    );
-  }
-
   Widget _buildHotComment(BuildContext context) {
     final HotComment comment = hotComment!;
     return Container(
@@ -223,7 +204,7 @@ class _PinItemWidget extends StatelessWidget {
         children: <Widget>[
           _buildUser(context),
           const Gap.v(10),
-          _buildContent(context),
+          _PinContentWidget(pinInfo.content),
           const Gap.v(10),
           if (hotComment != null) ...<Widget>[
             _buildHotComment(context),
@@ -240,6 +221,71 @@ class _PinItemWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Pins content widget to fold or expand the content
+class _PinContentWidget extends StatefulWidget {
+  const _PinContentWidget(this.content, {Key? key}) : super(key: key);
+
+  final String content;
+
+  @override
+  State<_PinContentWidget> createState() => _PinContentWidgetState();
+}
+
+class _PinContentWidgetState extends State<_PinContentWidget> {
+  bool isExpanding = false;
+
+  void _moreTap() {
+    setState(() {
+      isExpanding = !isExpanding;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ExtendedText(
+          widget.content,
+          maxLines: isExpanding ? null : _pinContentMaxLines,
+          onSpecialTextTap: (val) {
+            if (val is TopicText) {}
+          },
+          overflowWidget: TextOverflowWidget(
+            child: Text.rich(
+              TextSpan(
+                children: <TextSpan>[
+                  const TextSpan(text: '... '),
+                  TextSpan(
+                    text: context.l10n.actionMore,
+                    style: const TextStyle(color: themeColorLight),
+                    recognizer: TapGestureRecognizer()..onTap = _moreTap,
+                  ),
+                ],
+              ),
+              style: const TextStyle(height: 1.2),
+            ),
+          ),
+          specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),
+        ),
+        if (isExpanding)
+          GestureDetector(
+            onTap: _moreTap,
+            child: Semantics(
+              button: true,
+              label: context.l10n.actionFold,
+              child: Text(
+                context.l10n.actionFold,
+                style: const TextStyle(color: themeColorLight),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

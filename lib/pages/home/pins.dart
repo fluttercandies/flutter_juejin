@@ -30,7 +30,7 @@ class _PinsPageState extends State<PinsPage> {
         children: <Widget>[
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
-            child: JJLogo(heroTag: defaultLogoHeroTag),
+            child: JJLogo(),
           ),
           Expanded(
             child: RefreshListWrapper(

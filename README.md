@@ -1,9 +1,21 @@
 # juejin
+
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/fluttercandies/flutter_juejin?logo=codefactor&logoColor=%23ffffff&style=flat-square)](https://www.codefactor.io/repository/github/fluttercandies/flutter_juejin)
+[![GitHub stars](https://img.shields.io/github/stars/fluttercandies/flutter_juejin?logo=github&style=flat-square)](https://github.com/fluttercandies/flutter_juejin/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/fluttercandies/flutter_juejin?logo=github&style=flat-square)](https://github.com/fluttercandies/flutter_juejin/network)
+<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="FlutterCandies" title="FlutterCandies"></a>
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 The Flutter App that reimplemented [Xitu Juejin (稀土掘金)](https://juejin.cn).
+
+**Notice for Windows developers:** If you're developing on Windows, set `core.autocrlf` to true before any runs.
+
+```shell
+git config core.autocrlf true
+git add --renormalize .
+```
 
 ## Screenshots 📸
 

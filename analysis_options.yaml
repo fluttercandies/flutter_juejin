@@ -8,8 +8,13 @@ analyzer:
 
 linter:
   rules:
+    always_declare_return_types: true
+    avoid_bool_literals_in_conditional_expressions: true
+    avoid_classes_with_only_static_members: true
     avoid_print: true
     avoid_redundant_argument_values: true
+    avoid_slow_async_io: true
+    avoid_void_async: true
     constant_identifier_names: false
     directives_ordering: true
     prefer_const_constructors: true

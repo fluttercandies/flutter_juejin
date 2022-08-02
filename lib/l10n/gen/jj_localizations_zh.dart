@@ -31,7 +31,9 @@ class JJLocalizationsZh extends JJLocalizations {
   }
 
   @override
-  String get exceptionRouteNotFound => '路由。';
+  String exceptionRouteNotFound(String routeName) {
+    return '$routeName 无效路由。';
+  }
 
   @override
   String get exceptionRouteUnknown => '未知';

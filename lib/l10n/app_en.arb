@@ -9,7 +9,8 @@
   "exceptionPoorNetwork": "Poor network condition, please retry later.",
   "exceptionRequest": "Request error: (-1 {message})",
   "@exceptionRequest": {"placeholders": {"message": {}}},
-  "exceptionRouteNotFound": " route not found。",
+  "exceptionRouteNotFound": "{routeName} route not found.",
+  "@exceptionRouteNotFound": {"placeholders": {"routeName": {"type": "String"}}},
   "exceptionRouteUnknown": "Unknown",
 
   "listEmpty": "It's empty here.",

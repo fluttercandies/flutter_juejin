@@ -52,7 +52,9 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
 
   Widget _buildAnnotatedRegion(BuildContext context, Widget child) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: context.brightness.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      value: context.brightness.isDark
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
       child: child,
     );
   }
@@ -95,8 +97,9 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
             alignment: Alignment.center,
             color: Colors.black,
             child: Text(
-              '${settings.name ?? context.l10n.exceptionRouteUnknown}'
-              '${context.l10n.exceptionRouteNotFound}',
+              context.l10n.exceptionRouteNotFound(
+                settings.name ?? context.l10n.exceptionRouteUnknown,
+              ),
               style: const TextStyle(color: Colors.white, inherit: false),
             ),
           ),

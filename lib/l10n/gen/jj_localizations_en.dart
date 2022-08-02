@@ -31,7 +31,9 @@ class JJLocalizationsEn extends JJLocalizations {
   }
 
   @override
-  String get exceptionRouteNotFound => ' route not found。';
+  String exceptionRouteNotFound(String routeName) {
+    return '$routeName route not found.';
+  }
 
   @override
   String get exceptionRouteUnknown => 'Unknown';

@@ -139,8 +139,8 @@ abstract class JJLocalizations {
   /// No description provided for @exceptionRouteNotFound.
   ///
   /// In en, this message translates to:
-  /// **' route not found。'**
-  String get exceptionRouteNotFound;
+  /// **'{routeName} route not found.'**
+  String exceptionRouteNotFound(String routeName);
 
   /// No description provided for @exceptionRouteUnknown.
   ///

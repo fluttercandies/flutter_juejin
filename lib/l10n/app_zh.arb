@@ -8,7 +8,7 @@
   "exceptionFailed": "失败",
   "exceptionPoorNetwork": "网络状况差，请稍后重试",
   "exceptionRequest": "请求失败：(-1 {message})",
-  "exceptionRouteNotFound": "路由。",
+  "exceptionRouteNotFound": "{routeName} 无效路由。",
   "exceptionRouteUnknown": "未知",
 
   "listEmpty": "空空如也",

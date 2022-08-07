@@ -42,6 +42,9 @@ class JJLocalizationsEn extends JJLocalizations {
   String get notSupported => 'Not supported yet';
 
   @override
+  String get close => 'Close';
+
+  @override
   String get listEmpty => 'It\'s empty here.';
 
   @override

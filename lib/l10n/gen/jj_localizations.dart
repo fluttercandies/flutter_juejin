@@ -154,6 +154,12 @@ abstract class JJLocalizations {
   /// **'Not supported yet'**
   String get notSupported;
 
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
   /// No description provided for @listEmpty.
   ///
   /// In en, this message translates to:

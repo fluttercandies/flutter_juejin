@@ -42,6 +42,9 @@ class JJLocalizationsZh extends JJLocalizations {
   String get notSupported => '尚未实现';
 
   @override
+  String get close => '关闭';
+
+  @override
   String get listEmpty => '空空如也';
 
   @override

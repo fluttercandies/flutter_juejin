@@ -46,11 +46,32 @@ class _CommentsWidgetState extends State<CommentsWidget> {
       ),
       child: Column(
         children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Text(context.l10n.pinTotalCommentCount(count)),
-            ),
+          Row(
+            children: [
+              const SizedBox(width: 40),
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text(
+                      context.l10n.pinTotalCommentCount(count),
+                      style: context.textTheme.caption,
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Semantics(
+                  button: true,
+                  label: context.l10n.close,
+                  child: const Icon(Icons.close_outlined, size: 24),
+                ),
+              ),
+              const SizedBox(width: 16),
+            ],
           ),
           Expanded(
             child: Padding(

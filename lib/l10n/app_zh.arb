@@ -11,6 +11,8 @@
   "exceptionRouteNotFound": "{routeName} 无效路由。",
   "exceptionRouteUnknown": "未知",
   "notSupported": "尚未实现",
+  
+  "close": "关闭",
 
   "listEmpty": "空空如也",
   "listLoadingMore": "加载中...",

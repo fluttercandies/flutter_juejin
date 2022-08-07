@@ -23,7 +23,7 @@ class CommentItemModel extends DataModel {
   final UserInfoModel userInfo;
   final UserInteract userInteract;
   @JsonKey(defaultValue: [])
-  final List<Object> replyInfos;
+  final List<ReplyInfo> replyInfos;
   final bool isAuthor;
 
   @override
@@ -147,6 +147,12 @@ class CommentReply extends DataModel {
   @JsonKey(name: 'burry_count')
   final int buryCount;
 
+  String createTimeString(BuildContext context) {
+    return DateTime.now()
+        .difference((ctime * 1000).toDateTimeInMilliseconds)
+        .differenceString(context);
+  }
+
   @override
   Map<String, dynamic> toJson() => _$CommentReplyToJson(this);
 
@@ -164,5 +170,40 @@ class CommentReply extends DataModel {
         replyStatus,
         ctime,
         diggCount,
+      ];
+}
+
+@JsonSerializable()
+class ReplyInfo extends DataModel {
+  const ReplyInfo({
+    required this.replyId,
+    required this.isAuthor,
+    required this.parentReply,
+    required this.replyInfo,
+    required this.userInfo,
+    required this.userInteract,
+  });
+
+  factory ReplyInfo.fromJson(Map<String, dynamic> json) =>
+      _$ReplyInfoFromJson(json);
+
+  final int replyId;
+  final bool isAuthor;
+  final Object parentReply;
+  final CommentReply replyInfo;
+  final UserInfoModel userInfo;
+  final Object userInteract;
+
+  @override
+  Map<String, dynamic> toJson() => _$ReplyInfoToJson(this);
+
+  @override
+  List<Object?> get props => <Object>[
+        replyId,
+        isAuthor,
+        parentReply,
+        replyInfo,
+        userInfo,
+        userInteract,
       ];
 }

@@ -47,6 +47,7 @@ class FeedModel extends DataModel {
 
 enum FeedItemType {
   article(2),
+  pin(4),
   advertisement(14);
 
   const FeedItemType(this.type);

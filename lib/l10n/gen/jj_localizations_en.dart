@@ -39,6 +39,9 @@ class JJLocalizationsEn extends JJLocalizations {
   String get exceptionRouteUnknown => 'Unknown';
 
   @override
+  String get notSupported => 'Not supported yet';
+
+  @override
   String get listEmpty => 'It\'s empty here.';
 
   @override
@@ -84,6 +87,9 @@ class JJLocalizationsEn extends JJLocalizations {
   String get actionComment => 'Comment';
 
   @override
+  String get actionReply => 'Reply';
+
+  @override
   String get actionMore => 'More';
 
   @override
@@ -103,6 +109,11 @@ class JJLocalizationsEn extends JJLocalizations {
   @override
   String pinHotCommentLikes(int num) {
     return '$num likes';
+  }
+
+  @override
+  String pinTotalCommentCount(int count) {
+    return 'Total comments $count';
   }
 
   @override

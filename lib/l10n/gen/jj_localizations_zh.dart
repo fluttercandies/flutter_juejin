@@ -39,6 +39,9 @@ class JJLocalizationsZh extends JJLocalizations {
   String get exceptionRouteUnknown => '未知';
 
   @override
+  String get notSupported => '尚未实现';
+
+  @override
   String get listEmpty => '空空如也';
 
   @override
@@ -84,6 +87,9 @@ class JJLocalizationsZh extends JJLocalizations {
   String get actionComment => '评论';
 
   @override
+  String get actionReply => '回复';
+
+  @override
   String get actionMore => '展开';
 
   @override
@@ -103,6 +109,11 @@ class JJLocalizationsZh extends JJLocalizations {
   @override
   String pinHotCommentLikes(int num) {
     return '$num人赞';
+  }
+
+  @override
+  String pinTotalCommentCount(int count) {
+    return '全部评论 $count';
   }
 
   @override

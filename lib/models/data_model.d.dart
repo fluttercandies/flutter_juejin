@@ -12,6 +12,7 @@ final Map<Type, DataFactory> dataModelFactories = <Type, DataFactory>{
   CommentItemModel: CommentItemModel.fromJson,
   CommentInfo: CommentInfo.fromJson,
   CommentReply: CommentReply.fromJson,
+  ReplyInfo: ReplyInfo.fromJson,
   PinItemModel: PinItemModel.fromJson,
   PinInfo: PinInfo.fromJson,
   PinTopic: PinTopic.fromJson,

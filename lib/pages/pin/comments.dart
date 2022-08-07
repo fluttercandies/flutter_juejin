@@ -35,10 +35,10 @@ class _CommentsWidgetState extends State<CommentsWidget> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: kToolbarHeight + MediaQuery.of(context).padding.top,
+        top: kToolbarHeight + context.topPadding,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: context.surfaceColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(8),
           topRight: Radius.circular(8),

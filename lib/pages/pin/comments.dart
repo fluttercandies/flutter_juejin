@@ -171,9 +171,15 @@ class _CommentItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(item.userInfo.userName),
+                  Text(
+                    item.userInfo.userName,
+                    style: context.textTheme.caption?.copyWith(fontSize: 14),
+                  ),
                   const Spacer(),
-                  Text(item.commentInfo.createTimeString(context)),
+                  Text(
+                    item.commentInfo.createTimeString(context),
+                    style: context.textTheme.caption,
+                  ),
                 ],
               ),
               const Gap.v(8),
@@ -282,9 +288,15 @@ class _ReplyItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(reply.userInfo.userName),
+                  Text(
+                    reply.userInfo.userName,
+                    style: context.textTheme.caption?.copyWith(fontSize: 14),
+                  ),
                   const Spacer(),
-                  Text(reply.replyInfo.createTimeString(context)),
+                  Text(
+                    reply.replyInfo.createTimeString(context),
+                    style: context.textTheme.caption,
+                  ),
                 ],
               ),
               const Gap.v(8),

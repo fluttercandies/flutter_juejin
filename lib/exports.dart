@@ -14,6 +14,7 @@ export 'constants/constants.dart';
 export 'constants/resources.dart';
 export 'constants/screens.dart';
 export 'constants/styles.dart';
+export 'constants/themes.dart';
 
 export 'extensions/brightness_extension.dart';
 export 'extensions/build_context_extension.dart';

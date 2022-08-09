@@ -101,12 +101,51 @@ class _PinItemWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[Text(user.userName), _buildInfo(context)],
+              children: <Widget>[
+                Row(
+                  children: [
+                    Text(
+                      user.userName,
+                      style: TextStyle(
+                        color: context.textTheme.headlineSmall?.color,
+                      ),
+                    ),
+                    if (user.userGrowthInfo.vipLevel > 0)
+                      Padding(
+                        padding: const EdgeInsetsDirectional.only(start: 4),
+                        child: user.buildVipImage(size: 16),
+                      ),
+                  ],
+                ),
+                _buildInfo(context),
+              ],
             ),
           ),
           const Icon(Icons.more_vert_rounded, size: 20),
         ],
       ),
+    );
+  }
+
+  Widget _buildImages(BuildContext context) {
+    return Wrap(
+      children: pinInfo.picList
+          .map(
+            (String p) => FractionallySizedBox(
+              widthFactor: 1 / 3,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: ClipRRect(
+                    borderRadius: RadiusConstants.r6,
+                    child: Image.network(p, fit: BoxFit.cover),
+                  ),
+                ),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -126,10 +165,13 @@ class _PinItemWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Image.asset(R.ASSETS_ICON_POST_HOT_COMMENT_PNG, height: 20),
-              Text(
-                context.l10n.pinHotCommentLikes(comment.commentInfo.diggCount),
-                style: context.textTheme.caption,
-              ),
+              if (comment.commentInfo.diggCount > 0)
+                Text(
+                  context.l10n.pinHotCommentLikes(
+                    comment.commentInfo.diggCount,
+                  ),
+                  style: context.textTheme.caption,
+                ),
             ],
           ),
           Text(comment.commentInfo.commentContent),
@@ -280,6 +322,10 @@ class _PinItemWidget extends StatelessWidget {
           const Gap.v(10),
           _PinContentWidget(pinInfo.content),
           const Gap.v(10),
+          if (pinInfo.picList.isNotEmpty) ...[
+            _buildImages(context),
+            const Gap.v(10),
+          ],
           if (hotComment != null) ...<Widget>[
             _buildHotComment(context),
             const Gap.v(10),

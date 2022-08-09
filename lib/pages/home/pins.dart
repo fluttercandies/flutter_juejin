@@ -7,6 +7,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
+import '../pin/comments.dart';
+
 const _pinContentMaxLines = 3;
 
 class PinsPage extends StatefulWidget {
@@ -194,6 +196,74 @@ class _PinItemWidget extends StatelessWidget {
     );
   }
 
+  Widget _buildInteractions(BuildContext context) {
+    return DefaultTextStyle.merge(
+      style: context.textTheme.caption,
+      child: IconTheme(
+        data: IconTheme.of(context).copyWith(
+          color: context.textTheme.caption?.color,
+          size: 14,
+        ),
+        child: Row(
+          children: <Widget>[
+            Expanded(child: _buildDigg(context)),
+            Expanded(child: _buildComment(context)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDigg(BuildContext context) {
+    final int count = pinInfo.diggCount;
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          showToast('Not supported yet');
+        },
+        child: Container(
+          color: Colors.transparent,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const Icon(Icons.thumb_up_alt_outlined),
+              const Gap.h(4),
+              Text(count == 0 ? context.l10n.actionLike : '$count'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildComment(BuildContext context) {
+    final int count = pinInfo.commentCount;
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (context) =>
+                CommentsWidget(pin.msgId, count: pinInfo.commentCount),
+          );
+        },
+        child: Container(
+          color: Colors.transparent,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const Icon(Icons.message_outlined),
+              const Gap.h(4),
+              Text(count == 0 ? context.l10n.actionComment : '$count'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -219,6 +289,8 @@ class _PinItemWidget extends StatelessWidget {
               ],
             ],
           ),
+          const Divider(thickness: 0.5, height: 16, color: Color(0xffe0e0e0)),
+          _buildInteractions(context),
         ],
       ),
     );

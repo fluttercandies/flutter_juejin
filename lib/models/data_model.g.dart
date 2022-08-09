@@ -275,7 +275,7 @@ CommentItemModel _$CommentItemModelFromJson(Map<String, dynamic> json) =>
       userInteract:
           UserInteract.fromJson(json['user_interact'] as Map<String, dynamic>),
       replyInfos: (json['reply_infos'] as List<dynamic>?)
-              ?.map((e) => e as Object)
+              ?.map((e) => ReplyInfo.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
       isAuthor: json['is_author'] as bool,
@@ -287,7 +287,7 @@ Map<String, dynamic> _$CommentItemModelToJson(CommentItemModel instance) =>
       'comment_info': instance.commentInfo.toJson(),
       'user_info': instance.userInfo.toJson(),
       'user_interact': instance.userInteract.toJson(),
-      'reply_infos': instance.replyInfos,
+      'reply_infos': instance.replyInfos.map((e) => e.toJson()).toList(),
       'is_author': instance.isAuthor,
     };
 
@@ -370,8 +370,27 @@ Map<String, dynamic> _$CommentReplyToJson(CommentReply instance) =>
       'burry_count': instance.buryCount,
     };
 
-PinItemModel _$PinItemModelFromJson(Map<String, dynamic> json) =>
-    PinItemModel(
+ReplyInfo _$ReplyInfoFromJson(Map<String, dynamic> json) => ReplyInfo(
+      replyId: json['reply_id'] as int,
+      isAuthor: json['is_author'] as bool,
+      parentReply: json['parent_reply'] as Object,
+      replyInfo:
+          CommentReply.fromJson(json['reply_info'] as Map<String, dynamic>),
+      userInfo:
+          UserInfoModel.fromJson(json['user_info'] as Map<String, dynamic>),
+      userInteract: json['user_interact'] as Object,
+    );
+
+Map<String, dynamic> _$ReplyInfoToJson(ReplyInfo instance) => <String, dynamic>{
+      'reply_id': instance.replyId,
+      'is_author': instance.isAuthor,
+      'parent_reply': instance.parentReply,
+      'reply_info': instance.replyInfo.toJson(),
+      'user_info': instance.userInfo.toJson(),
+      'user_interact': instance.userInteract,
+    };
+
+PinItemModel _$PinItemModelFromJson(Map<String, dynamic> json) => PinItemModel(
       msgId: json['msg_id'] as String,
       msgInfo: PinInfo.fromJson(json['msg_Info'] as Map<String, dynamic>),
       authorUserInfo: UserInfoModel.fromJson(

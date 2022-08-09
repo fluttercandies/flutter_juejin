@@ -12,6 +12,9 @@
   "exceptionRouteNotFound": "{routeName} route not found.",
   "@exceptionRouteNotFound": {"placeholders": {"routeName": {"type": "String"}}},
   "exceptionRouteUnknown": "Unknown",
+  "notSupported": "Not supported yet",
+
+  "close": "Close",
 
   "listEmpty": "It's empty here.",
   "listLoadingMore": "Loading more content...",
@@ -31,6 +34,7 @@
 
   "actionLike": "Like",
   "actionComment": "Comment",
+  "actionReply": "Reply",
   "actionMore": "More",
   "actionFold": "Fold",
   "advertiseAbbr": "Ad",
@@ -44,6 +48,10 @@
   "pinHotCommentLikes": "{num} likes",
   "@pinHotCommentLikes": {
     "placeholders": {"num": {"type": "int"}}
+  },
+  "pinTotalCommentCount": "Total comments {count}",
+  "@pinTotalCommentCount": {
+    "placeholders": {"count": {"type": "int"}}
   },
 
   "userLikes": "Likes",

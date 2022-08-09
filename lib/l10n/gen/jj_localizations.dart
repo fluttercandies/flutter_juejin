@@ -148,6 +148,18 @@ abstract class JJLocalizations {
   /// **'Unknown'**
   String get exceptionRouteUnknown;
 
+  /// No description provided for @notSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Not supported yet'**
+  String get notSupported;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
   /// No description provided for @listEmpty.
   ///
   /// In en, this message translates to:
@@ -238,6 +250,12 @@ abstract class JJLocalizations {
   /// **'Comment'**
   String get actionComment;
 
+  /// No description provided for @actionReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get actionReply;
+
   /// No description provided for @actionMore.
   ///
   /// In en, this message translates to:
@@ -273,6 +291,12 @@ abstract class JJLocalizations {
   /// In en, this message translates to:
   /// **'{num} likes'**
   String pinHotCommentLikes(int num);
+
+  /// No description provided for @pinTotalCommentCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total comments {count}'**
+  String pinTotalCommentCount(int count);
 
   /// No description provided for @userLikes.
   ///

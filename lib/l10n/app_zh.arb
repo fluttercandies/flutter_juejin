@@ -10,6 +10,9 @@
   "exceptionRequest": "请求失败：(-1 {message})",
   "exceptionRouteNotFound": "{routeName} 无效路由。",
   "exceptionRouteUnknown": "未知",
+  "notSupported": "尚未实现",
+  
+  "close": "关闭",
 
   "listEmpty": "空空如也",
   "listLoadingMore": "加载中...",
@@ -29,6 +32,7 @@
 
   "actionLike": "赞",
   "actionComment": "评论",
+  "actionReply": "回复",
   "actionMore": "展开",
   "actionFold": "收起",
   "advertiseAbbr": "广告",
@@ -37,6 +41,7 @@
 
   "pinLiked": "等人赞过",
   "pinHotCommentLikes": "{num}人赞",
+  "pinTotalCommentCount": "全部评论 {count}",
 
   "userLikes": "点赞",
   "userFavorites": "收藏",

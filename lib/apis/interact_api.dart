@@ -16,6 +16,7 @@ class InteractAPI {
   static Future<ResponseModel<CommentItemModel>> getCommentByTypeAndId({
     required FeedItemType type,
     required String id,
+    String? lastId,
     int limit = 20,
   }) {
     return HttpUtil.fetchModel(
@@ -24,6 +25,7 @@ class InteractAPI {
       body: <String, dynamic>{
         'item_type': type.type,
         'item_id': id,
+        'cursor': cursorFromLastIdAndLimit(lastId, limit),
         'limit': limit,
       },
     );

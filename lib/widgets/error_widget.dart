@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../constants/styles.dart';
+import '../constants/themes.dart';
 import '../extensions/build_context_extension.dart';
 import '../utils/log_util.dart';
 import 'logo.dart';

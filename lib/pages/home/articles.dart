@@ -65,7 +65,7 @@ class _ArticleWidget extends StatelessWidget {
   Widget _buildTitle(BuildContext context) {
     return Text(
       article.articleInfo.title,
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      style: context.textTheme.headlineSmall?.copyWith(fontSize: 14),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
@@ -76,7 +76,10 @@ class _ArticleWidget extends StatelessWidget {
       style: context.textTheme.caption,
       child: Row(
         children: <Widget>[
-          Text(article.authorUserInfo.userName),
+          Text(
+            article.authorUserInfo.userName,
+            style: TextStyle(color: context.textTheme.headlineSmall?.color),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Gap.h(
@@ -96,6 +99,7 @@ class _ArticleWidget extends StatelessWidget {
   Widget _buildBrief(BuildContext context) {
     return Text(
       article.articleInfo.briefContent,
+      style: const TextStyle(fontSize: 13, height: 1.3),
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
     );
@@ -105,7 +109,7 @@ class _ArticleWidget extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 3 / 2,
       child: ClipRRect(
-        borderRadius: RadiusConstants.r2,
+        borderRadius: RadiusConstants.r4,
         child: Image.network(
           article.articleInfo.slicedCoverImage(),
           fit: BoxFit.cover,
@@ -125,7 +129,7 @@ class _ArticleWidget extends StatelessWidget {
         child: Row(
           children: <Widget>[
             _buildDigg(context),
-            const Gap.h(10),
+            const Gap.h(16),
             _buildComment(context),
           ],
         ),
@@ -159,8 +163,8 @@ class _ArticleWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
-        borderRadius: RadiusConstants.r2,
-        color: context.theme.dividerColor.withOpacity(.05),
+        borderRadius: RadiusConstants.r4,
+        color: context.theme.canvasColor,
       ),
       child: Text(
         article.category.categoryName,
@@ -182,10 +186,10 @@ class _ArticleWidget extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _buildInfo(context),
+                    const Gap.v(10),
                     _buildBrief(context),
                   ],
                 ),
@@ -218,8 +222,10 @@ class _ArticleWidget extends StatelessWidget {
         arguments: Routes.articleDetailPage.d(article.articleId),
       ),
       child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 6),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
+          borderRadius: RadiusConstants.r10,
           color: context.theme.cardColor,
         ),
         child: _buildContent(context),
@@ -246,7 +252,12 @@ class _AdvertiseWidget extends StatelessWidget {
       style: context.textTheme.caption,
       child: Row(
         children: <Widget>[
-          Text(ad.itemUserInfo.userName),
+          Text(
+            ad.itemUserInfo.userName,
+            style: TextStyle(
+              color: context.textTheme.bodyMedium?.color,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Gap.h(
@@ -294,8 +305,10 @@ class _AdvertiseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 6),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
+        borderRadius: RadiusConstants.r10,
         color: context.theme.cardColor,
       ),
       child: Column(
@@ -310,7 +323,7 @@ class _AdvertiseWidget extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       _buildTitle(context),

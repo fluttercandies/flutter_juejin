@@ -273,6 +273,7 @@ class ListMoreIndicator extends StatelessWidget {
             isRequesting
                 ? context.l10n.listLoadingMore
                 : context.l10n.listNoMoreToLoad,
+            style: Theme.of(context).textTheme.caption,
           ),
         ],
       ),

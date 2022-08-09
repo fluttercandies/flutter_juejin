@@ -79,7 +79,7 @@ class PullToRefreshHeader extends StatelessWidget {
             duration: kTabScrollDuration,
             width: isRefreshingMode ? 10 : 0,
           ),
-          Text(text),
+          Text(text, style: Theme.of(context).textTheme.caption),
         ],
       );
     }

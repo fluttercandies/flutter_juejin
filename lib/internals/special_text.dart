@@ -6,7 +6,7 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/styles.dart';
+import '../constants/themes.dart';
 
 class TopicText extends RegExpSpecialText {
   /// [7118934098294341672#理财经验分享#]

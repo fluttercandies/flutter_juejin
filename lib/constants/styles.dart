@@ -4,8 +4,6 @@
 
 import 'package:flutter/material.dart';
 
-const Color themeColorLight = Color(0xff007fff);
-
 const Color failedColor = Color(0xffff6363);
 
 class RadiusConstants {

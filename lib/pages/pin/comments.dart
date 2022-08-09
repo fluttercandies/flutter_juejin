@@ -38,7 +38,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
         top: kToolbarHeight + context.topPadding,
       ),
       decoration: BoxDecoration(
-        color: context.surfaceColor,
+        color: context.theme.cardColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(8),
           topRight: Radius.circular(8),
@@ -189,9 +189,9 @@ class _CommentItem extends StatelessWidget {
               const Gap.v(8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: const BoxDecoration(
-                  color: Color(0xb2f7f8ff),
-                  borderRadius: BorderRadius.all(Radius.circular(2)),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(2)),
+                  color: context.theme.canvasColor,
                 ),
                 child: Column(
                   children: [

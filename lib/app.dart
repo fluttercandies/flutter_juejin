@@ -76,13 +76,8 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return _buildOKToast(
       child: MaterialApp(
-        theme: ThemeData(
-          primarySwatch: themeColorLight.swatch,
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: themeColorLight.swatch,
-        ),
+        theme: themeBy(brightness: Brightness.light),
+        darkTheme: themeBy(brightness: Brightness.dark),
         initialRoute: Routes.splashPage.name,
         navigatorKey: JJ.navigatorKey,
         navigatorObservers: <NavigatorObserver>[

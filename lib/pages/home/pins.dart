@@ -116,8 +116,8 @@ class _PinItemWidget extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        borderRadius: RadiusConstants.r2,
-        color: context.theme.dividerColor,
+        borderRadius: RadiusConstants.r4,
+        color: context.theme.canvasColor,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,8 +267,12 @@ class _PinItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 6),
       padding: const EdgeInsets.all(12),
-      color: context.theme.cardColor,
+      decoration: BoxDecoration(
+        borderRadius: RadiusConstants.r10,
+        color: context.theme.cardColor,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -289,7 +293,7 @@ class _PinItemWidget extends StatelessWidget {
               ],
             ],
           ),
-          const Divider(thickness: 0.5, height: 16, color: Color(0xffe0e0e0)),
+          const Gap.v(10),
           _buildInteractions(context),
         ],
       ),
@@ -324,6 +328,7 @@ class _PinContentWidgetState extends State<_PinContentWidget> {
       children: [
         ExtendedText(
           widget.content,
+          style: const TextStyle(height: 1.3),
           maxLines: isExpanding ? null : _pinContentMaxLines,
           onSpecialTextTap: (val) {
             if (val is TopicText) {}
@@ -340,7 +345,7 @@ class _PinContentWidgetState extends State<_PinContentWidget> {
                   ),
                 ],
               ),
-              style: const TextStyle(height: 1.2),
+              style: const TextStyle(height: 1.3),
             ),
           ),
           specialTextSpanBuilder: JJRegExpSpecialTextSpanBuilder(),

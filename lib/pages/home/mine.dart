@@ -16,20 +16,23 @@ class _MinePageState extends State<MinePage> {
   Widget _buildHeaderActions(BuildContext context) {
     return Container(
       alignment: AlignmentDirectional.centerEnd,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Icon(
-            context.brightness.isDark
-                ? Icons.light_mode_outlined
-                : Icons.dark_mode_outlined,
-          ),
-          const Gap.h(16),
-          const Icon(Icons.notifications_none_outlined),
-          const Gap.h(16),
-          const Icon(Icons.settings_outlined),
-        ],
+      child: IconTheme.merge(
+        data: IconThemeData(color: context.textTheme.bodyMedium?.color),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(
+              context.brightness.isDark
+                  ? Icons.light_mode_outlined
+                  : Icons.dark_mode_outlined,
+            ),
+            const Gap.h(16),
+            const Icon(Icons.notifications_none_outlined),
+            const Gap.h(16),
+            const Icon(Icons.settings_outlined),
+          ],
+        ),
       ),
     );
   }

@@ -201,7 +201,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: context.theme.canvasColor,
+        backgroundColor: context.theme.scaffoldBackgroundColor,
         elevation: 0,
         title: _detail != null ? _buildAuthorInTitle(context) : null,
         titleSpacing: 8,
@@ -218,8 +218,10 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
           if (_detail == null || !_hasContentLoaded)
             Container(
               alignment: Alignment.center,
-              color: context.theme.canvasColor,
-              child: const CircularProgressIndicator(),
+              color: context.theme.scaffoldBackgroundColor,
+              child: CircularProgressIndicator(
+                color: context.theme.primaryColor,
+              ),
             ),
         ],
       ),

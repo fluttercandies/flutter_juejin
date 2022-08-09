@@ -68,8 +68,8 @@ class UserInfoModel extends DataModel {
   final int favorableAuthor;
   final int power;
   final int studyPoint;
-  final UserUniversity university;
-  final UserMajor major;
+  final UserUniversity? university;
+  final UserMajor? major;
   final int studentStatus;
   final int selectEventCount;
   final int selectOnlineCourseCount;

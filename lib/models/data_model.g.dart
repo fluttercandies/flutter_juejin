@@ -617,9 +617,12 @@ UserInfoModel _$UserInfoModelFromJson(Map<String, dynamic> json) =>
       favorableAuthor: json['favorable_author'] as int,
       power: json['power'] as int,
       studyPoint: json['study_point'] as int,
-      university:
-          UserUniversity.fromJson(json['university'] as Map<String, dynamic>),
-      major: UserMajor.fromJson(json['major'] as Map<String, dynamic>),
+      university: json['university'] == null
+          ? null
+          : UserUniversity.fromJson(json['university'] as Map<String, dynamic>),
+      major: json['major'] == null
+          ? null
+          : UserMajor.fromJson(json['major'] as Map<String, dynamic>),
       studentStatus: json['student_status'] as int,
       selectEventCount: json['select_event_count'] as int,
       selectOnlineCourseCount: json['select_online_course_count'] as int,
@@ -659,8 +662,8 @@ Map<String, dynamic> _$UserInfoModelToJson(UserInfoModel instance) =>
       'favorable_author': instance.favorableAuthor,
       'power': instance.power,
       'study_point': instance.studyPoint,
-      'university': instance.university.toJson(),
-      'major': instance.major.toJson(),
+      'university': instance.university?.toJson(),
+      'major': instance.major?.toJson(),
       'student_status': instance.studentStatus,
       'select_event_count': instance.selectEventCount,
       'select_online_course_count': instance.selectOnlineCourseCount,

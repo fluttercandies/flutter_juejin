@@ -65,9 +65,8 @@ class _CommentsWidgetState extends State<CommentsWidget> {
         return Container(
           decoration: BoxDecoration(
             color: context.theme.cardColor,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(8),
-              topRight: Radius.circular(8),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(8),
             ),
           ),
           child: Column(

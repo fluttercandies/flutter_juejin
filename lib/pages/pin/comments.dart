@@ -28,8 +28,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
   /// whether this popup has dragged to max size
   bool isMaxed = false;
 
-  DraggableScrollableController draggableScrollableController =
-      DraggableScrollableController();
+  final draggableScrollableController = DraggableScrollableController();
 
   @override
   void initState() {
@@ -45,7 +44,9 @@ class _CommentsWidgetState extends State<CommentsWidget> {
   }
 
   void _onDragScroll() {
-    if (isMaxed) return;
+    if (isMaxed) {
+      return;
+    }
     if (draggableScrollableController.size >= 0.85) {
       setState(() {
         isMaxed = true;

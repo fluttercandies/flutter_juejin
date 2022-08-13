@@ -25,70 +25,112 @@ class _CommentsWidgetState extends State<CommentsWidget> {
   /// from widget.count but can update
   int count = 0;
 
+  /// whether this popup has dragged to max size
+  bool isMaxed = false;
+
+  final draggableScrollableController = DraggableScrollableController();
+
   @override
   void initState() {
     super.initState();
     count = widget.count ?? 0;
+    draggableScrollableController.addListener(_onDragScroll);
+  }
+
+  @override
+  void dispose() {
+    draggableScrollableController.removeListener(_onDragScroll);
+    super.dispose();
+  }
+
+  void _onDragScroll() {
+    if (isMaxed) {
+      return;
+    }
+    if (draggableScrollableController.size >= 0.85) {
+      setState(() {
+        isMaxed = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-        top: kToolbarHeight + context.topPadding,
-      ),
-      decoration: BoxDecoration(
-        color: context.theme.cardColor,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8),
-          topRight: Radius.circular(8),
-        ),
-      ),
-      child: Column(
-        children: [
-          Row(
+    return DraggableScrollableSheet(
+      maxChildSize: 0.85,
+      snapSizes: const [0.5, 0.85],
+      snap: true,
+      controller: draggableScrollableController,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Container(
+          decoration: BoxDecoration(
+            color: context.theme.cardColor,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(8),
+            ),
+          ),
+          child: Column(
             children: [
-              const SizedBox(width: 40),
-              Expanded(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: Text(
-                      context.l10n.pinTotalCommentCount(count),
-                      style: context.textTheme.caption,
+              Row(
+                children: [
+                  // To ignore dragscroll when popup is max sized
+                  IgnorePointer(
+                    child: SizedBox(
+                      width: 40,
+                      height: 20,
+                      child: ListView.builder(
+                        controller: isMaxed ? scrollController : null,
+                        itemBuilder: (context, index) => const SizedBox(
+                          height: 10,
+                        ),
+                      ),
                     ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: Text(
+                          context.l10n.pinTotalCommentCount(count),
+                          style: context.textTheme.caption,
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Semantics(
+                      button: true,
+                      label: context.l10n.close,
+                      child: const Icon(Icons.close_outlined, size: 24),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: RefreshListWrapper(
+                    // when maxed, ignore drag and respond drop-down refresh
+                    controller: isMaxed ? null : scrollController,
+                    loadingBase: _lb,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    itemBuilder: (CommentItemModel model) => _CommentItem(
+                      model,
+                      key: ValueKey<String>(model.commentId),
+                    ),
+                    dividerBuilder: (_, __) => const Gap.v(8),
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Semantics(
-                  button: true,
-                  label: context.l10n.close,
-                  child: const Icon(Icons.close_outlined, size: 24),
-                ),
-              ),
-              const SizedBox(width: 16),
             ],
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: RefreshListWrapper(
-                loadingBase: _lb,
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                itemBuilder: (CommentItemModel model) => _CommentItem(
-                  model,
-                  key: ValueKey<String>(model.commentId),
-                ),
-                dividerBuilder: (_, __) => const Gap.v(8),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -171,11 +213,14 @@ class _CommentItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    item.userInfo.userName,
-                    style: context.textTheme.caption?.copyWith(fontSize: 14),
+                  Expanded(
+                    child: Text(
+                      item.userInfo.userName,
+                      style: context.textTheme.caption?.copyWith(fontSize: 14),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  const Spacer(),
+                  const Gap.v(8),
                   Text(
                     item.commentInfo.createTimeString(context),
                     style: context.textTheme.caption,
@@ -288,11 +333,14 @@ class _ReplyItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    reply.userInfo.userName,
-                    style: context.textTheme.caption?.copyWith(fontSize: 14),
+                  Expanded(
+                    child: Text(
+                      reply.userInfo.userName,
+                      style: context.textTheme.caption?.copyWith(fontSize: 14),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  const Spacer(),
+                  const Gap.v(8),
                   Text(
                     reply.replyInfo.createTimeString(context),
                     style: context.textTheme.caption,

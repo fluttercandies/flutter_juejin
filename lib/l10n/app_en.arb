@@ -37,6 +37,8 @@
   "actionReply": "Reply",
   "actionMore": "More",
   "actionFold": "Fold",
+  "actionCollect": "Collect",
+  "actionShare": "Share",
   "advertiseAbbr": "Ad",
 
   "articleViews": "{num} views",

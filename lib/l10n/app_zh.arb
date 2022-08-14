@@ -35,6 +35,8 @@
   "actionReply": "回复",
   "actionMore": "展开",
   "actionFold": "收起",
+  "actionCollect": "收藏",
+  "actionShare": "分享",
   "advertiseAbbr": "广告",
 
   "articleViews": "阅读 {num}",

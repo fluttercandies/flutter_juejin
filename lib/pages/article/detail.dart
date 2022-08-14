@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../components/comments.dart';
+
+const _bottomBarHeight = kBottomNavigationBarHeight;
+
 @FFRoute(name: 'article-detail-page')
 class ArticleDetailPage extends StatefulWidget {
   const ArticleDetailPage(this.id, {Key? key, this.item}) : super(key: key);
@@ -140,6 +144,79 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     );
   }
 
+  Widget _buildBottomBar(BuildContext context) {
+    return AnimatedPositioned(
+      bottom: _hasContentLoaded
+          ? 0
+          : -_bottomBarHeight - context.mediaQuery.viewPadding.bottom,
+      left: 0,
+      right: 0,
+      duration: const Duration(milliseconds: 300),
+      child: Container(
+        height: _bottomBarHeight + context.mediaQuery.viewPadding.bottom,
+        alignment: Alignment.center,
+        color: context.surfaceColor,
+        child: SafeArea(
+          child: Row(
+            children: [
+              Expanded(
+                child: _IconAction(
+                  icon: const Icon(Icons.thumb_up_alt_outlined),
+                  semanticsLabel: context.l10n.actionLike,
+                  label: Text(
+                    articleInfo.diggCount == 0
+                        ? context.l10n.actionLike
+                        : '${articleInfo.diggCount}',
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _IconAction(
+                  icon: const Icon(Icons.message_outlined),
+                  semanticsLabel: context.l10n.actionComment,
+                  label: Text(
+                    articleInfo.commentCount == 0
+                        ? context.l10n.actionComment
+                        : '${articleInfo.commentCount}',
+                  ),
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => CommentsWidget(
+                        detail.articleId,
+                        type: FeedItemType.article,
+                        count: articleInfo.commentCount,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: _IconAction(
+                  icon: const Icon(Icons.favorite_outline),
+                  semanticsLabel: context.l10n.actionCollect,
+                  label: Text(
+                    articleInfo.collectCount == 0
+                        ? context.l10n.actionCollect
+                        : '${articleInfo.collectCount}',
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _IconAction(
+                  icon: const Icon(Icons.share),
+                  label: Text(context.l10n.actionShare),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildBody(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
@@ -208,6 +285,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
               enableProgressBar: false,
             ),
           ),
+        SliverGap.v(_bottomBarHeight + context.mediaQuery.viewPadding.bottom),
       ],
     );
   }
@@ -239,7 +317,47 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 color: context.theme.primaryColor,
               ),
             ),
+          _buildBottomBar(context),
         ],
+      ),
+    );
+  }
+}
+
+class _IconAction extends StatelessWidget {
+  const _IconAction({
+    Key? key,
+    required this.icon,
+    required this.label,
+    this.semanticsLabel,
+    this.onTap,
+  }) : super(key: key);
+
+  final Widget icon;
+  final Text label;
+  final String? semanticsLabel;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Semantics(
+          label: semanticsLabel ?? label.data,
+          button: true,
+          child: Container(
+            color: Colors.transparent,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon,
+                const Gap.h(4),
+                label,
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

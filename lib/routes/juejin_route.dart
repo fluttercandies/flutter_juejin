@@ -30,6 +30,9 @@ FFRouteSettings getRouteSettings({
           key: asT<Key?>(
             safeArguments['key'],
           ),
+          item: asT<ArticleItemModel?>(
+            safeArguments['item'],
+          ),
         ),
       );
     case 'home-page':

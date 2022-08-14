@@ -13,9 +13,10 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 @FFRoute(name: 'article-detail-page')
 class ArticleDetailPage extends StatefulWidget {
-  const ArticleDetailPage(this.id, {Key? key}) : super(key: key);
+  const ArticleDetailPage(this.id, {Key? key, this.item}) : super(key: key);
 
   final String id;
+  final ArticleItemModel? item;
 
   @override
   State<ArticleDetailPage> createState() => _ArticleDetailPageState();
@@ -33,12 +34,13 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 
   UserInfoModel get userInfo => detail.authorUserInfo;
 
-  late NestedWebViewController _controller;
+  NestedWebViewController? _controller;
   bool _hasContentLoaded = false;
 
   @override
   void initState() {
     super.initState();
+    _detail = widget.item;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchDetail();
     });
@@ -171,28 +173,41 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
               fit: BoxFit.cover,
             ),
           ),
-        ValueListenableBuilder<double>(
-          valueListenable: _controller.scrollHeightNotifier,
-          builder: (BuildContext context, double scrollHeight, Widget? child) {
-            return SliverToNestedScrollBoxAdapter(
-              onScrollOffsetChanged: (double scrollOffset) {
-                double y = scrollOffset;
-                if (Platform.isAndroid) {
-                  // https://github.com/flutter/flutter/issues/75841
-                  y *= ui.window.devicePixelRatio;
-                }
-                _controller.controller?.scrollTo(x: 0, y: y.ceil());
-              },
-              childExtent: scrollHeight,
-              child: child,
-            );
-          },
-          child: JJWebView(
-            controller: _controller,
-            isWebViewOnly: true,
-            enableProgressBar: false,
+        if (_controller == null || !_hasContentLoaded)
+          SliverToBoxAdapter(
+            child: Container(
+              alignment: Alignment.center,
+              color: context.theme.scaffoldBackgroundColor,
+              padding: const EdgeInsets.only(top: 50),
+              child: CircularProgressIndicator(
+                color: context.theme.primaryColor,
+              ),
+            ),
           ),
-        ),
+        if (_controller != null)
+          ValueListenableBuilder<double>(
+            valueListenable: _controller!.scrollHeightNotifier,
+            builder:
+                (BuildContext context, double scrollHeight, Widget? child) {
+              return SliverToNestedScrollBoxAdapter(
+                onScrollOffsetChanged: (double scrollOffset) {
+                  double y = scrollOffset;
+                  if (Platform.isAndroid) {
+                    // https://github.com/flutter/flutter/issues/75841
+                    y *= ui.window.devicePixelRatio;
+                  }
+                  _controller!.controller?.scrollTo(x: 0, y: y.ceil());
+                },
+                childExtent: scrollHeight,
+                child: child,
+              );
+            },
+            child: JJWebView(
+              controller: _controller,
+              isWebViewOnly: true,
+              enableProgressBar: false,
+            ),
+          ),
       ],
     );
   }
@@ -214,8 +229,9 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       ),
       body: Stack(
         children: <Widget>[
-          if (_detail != null) _buildBody(context),
-          if (_detail == null || !_hasContentLoaded)
+          if (_detail != null)
+            _buildBody(context)
+          else
             Container(
               alignment: Alignment.center,
               color: context.theme.scaffoldBackgroundColor,

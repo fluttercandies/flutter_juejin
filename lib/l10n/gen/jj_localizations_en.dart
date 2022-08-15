@@ -99,7 +99,7 @@ class JJLocalizationsEn extends JJLocalizations {
   String get actionFold => 'Fold';
 
   @override
-  String get actionCollect => 'Collect';
+  String get actionCollect => 'Favorite';
 
   @override
   String get actionShare => 'Share';

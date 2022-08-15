@@ -271,7 +271,7 @@ abstract class JJLocalizations {
   /// No description provided for @actionCollect.
   ///
   /// In en, this message translates to:
-  /// **'Collect'**
+  /// **'Favorite'**
   String get actionCollect;
 
   /// No description provided for @actionShare.

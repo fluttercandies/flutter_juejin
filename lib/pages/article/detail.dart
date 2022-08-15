@@ -195,7 +195,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
               ),
               Expanded(
                 child: _IconAction(
-                  icon: const Icon(Icons.favorite_outline),
+                  icon: const Icon(Icons.star_outline),
                   semanticsLabel: context.l10n.actionCollect,
                   label: Text(
                     articleInfo.collectCount == 0

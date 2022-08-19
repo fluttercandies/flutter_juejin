@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:extended_sliver/extended_sliver.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -242,23 +243,22 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
         ),
         if (articleInfo.coverImage.isNotEmpty)
           SliverToBoxAdapter(
-            child: Image.network(
-              articleInfo.slicedCoverImage(
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: articleInfo.slicedCoverImage(
                 width: context.mediaQuery.size.width.toPx(),
                 extension: 'image',
               ),
-              fit: BoxFit.cover,
+              fit: BoxFit.fitWidth,
             ),
           ),
-        if (_controller == null || !_hasContentLoaded)
+        if (!_hasContentLoaded)
           SliverToBoxAdapter(
             child: Container(
               alignment: Alignment.center,
               color: context.theme.scaffoldBackgroundColor,
-              padding: const EdgeInsets.only(top: 50),
-              child: CircularProgressIndicator(
-                color: context.theme.primaryColor,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              child: const CupertinoActivityIndicator(),
             ),
           ),
         if (_controller != null)
@@ -279,10 +279,14 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 child: child,
               );
             },
-            child: JJWebView(
-              controller: _controller,
-              isWebViewOnly: true,
-              enableProgressBar: false,
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: _hasContentLoaded ? 1 : 0,
+              child: JJWebView(
+                controller: _controller,
+                isWebViewOnly: true,
+                enableProgressBar: false,
+              ),
             ),
           ),
         SliverGap.v(_bottomBarHeight + context.mediaQuery.viewPadding.bottom),

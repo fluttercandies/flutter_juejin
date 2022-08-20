@@ -25,7 +25,7 @@ class InteractAPI {
       body: <String, dynamic>{
         'item_type': type.type,
         'item_id': id,
-        'cursor': cursorFromLastIdAndLimit(lastId, limit),
+        'cursor': lastId,
         'limit': limit,
       },
     );

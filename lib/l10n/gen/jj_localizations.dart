@@ -268,6 +268,18 @@ abstract class JJLocalizations {
   /// **'Fold'**
   String get actionFold;
 
+  /// No description provided for @actionCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite'**
+  String get actionCollect;
+
+  /// No description provided for @actionShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get actionShare;
+
   /// No description provided for @advertiseAbbr.
   ///
   /// In en, this message translates to:

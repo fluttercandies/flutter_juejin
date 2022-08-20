@@ -7,15 +7,21 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:extended_sliver/extended_sliver.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../components/comments.dart';
+
+const _bottomBarHeight = kBottomNavigationBarHeight;
+
 @FFRoute(name: 'article-detail-page')
 class ArticleDetailPage extends StatefulWidget {
-  const ArticleDetailPage(this.id, {Key? key}) : super(key: key);
+  const ArticleDetailPage(this.id, {Key? key, this.item}) : super(key: key);
 
   final String id;
+  final ArticleItemModel? item;
 
   @override
   State<ArticleDetailPage> createState() => _ArticleDetailPageState();
@@ -33,12 +39,13 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 
   UserInfoModel get userInfo => detail.authorUserInfo;
 
-  late NestedWebViewController _controller;
+  NestedWebViewController? _controller;
   bool _hasContentLoaded = false;
 
   @override
   void initState() {
     super.initState();
+    _detail = widget.item;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchDetail();
     });
@@ -138,6 +145,79 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     );
   }
 
+  Widget _buildBottomBar(BuildContext context) {
+    return AnimatedPositioned(
+      bottom: _hasContentLoaded
+          ? 0
+          : -_bottomBarHeight - context.mediaQuery.viewPadding.bottom,
+      left: 0,
+      right: 0,
+      duration: const Duration(milliseconds: 300),
+      child: Container(
+        height: _bottomBarHeight + context.mediaQuery.viewPadding.bottom,
+        alignment: Alignment.center,
+        color: context.surfaceColor,
+        child: SafeArea(
+          child: Row(
+            children: [
+              Expanded(
+                child: _IconAction(
+                  icon: const Icon(Icons.thumb_up_alt_outlined),
+                  semanticsLabel: context.l10n.actionLike,
+                  label: Text(
+                    articleInfo.diggCount == 0
+                        ? context.l10n.actionLike
+                        : '${articleInfo.diggCount}',
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _IconAction(
+                  icon: const Icon(Icons.message_outlined),
+                  semanticsLabel: context.l10n.actionComment,
+                  label: Text(
+                    articleInfo.commentCount == 0
+                        ? context.l10n.actionComment
+                        : '${articleInfo.commentCount}',
+                  ),
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => CommentsWidget(
+                        detail.articleId,
+                        type: FeedItemType.article,
+                        count: articleInfo.commentCount,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: _IconAction(
+                  icon: const Icon(Icons.star_outline),
+                  semanticsLabel: context.l10n.actionCollect,
+                  label: Text(
+                    articleInfo.collectCount == 0
+                        ? context.l10n.actionCollect
+                        : '${articleInfo.collectCount}',
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _IconAction(
+                  icon: const Icon(Icons.share),
+                  label: Text(context.l10n.actionShare),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildBody(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
@@ -163,36 +243,53 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
         ),
         if (articleInfo.coverImage.isNotEmpty)
           SliverToBoxAdapter(
-            child: Image.network(
-              articleInfo.slicedCoverImage(
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: articleInfo.slicedCoverImage(
                 width: context.mediaQuery.size.width.toPx(),
                 extension: 'image',
               ),
-              fit: BoxFit.cover,
+              fit: BoxFit.fitWidth,
             ),
           ),
-        ValueListenableBuilder<double>(
-          valueListenable: _controller.scrollHeightNotifier,
-          builder: (BuildContext context, double scrollHeight, Widget? child) {
-            return SliverToNestedScrollBoxAdapter(
-              onScrollOffsetChanged: (double scrollOffset) {
-                double y = scrollOffset;
-                if (Platform.isAndroid) {
-                  // https://github.com/flutter/flutter/issues/75841
-                  y *= ui.window.devicePixelRatio;
-                }
-                _controller.controller?.scrollTo(x: 0, y: y.ceil());
-              },
-              childExtent: scrollHeight,
-              child: child,
-            );
-          },
-          child: JJWebView(
-            controller: _controller,
-            isWebViewOnly: true,
-            enableProgressBar: false,
+        if (!_hasContentLoaded)
+          SliverToBoxAdapter(
+            child: Container(
+              alignment: Alignment.center,
+              color: context.theme.scaffoldBackgroundColor,
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              child: const CupertinoActivityIndicator(),
+            ),
           ),
-        ),
+        if (_controller != null)
+          ValueListenableBuilder<double>(
+            valueListenable: _controller!.scrollHeightNotifier,
+            builder:
+                (BuildContext context, double scrollHeight, Widget? child) {
+              return SliverToNestedScrollBoxAdapter(
+                onScrollOffsetChanged: (double scrollOffset) {
+                  double y = scrollOffset;
+                  if (Platform.isAndroid) {
+                    // https://github.com/flutter/flutter/issues/75841
+                    y *= ui.window.devicePixelRatio;
+                  }
+                  _controller!.controller?.scrollTo(x: 0, y: y.ceil());
+                },
+                childExtent: scrollHeight,
+                child: child,
+              );
+            },
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: _hasContentLoaded ? 1 : 0,
+              child: JJWebView(
+                controller: _controller,
+                isWebViewOnly: true,
+                enableProgressBar: false,
+              ),
+            ),
+          ),
+        SliverGap.v(_bottomBarHeight + context.mediaQuery.viewPadding.bottom),
       ],
     );
   }
@@ -214,8 +311,9 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       ),
       body: Stack(
         children: <Widget>[
-          if (_detail != null) _buildBody(context),
-          if (_detail == null || !_hasContentLoaded)
+          if (_detail != null)
+            _buildBody(context)
+          else
             Container(
               alignment: Alignment.center,
               color: context.theme.scaffoldBackgroundColor,
@@ -223,7 +321,47 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 color: context.theme.primaryColor,
               ),
             ),
+          _buildBottomBar(context),
         ],
+      ),
+    );
+  }
+}
+
+class _IconAction extends StatelessWidget {
+  const _IconAction({
+    Key? key,
+    required this.icon,
+    required this.label,
+    this.semanticsLabel,
+    this.onTap,
+  }) : super(key: key);
+
+  final Widget icon;
+  final Text label;
+  final String? semanticsLabel;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Semantics(
+          label: semanticsLabel ?? label.data,
+          button: true,
+          child: Container(
+            color: Colors.transparent,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon,
+                const Gap.h(4),
+                label,
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

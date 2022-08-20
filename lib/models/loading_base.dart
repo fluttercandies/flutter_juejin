@@ -12,18 +12,25 @@ import '../utils/log_util.dart';
 import 'data_model.dart';
 import 'response_model.dart';
 
+enum CursorType {
+  json,
+  raw,
+}
+
 class LoadingBase<T extends DataModel> extends LoadingMoreBase<T> {
   LoadingBase({
     required this.request,
     this.onRefresh,
     this.onLoadSucceed,
     this.onLoadFailed,
+    this.cursorType = CursorType.json,
   });
 
   Future<ResponseModel<T>> Function(int page, String? lastId) request;
   final VoidCallback? onRefresh;
   final Function(LoadingBase<T> lb, bool isMore)? onLoadSucceed;
   final Function(LoadingBase<T> lb, bool isMore, Object e)? onLoadFailed;
+  final CursorType cursorType;
 
   int total = 0;
   int page = 1;
@@ -55,7 +62,9 @@ class LoadingBase<T extends DataModel> extends LoadingMoreBase<T> {
         addAll(response.models!);
         total = response.total!;
         page = response.page ?? newPage;
-        lastId = _decodeCursor(response.cursor)?['v'];
+        lastId = cursorType == CursorType.json
+            ? (_decodeCursor(response.cursor)?['v'])
+            : response.cursor;
         canRequestMore = response.canLoadMore;
         onLoadSucceed?.call(this, isLoadMoreAction);
       } else {

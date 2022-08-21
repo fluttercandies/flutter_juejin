@@ -29,9 +29,13 @@ class RecommendAPI {
     );
   }
 
+  /// [sortType] 200: Hot Recommend Post
+  /// [sortType] 300: Newest Recommend Post
+  ///
   static Future<ResponseModel<PinItemModel>> getRecommendPins({
     String? lastId,
     int limit = 20,
+    int sortType = 300
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,
@@ -39,7 +43,7 @@ class RecommendAPI {
       body: <String, dynamic>{
         'cursor': cursorFromLastIdAndLimit(lastId, limit),
         'limit': limit,
-        'sort_type': 300,
+        'sort_type': sortType,
       },
     );
   }

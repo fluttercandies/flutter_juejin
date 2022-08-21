@@ -19,11 +19,87 @@ class PinsPage extends StatefulWidget {
 }
 
 class _PinsPageState extends State<PinsPage> {
-  late final LoadingBase<PinItemModel> _lb = LoadingBase(
+  LoadingBase<PinItemModel> _lb = LoadingBase(
     request: (_, String? lastId) => RecommendAPI.getRecommendPins(
       lastId: lastId,
+      sortType: 200,
     ),
   );
+
+  set lb(LoadingBase<PinItemModel> value) {
+    _lb = value;
+  }
+
+  bool _hotPin = false;
+
+  Widget _buildPinSelectedSwitch(BuildContext context) {
+    return Container(
+      width: 80,
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      decoration: BoxDecoration(
+          borderRadius: RadiusConstants.r20,
+          color: Colors.grey[200]
+      ),
+      child: Stack(
+        alignment: _hotPin ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(2.0),
+            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0,),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => safeSetState(() {
+                    _hotPin = false;
+                    _lb = LoadingBase(
+                      request: (_, String? lastId) => RecommendAPI.getRecommendPins(
+                        lastId: lastId,
+                      ),
+                    );
+                  }),
+                  child: Text(
+                    '最新',
+                    style: context.textTheme.caption,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => safeSetState(() {
+                    _hotPin = true;
+                    _lb = LoadingBase(
+                      request: (_, String? lastId) => RecommendAPI.getRecommendPins(
+                        lastId: lastId,
+                        sortType: 200,
+                      ),
+                    );
+                  }),
+                  child: Text(
+                    '热门',
+                    style: context.textTheme.caption,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: _hotPin ? Alignment.centerRight : Alignment.centerLeft,
+            width: 35,
+            height: 20,
+            decoration: const BoxDecoration(
+              borderRadius: RadiusConstants.r10,
+              color: Colors.white,
+            ),
+            child: Center(
+              child: Text(
+                _hotPin ? '热门' : '最新',
+                style: context.textTheme.caption,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +109,27 @@ class _PinsPageState extends State<PinsPage> {
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
             child: JJLogo(),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+            padding: const EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              borderRadius: RadiusConstants.r10,
+              color: context.theme.cardColor,
+            ),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    '排序',
+                    style: context.textTheme.caption?.copyWith(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                _buildPinSelectedSwitch(context),
+              ],
+            ),
           ),
           Expanded(
             child: RefreshListWrapper(
@@ -132,19 +229,19 @@ class _PinItemWidget extends StatelessWidget {
       children: pinInfo.picList
           .map(
             (String p) => FractionallySizedBox(
-              widthFactor: 1 / 3,
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: ClipRRect(
-                    borderRadius: RadiusConstants.r6,
-                    child: Image.network(p, fit: BoxFit.cover),
-                  ),
-                ),
+          widthFactor: 1 / 3,
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: ClipRRect(
+                borderRadius: RadiusConstants.r6,
+                child: Image.network(p, fit: BoxFit.cover),
               ),
             ),
-          )
+          ),
+        ),
+      )
           .toList(),
     );
   }

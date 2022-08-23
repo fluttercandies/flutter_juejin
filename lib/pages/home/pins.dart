@@ -7,7 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
-import '../pin/comments.dart';
+import '../components/comments.dart';
 
 const _pinContentMaxLines = 3;
 
@@ -384,8 +384,11 @@ class _PinItemWidget extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
-            builder: (context) =>
-                CommentsWidget(pin.msgId, count: pinInfo.commentCount),
+            builder: (context) => CommentsWidget(
+              pin.msgId,
+              count: pinInfo.commentCount,
+              type: FeedItemType.pin,
+            ),
           );
         },
         child: Container(

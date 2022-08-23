@@ -3,12 +3,21 @@
 [![CodeFactor](https://img.shields.io/codefactor/grade/github/fluttercandies/flutter_juejin?logo=codefactor&logoColor=%23ffffff&style=flat-square)](https://www.codefactor.io/repository/github/fluttercandies/flutter_juejin)
 [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/flutter_juejin?logo=github&style=flat-square)](https://github.com/fluttercandies/flutter_juejin/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/flutter_juejin?logo=github&style=flat-square)](https://github.com/fluttercandies/flutter_juejin/network)
-<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="FlutterCandies" title="FlutterCandies"></a>
+
+[![Flutter 掘金客户端](https://img.shields.io/badge/%E5%8A%A0%E5%85%A5QQ%E7%BE%A4-Flutter%20%E6%8E%98%E9%87%91%E5%AE%A2%E6%88%B7%E7%AB%AF-1e80ff)](https://jq.qq.com/?_wv=1027&k=2iGjTnKs)
+[![FlutterCandies](https://img.shields.io/badge/%E5%8A%A0%E5%85%A5QQ%E7%BE%A4-FlutterCandies-f07a70)](https://jq.qq.com/?_wv=1027&k=5bcc0gy)
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 The Flutter App that reimplemented [Xitu Juejin (稀土掘金)](https://juejin.cn).
+
+## Screenshots 📸
+
+> 🚧 Work in progress.
+
+## Notices ⚠️
 
 **Notice for Windows developers:** If you're developing on Windows, set `core.autocrlf` to true before any runs.
 
@@ -16,10 +25,6 @@ The Flutter App that reimplemented [Xitu Juejin (稀土掘金)](https://juejin.c
 git config core.autocrlf true
 git add --renormalize .
 ```
-
-## Screenshots 📸
-
-> 🚧 Work in progress.
 
 ## Contributors ✨
 

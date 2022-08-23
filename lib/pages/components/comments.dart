@@ -20,7 +20,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
   late final LoadingBase<CommentItemModel> _lb = LoadingBase(
     cursorType: CursorType.raw,
     request: (_, String? lastId) => InteractAPI.getCommentByTypeAndId(
-      type: FeedItemType.article,
+      type: widget.type,
       id: widget.id,
       lastId: lastId,
     ),

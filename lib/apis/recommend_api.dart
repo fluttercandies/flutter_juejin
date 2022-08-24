@@ -135,15 +135,8 @@ class RecommendAPI {
     );
   }
 
-  static Future<ResponseModel<Category>> getCategories() {
-    return HttpUtil.fetchModel(
-      FetchType.get,
-      url: '$_api/query_category_briefs',
-    );
-  }
-
   static Future<ResponseModel<Tag>> getRecommendTags({
-    int cateId = 2,
+    required String cateId,
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,

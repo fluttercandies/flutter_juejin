@@ -12,29 +12,83 @@ class ArticlesPage extends StatefulWidget {
   State<ArticlesPage> createState() => _ArticlesPageState();
 }
 
-class _ArticlesPageState extends State<ArticlesPage> {
-  late final LoadingBase<FeedModel> _lb = LoadingBase(
-    request: (_, String? lastId) => RecommendAPI.getAllFeedArticles(
-      lastId: lastId,
-    ),
-  );
-
+class _ArticlesPageState extends State<ArticlesPage>
+    with TickerProviderStateMixin {
   final searchTextController = TextEditingController();
   bool searchHasText = false;
 
-  Widget itemBuilder(final FeedModel model) {
-    final Object feed = model.itemInfo;
-    if (feed is ArticleItemModel) {
-      return _ArticleWidget(feed, key: ValueKey<String>(feed.articleId));
+  /// tabbar trigger the page change
+  bool tabTrigger = false;
+
+  int pageIndex = 1;
+  late PageController pageController;
+  late TabController tabController;
+  final tabs = <Widget>[
+    const Tab(text: '关注'),
+    const Tab(text: '推荐'),
+  ];
+
+  final pages = <Widget>[
+    const _ArticleTabPage<ArticleItemModel>(isFollow: true),
+    const _ArticleTabPage<FeedModel>(),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_getCates);
+
+    pageController = PageController(initialPage: pageIndex);
+    tabController = TabController(
+        length: tabs.length, vsync: this, initialIndex: pageIndex);
+    pageController.addListener(_onPageChange);
+    tabController.addListener(_onTabChange);
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    tabController.dispose();
+    super.dispose();
+  }
+
+  void _onTabChange() {}
+
+  void _onPageChange() {
+    if (tabTrigger) {
+      return;
     }
-    if (feed is AdvertiseItemModel) {
-      return _AdvertiseWidget(feed, key: ValueKey<String>(feed.advertId));
+    final offset = (pageController.page ?? 0) - pageIndex;
+
+    if (offset >= 0.99) {
+      pageIndex = (pageController.page ?? 0).round();
+      tabController.index = pageIndex;
+    } else if (offset <= -0.99) {
+      pageIndex = (pageController.page ?? 0).round();
+      tabController.index = pageIndex;
+    } else {
+      tabController.offset = offset;
     }
-    return Text(
-      feed.toString(),
-      maxLines: 5,
-      overflow: TextOverflow.ellipsis,
-    );
+  }
+
+  Future<void> _getCates(t) async {
+    final cates = await TagAPI.getCategories();
+    if (cates.isSucceed) {
+      for (final cate in cates.models ?? <Category>[]) {
+        tabs.add(Tab(text: cate.categoryName));
+        pages.add(_ArticleTabPage<ArticleItemModel>(cateId: cate.categoryId));
+      }
+
+      tabController.dispose();
+      tabController = TabController(
+        length: tabs.length,
+        vsync: this,
+        initialIndex: pageIndex,
+      );
+      setState(() {});
+    } else {
+      LogUtil.e(cates.msg);
+    }
   }
 
   Widget _buildSearch(BuildContext context) {
@@ -86,6 +140,37 @@ class _ArticlesPageState extends State<ArticlesPage> {
     );
   }
 
+  Widget buildCatalog(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: TabBar(
+            isScrollable: true,
+            controller: tabController,
+            indicatorColor: context.theme.primaryColor,
+            onTap: (index) {
+              tabTrigger = true;
+              pageIndex = index;
+              pageController
+                  .animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeIn,
+              )
+                  .whenComplete(() {
+                tabTrigger = false;
+              });
+            },
+            tabs: tabs,
+          ),
+        ),
+        GestureDetector(
+          child: const Icon(Icons.menu),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -110,16 +195,144 @@ class _ArticlesPageState extends State<ArticlesPage> {
               ],
             ),
           ),
+          buildCatalog(context),
           Expanded(
-            child: RefreshListWrapper(
-              loadingBase: _lb,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              itemBuilder: itemBuilder,
-              dividerBuilder: (_, __) => const Gap.v(8),
+            child: PageView(
+              controller: pageController,
+              children: pages,
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
+  const _ArticleTabPage({
+    Key? key,
+    this.isFollow = false,
+    this.cursorType = CursorType.raw,
+    this.cateId,
+  }) : super(key: key);
+
+  final bool isFollow;
+
+  final String? cateId;
+
+  final CursorType cursorType;
+
+  @override
+  State<_ArticleTabPage<T>> createState() => __ArticleTabPageState<T>();
+}
+
+class __ArticleTabPageState<T extends DataModel>
+    extends State<_ArticleTabPage<T>> with AutomaticKeepAliveClientMixin {
+  late final LoadingBase<T> _lb = LoadingBase(
+    cursorType: widget.cursorType,
+    request: (_, String? lastId) => RecommendAPI.getArticles<T>(
+      isFollow: widget.isFollow,
+      lastId: lastId,
+      cateId: widget.cateId,
+      tagId: tagId,
+    ),
+  );
+
+  String? tagId;
+  List<Tag>? tags;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.cateId != null) {
+      WidgetsBinding.instance.addPostFrameCallback(_loadTags);
+    }
+  }
+
+  Future<void> _loadTags(t) async {
+    final result = await RecommendAPI.getRecommendTags(cateId: widget.cateId!);
+    if (result.isSucceed) {
+      tags = result.models;
+      setState(() {});
+    } else {
+      LogUtil.e(result.msg);
+    }
+  }
+
+  Widget _buildTags() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          for (final tag in tags!)
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    if (tagId == tag.tagId) {
+                      tagId = null;
+                    } else {
+                      tagId = tag.tagId;
+                    }
+                    _lb.refresh(true);
+                  });
+                },
+                style: TextButton.styleFrom(
+                  primary: tagId == tag.tagId
+                      ? context.theme.primaryColor
+                      : context.colorScheme.outline,
+                  backgroundColor: context.colorScheme.surface,
+                  shape: const StadiumBorder(),
+                  visualDensity: VisualDensity.compact,
+                  textStyle: context.textTheme.caption,
+                ),
+                child: Text(tag.tagName),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget itemBuilder(final T model) {
+    if (model is FeedModel) {
+      final Object feed = model.itemInfo;
+      if (feed is ArticleItemModel) {
+        return _ArticleWidget(feed, key: ValueKey<String>(feed.articleId));
+      }
+      if (feed is AdvertiseItemModel) {
+        return _AdvertiseWidget(feed, key: ValueKey<String>(feed.advertId));
+      }
+    } else if (model is ArticleItemModel) {
+      return _ArticleWidget(model, key: ValueKey<String>(model.articleId));
+    }
+    return Text(
+      model.toString(),
+      maxLines: 5,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Column(
+      children: [
+        if (widget.cateId != null && tags != null && tags!.isNotEmpty)
+          _buildTags(),
+        Expanded(
+          child: RefreshListWrapper<T>(
+            loadingBase: _lb,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            itemBuilder: itemBuilder,
+            dividerBuilder: (_, __) => const Gap.v(8),
+          ),
+        ),
+      ],
     );
   }
 }

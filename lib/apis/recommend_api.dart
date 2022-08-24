@@ -23,7 +23,7 @@ class RecommendAPI {
   static const String _articles = '$_api/article';
   static const String _pins = '$_api/short_msg';
 
-  static Future<ResponseModel<FeedModel>> getArticles({
+  static Future<ResponseModel<T>> getArticles<T extends DataModel>({
     bool isFollow = false,
     String? lastId,
     String? cateId,
@@ -37,7 +37,7 @@ class RecommendAPI {
         lastId: lastId,
         idType: idType,
         limit: limit,
-      );
+      ) as Future<ResponseModel<T>>;
     }
     if (cateId != null) {
       if (tagId != null) {
@@ -48,7 +48,7 @@ class RecommendAPI {
           idType: idType,
           limit: limit,
           sortType: sortType,
-        );
+        ) as Future<ResponseModel<T>>;
       } else {
         return getRecommendCateFeedArticles(
           lastId: lastId,
@@ -56,10 +56,11 @@ class RecommendAPI {
           idType: idType,
           limit: limit,
           sortType: sortType,
-        );
+        ) as Future<ResponseModel<T>>;
       }
     }
-    return getAllFeedArticles(lastId: lastId, limit: limit);
+    return getAllFeedArticles(lastId: lastId, limit: limit)
+        as Future<ResponseModel<T>>;
   }
 
   static Future<ResponseModel<FeedModel>> getAllFeedArticles({
@@ -77,7 +78,8 @@ class RecommendAPI {
     );
   }
 
-  static Future<ResponseModel<FeedModel>> getRecommendFollowFeedArticles({
+  static Future<ResponseModel<ArticleItemModel>>
+      getRecommendFollowFeedArticles({
     String? lastId,
     int idType = 2,
     int limit = 20,
@@ -93,7 +95,7 @@ class RecommendAPI {
     );
   }
 
-  static Future<ResponseModel<FeedModel>> getRecommendCateFeedArticles({
+  static Future<ResponseModel<ArticleItemModel>> getRecommendCateFeedArticles({
     String? lastId,
     required String cateId,
     int idType = 2,
@@ -113,7 +115,8 @@ class RecommendAPI {
     );
   }
 
-  static Future<ResponseModel<FeedModel>> getRecommendCateTagFeedArticles({
+  static Future<ResponseModel<ArticleItemModel>>
+      getRecommendCateTagFeedArticles({
     String? lastId,
     required String cateId,
     required String tagId,

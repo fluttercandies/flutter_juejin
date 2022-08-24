@@ -79,7 +79,11 @@ class _ArticlesPageState extends State<ArticlesPage>
     if (cates.isSucceed) {
       for (final cate in cates.models ?? <Category>[]) {
         tabs.add(Tab(text: cate.categoryName));
-        pages.add(_ArticleTabPage<ArticleItemModel>(cateId: cate.categoryId));
+        pages.add(
+          _ArticleTabPage<ArticleItemModel>(
+            categoryId: cate.categoryId,
+          ),
+        );
       }
 
       tabController.dispose();
@@ -186,18 +190,18 @@ class _ArticlesPageState extends State<ArticlesPage>
             height: kToolbarHeight,
             child: Row(
               children: [
-                const SizedBox(width: 16),
+                const Gap.h(16),
                 const JJLogo(heroTag: defaultLogoHeroTag),
-                const SizedBox(width: 16),
+                const Gap.h(16),
                 Expanded(
                   child: _buildSearch(context),
                 ),
-                const SizedBox(width: 16),
+                const Gap.h(16),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.search),
                 ),
-                const SizedBox(width: 16),
+                const Gap.h(16),
               ],
             ),
           ),
@@ -219,12 +223,12 @@ class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
     Key? key,
     this.isFollow = false,
     this.cursorType = CursorType.raw,
-    this.cateId,
+    this.categoryId,
   }) : super(key: key);
 
   final bool isFollow;
 
-  final String? cateId;
+  final String? categoryId;
 
   final CursorType cursorType;
 
@@ -239,7 +243,7 @@ class __ArticleTabPageState<T extends DataModel>
     request: (_, String? lastId) => RecommendAPI.getArticles<T>(
       isFollow: widget.isFollow,
       lastId: lastId,
-      cateId: widget.cateId,
+      categoryId: widget.categoryId,
       tagId: tagId,
     ),
   );
@@ -253,16 +257,19 @@ class __ArticleTabPageState<T extends DataModel>
   @override
   void initState() {
     super.initState();
-    if (widget.cateId != null) {
+    if (widget.categoryId != null) {
       WidgetsBinding.instance.addPostFrameCallback(_loadTags);
     }
   }
 
   Future<void> _loadTags(t) async {
-    final result = await RecommendAPI.getRecommendTags(cateId: widget.cateId!);
+    final result = await RecommendAPI.getRecommendTags(
+      categoryId: widget.categoryId!,
+    );
     if (result.isSucceed) {
-      tags = result.models;
-      setState(() {});
+      setState(() {
+        tags = result.models;
+      });
     } else {
       LogUtil.e(result.msg);
     }
@@ -328,7 +335,7 @@ class __ArticleTabPageState<T extends DataModel>
     super.build(context);
     return Column(
       children: [
-        if (widget.cateId != null && tags != null && tags!.isNotEmpty)
+        if (widget.categoryId != null && tags != null && tags!.isNotEmpty)
           _buildTags(),
         Expanded(
           child: RefreshListWrapper<T>(

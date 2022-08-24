@@ -41,7 +41,11 @@ class HttpUtil {
   );
 
   static Future<void> init() async {
-    final Directory temporaryDir = await getTemporaryDirectory();
+    initFromDirectory(await getTemporaryDirectory());
+  }
+
+  @visibleForTesting
+  static void initFromDirectory(Directory temporaryDir) {
     final String cookiesPath = '${temporaryDir.path}/persist_cookies/';
     Directory(cookiesPath).createSync(recursive: true);
     cookieJar = PersistCookieJar(storage: FileStorage(cookiesPath));

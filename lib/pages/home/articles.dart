@@ -40,7 +40,10 @@ class _ArticlesPageState extends State<ArticlesPage>
 
     pageController = PageController(initialPage: pageIndex);
     tabController = TabController(
-        length: tabs.length, vsync: this, initialIndex: pageIndex);
+      length: tabs.length,
+      vsync: this,
+      initialIndex: pageIndex,
+    );
     pageController.addListener(_onPageChange);
     tabController.addListener(_onTabChange);
   }
@@ -165,7 +168,10 @@ class _ArticlesPageState extends State<ArticlesPage>
           ),
         ),
         GestureDetector(
-          child: const Icon(Icons.menu),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Icon(Icons.menu, size: 24),
+          ),
         ),
       ],
     );

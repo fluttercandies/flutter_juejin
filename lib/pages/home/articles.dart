@@ -239,7 +239,7 @@ class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
 class __ArticleTabPageState<T extends DataModel>
     extends State<_ArticleTabPage<T>> with AutomaticKeepAliveClientMixin {
   late final LoadingBase<T> _lb = LoadingBase(
-    cursorType: widget.cursorType,
+    getCursorType: () => tagId == null ? widget.cursorType : CursorType.raw,
     request: (_, String? lastId) => RecommendAPI.getArticles<T>(
       isFollow: widget.isFollow,
       lastId: lastId,

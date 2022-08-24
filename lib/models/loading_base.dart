@@ -23,14 +23,14 @@ class LoadingBase<T extends DataModel> extends LoadingMoreBase<T> {
     this.onRefresh,
     this.onLoadSucceed,
     this.onLoadFailed,
-    this.cursorType = CursorType.json,
+    this.getCursorType,
   });
 
   Future<ResponseModel<T>> Function(int page, String? lastId) request;
   final VoidCallback? onRefresh;
   final Function(LoadingBase<T> lb, bool isMore)? onLoadSucceed;
   final Function(LoadingBase<T> lb, bool isMore, Object e)? onLoadFailed;
-  final CursorType cursorType;
+  final CursorType Function()? getCursorType;
 
   int total = 0;
   int page = 1;
@@ -62,9 +62,9 @@ class LoadingBase<T extends DataModel> extends LoadingMoreBase<T> {
         addAll(response.models!);
         total = response.total!;
         page = response.page ?? newPage;
-        lastId = cursorType == CursorType.json
-            ? (_decodeCursor(response.cursor)?['v'])
-            : response.cursor;
+        lastId = getCursorType?.call() != CursorType.json
+            ? response.cursor
+            : (_decodeCursor(response.cursor)?['v']);
         canRequestMore = response.canLoadMore;
         onLoadSucceed?.call(this, isLoadMoreAction);
       } else {

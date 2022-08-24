@@ -17,6 +17,13 @@ class _ArticlesPageState extends State<ArticlesPage>
   final searchTextController = TextEditingController();
   bool searchHasText = false;
 
+  late final toolBarHeight = AnimationController(
+    vsync: this,
+    upperBound: kToolbarHeight,
+    value: kToolbarHeight,
+    duration: const Duration(milliseconds: 300),
+  );
+
   /// tabbar trigger the page change
   bool tabTrigger = false;
 
@@ -102,45 +109,56 @@ class _ArticlesPageState extends State<ArticlesPage>
     final headTextColor = (context.theme.appBarTheme.foregroundColor ??
             context.theme.colorScheme.onSecondary)
         .withAlpha(150);
-    return TextField(
-      controller: searchTextController,
-      style: context.textTheme.subtitle2?.copyWith(
-        color: headTextColor,
-      ),
-      strutStyle: const StrutStyle(height: 1),
-      onChanged: (v) {
-        if (searchHasText && v.isEmpty) {
-          setState(() {
-            searchHasText = false;
-          });
-        } else if (!searchHasText && v.isNotEmpty) {
-          setState(() {
-            searchHasText = true;
-          });
-        }
-      },
-      decoration: InputDecoration(
-        isDense: true,
-        prefixIcon: Icon(
-          Icons.search,
+    return Center(
+      child: TextField(
+        controller: searchTextController,
+        style: context.textTheme.subtitle2?.copyWith(
           color: headTextColor,
         ),
-        suffixIcon: searchHasText
-            ? Icon(
-                Icons.close,
-                color: headTextColor,
-              )
-            : null,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(100),
-          borderSide: BorderSide(
+        strutStyle: const StrutStyle(height: 1),
+        scrollPadding: EdgeInsets.zero,
+        onChanged: (v) {
+          if (searchHasText && v.isEmpty) {
+            setState(() {
+              searchHasText = false;
+            });
+          } else if (!searchHasText && v.isNotEmpty) {
+            setState(() {
+              searchHasText = true;
+            });
+          }
+        },
+        decoration: InputDecoration(
+          isDense: true,
+          prefixIcon: Icon(
+            Icons.search,
             color: headTextColor,
           ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(100),
-          borderSide: BorderSide(
-            color: headTextColor,
+          suffixIcon: searchHasText
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      searchTextController.clear();
+                    });
+                  },
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(
+                    Icons.close,
+                    color: headTextColor,
+                  ),
+                )
+              : null,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(100),
+            borderSide: BorderSide(
+              color: headTextColor,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(100),
+            borderSide: BorderSide(
+              color: headTextColor,
+            ),
           ),
         ),
       ),
@@ -181,35 +199,121 @@ class _ArticlesPageState extends State<ArticlesPage>
     );
   }
 
+  double? lastPositionPixel;
+
+  /// Notify the search header to show or hide
+  bool handleNotify(ScrollNotification notification) {
+    if (notification.metrics.axis != Axis.vertical) {
+      return false;
+    }
+
+    int direction =
+        notification.metrics.axisDirection == AxisDirection.down ? 1 : -1;
+    double? computedValue;
+    //if (toolBarHeight.isAnimating) toolBarHeight.stop();
+    if (notification is ScrollStartNotification) {
+      lastPositionPixel = notification.metrics.pixels;
+    } else if (notification is ScrollUpdateNotification) {
+      final scrollPixel = notification.scrollDelta! * direction;
+
+      /// Scroll reached top, only need to show
+      if (notification.metrics.extentBefore <= 0) {
+        toolBarHeight.animateTo(kToolbarHeight, curve: Curves.easeOut);
+        return true;
+      }
+
+      /// Scroll reached bottom, only need to hide
+      if (notification.metrics.extentAfter <= 0) {
+        toolBarHeight.animateTo(0, curve: Curves.easeOut);
+        return true;
+      }
+      if (scrollPixel <= 0 && toolBarHeight.value >= kToolbarHeight) {
+        return true;
+      }
+      if (scrollPixel >= 0 && toolBarHeight.value <= 0) {
+        return true;
+      }
+
+      // No animate duration scrolling
+      toolBarHeight
+        ..stop()
+        ..animateTo(
+          toolBarHeight.value - scrollPixel,
+          duration: Duration.zero,
+        );
+    } else if (notification is OverscrollNotification) {
+      if (toolBarHeight.value < kToolbarHeight && notification.overscroll < 0) {
+        computedValue =
+            (notification.overscroll) * direction < 0 ? kToolbarHeight : 0;
+      }
+    } else if (notification is ScrollEndNotification) {
+      if (toolBarHeight.value > 0 && toolBarHeight.value < kToolbarHeight) {
+        final primaryVelocity =
+            (notification.dragDetails?.primaryVelocity ?? 0.0) * direction;
+        if (primaryVelocity != 0) {
+          computedValue = primaryVelocity > 0 ? 0 : kToolbarHeight;
+        } else if (lastPositionPixel != null) {
+          computedValue =
+              (notification.metrics.pixels - lastPositionPixel!) * direction < 0
+                  ? kToolbarHeight
+                  : 0;
+        }
+      }
+    }
+    if (computedValue != null) {
+      toolBarHeight.animateTo(computedValue, curve: Curves.easeOut);
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         children: <Widget>[
-          SizedBox(
-            height: kToolbarHeight,
-            child: Row(
-              children: [
-                const Gap.h(16),
-                const JJLogo(heroTag: defaultLogoHeroTag),
-                const Gap.h(16),
-                Expanded(
-                  child: _buildSearch(context),
+          ValueListenableBuilder<double>(
+            valueListenable: toolBarHeight,
+            builder: (context, value, child) {
+              return SizedBox(
+                height: value,
+                child: child,
+              );
+            },
+            child: SingleChildScrollView(
+              reverse: true,
+              physics: const NeverScrollableScrollPhysics(),
+              child: SizedBox(
+                height: kToolbarHeight,
+                child: Row(
+                  children: [
+                    const Gap.h(16),
+                    const JJLogo(heroTag: defaultLogoHeroTag),
+                    const Gap.h(16),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: _buildSearch(context),
+                      ),
+                    ),
+                    const Gap.h(16),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.search),
+                    ),
+                    const Gap.h(16),
+                  ],
                 ),
-                const Gap.h(16),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.search),
-                ),
-                const Gap.h(16),
-              ],
+              ),
             ),
           ),
           buildCatalog(context),
           Expanded(
-            child: PageView(
-              controller: pageController,
-              children: pages,
+            child: NotificationListener<ScrollNotification>(
+              onNotification: handleNotify,
+              child: PageView(
+                controller: pageController,
+                children: pages,
+              ),
             ),
           ),
         ],

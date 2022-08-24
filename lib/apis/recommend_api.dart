@@ -23,6 +23,45 @@ class RecommendAPI {
   static const String _articles = '$_api/article';
   static const String _pins = '$_api/short_msg';
 
+  static Future<ResponseModel<FeedModel>> getArticles({
+    bool isFollow = false,
+    String? lastId,
+    String? cateId,
+    String? tagId,
+    int sortType = 200,
+    int limit = 20,
+    int idType = 2,
+  }) {
+    if (isFollow) {
+      return getRecommendFollowFeedArticles(
+        lastId: lastId,
+        idType: idType,
+        limit: limit,
+      );
+    }
+    if (cateId != null) {
+      if (tagId != null) {
+        return getRecommendCateTagFeedArticles(
+          lastId: lastId,
+          cateId: cateId,
+          tagId: tagId,
+          idType: idType,
+          limit: limit,
+          sortType: sortType,
+        );
+      } else {
+        return getRecommendCateFeedArticles(
+          lastId: lastId,
+          cateId: cateId,
+          idType: idType,
+          limit: limit,
+          sortType: sortType,
+        );
+      }
+    }
+    return getAllFeedArticles(lastId: lastId, limit: limit);
+  }
+
   static Future<ResponseModel<FeedModel>> getAllFeedArticles({
     String? lastId,
     int limit = 20,
@@ -34,6 +73,83 @@ class RecommendAPI {
         'cursor': cursorFromLastIdAndLimit(lastId, limit),
         'limit': limit,
         'sort_type': 200,
+      },
+    );
+  }
+
+  static Future<ResponseModel<FeedModel>> getRecommendFollowFeedArticles({
+    String? lastId,
+    int idType = 2,
+    int limit = 20,
+  }) {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_articles/recommend_follow_feed',
+      body: <String, dynamic>{
+        'cursor': lastId,
+        'limit': limit,
+        'id_type': idType,
+      },
+    );
+  }
+
+  static Future<ResponseModel<FeedModel>> getRecommendCateFeedArticles({
+    String? lastId,
+    required String cateId,
+    int idType = 2,
+    int limit = 20,
+    int sortType = 200,
+  }) {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_articles/recommend_cate_feed',
+      body: <String, dynamic>{
+        'cate_id': cateId,
+        'cursor': lastId,
+        'id_type': idType,
+        'limit': limit,
+        'sort_type': sortType,
+      },
+    );
+  }
+
+  static Future<ResponseModel<FeedModel>> getRecommendCateTagFeedArticles({
+    String? lastId,
+    required String cateId,
+    required String tagId,
+    int idType = 2,
+    int limit = 20,
+    int sortType = 200,
+  }) {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_articles/recommend_cate_tag_feed',
+      body: <String, dynamic>{
+        'cate_id': cateId,
+        'tag_id': tagId,
+        'cursor': lastId,
+        'id_type': idType,
+        'limit': limit,
+        'sort_type': sortType,
+      },
+    );
+  }
+
+  static Future<ResponseModel<Category>> getCategories() {
+    return HttpUtil.fetchModel(
+      FetchType.get,
+      url: '$_api/query_category_briefs',
+    );
+  }
+
+  static Future<ResponseModel<Tag>> getRecommendTags({
+    int cateId = 2,
+  }) {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_api/tag/recommend_tag_list',
+      body: <String, dynamic>{
+        'cate_id': cateId,
       },
     );
   }

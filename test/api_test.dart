@@ -17,7 +17,7 @@ void main() {
   );
   HttpUtil.initFromDirectory(Directory.systemTemp);
 
-  test('api', () async {
+  test('RecommendAPI', () async {
     final cates = await RecommendAPI.getAllFeedArticles();
     assert(cates.isSucceed);
   });

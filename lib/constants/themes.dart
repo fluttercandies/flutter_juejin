@@ -50,6 +50,7 @@ ThemeData themeBy({
     dividerColor: tg.dividerColor,
     appBarTheme: AppBarTheme(
       color: tg.cardColor,
+      foregroundColor: tg.primaryTextColor,
       elevation: 0.5,
       iconTheme: IconThemeData(color: tg.primaryTextColor),
     ),

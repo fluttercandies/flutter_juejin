@@ -19,6 +19,9 @@ class _ArticlesPageState extends State<ArticlesPage> {
     ),
   );
 
+  final searchTextController = TextEditingController();
+  bool searchHasText = false;
+
   Widget itemBuilder(final FeedModel model) {
     final Object feed = model.itemInfo;
     if (feed is ArticleItemModel) {
@@ -34,14 +37,78 @@ class _ArticlesPageState extends State<ArticlesPage> {
     );
   }
 
+  Widget _buildSearch(BuildContext context) {
+    final headTextColor = (context.theme.appBarTheme.foregroundColor ??
+            context.theme.colorScheme.onSecondary)
+        .withAlpha(150);
+    return TextField(
+      controller: searchTextController,
+      style: context.textTheme.subtitle2?.copyWith(
+        color: headTextColor,
+      ),
+      strutStyle: const StrutStyle(height: 1),
+      onChanged: (v) {
+        if (searchHasText && v.isEmpty) {
+          setState(() {
+            searchHasText = false;
+          });
+        } else if (!searchHasText && v.isNotEmpty) {
+          setState(() {
+            searchHasText = true;
+          });
+        }
+      },
+      decoration: InputDecoration(
+        isDense: true,
+        prefixIcon: Icon(
+          Icons.search,
+          color: headTextColor,
+        ),
+        suffixIcon: searchHasText
+            ? Icon(
+                Icons.close,
+                color: headTextColor,
+              )
+            : null,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(100),
+          borderSide: BorderSide(
+            color: headTextColor,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(100),
+          borderSide: BorderSide(
+            color: headTextColor,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: JJLogo(heroTag: defaultLogoHeroTag),
+          SizedBox(
+            height: kToolbarHeight,
+            child: Row(
+              children: [
+                const SizedBox(width: 16),
+                const JJLogo(heroTag: defaultLogoHeroTag),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildSearch(context),
+                ),
+                const SizedBox(width: 16),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.search),
+                ),
+                const SizedBox(width: 16),
+              ],
+            ),
           ),
           Expanded(
             child: RefreshListWrapper(

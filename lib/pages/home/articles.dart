@@ -486,7 +486,11 @@ class _ArticleWidget extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Text(article.articleInfo.createTimeString(context)),
+            child: Text(
+              article.articleInfo.createTimeString(context),
+              softWrap: false,
+              overflow: TextOverflow.fade,
+            ),
           ),
         ],
       ),

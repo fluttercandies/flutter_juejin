@@ -112,7 +112,7 @@ class _ArticlesPageState extends State<ArticlesPage>
     return Center(
       child: TextField(
         controller: searchTextController,
-        style: context.textTheme.subtitle2?.copyWith(
+        style: context.textTheme.titleSmall?.copyWith(
           color: headTextColor,
         ),
         strutStyle: const StrutStyle(height: 1),
@@ -210,7 +210,7 @@ class _ArticlesPageState extends State<ArticlesPage>
     int direction =
         notification.metrics.axisDirection == AxisDirection.down ? 1 : -1;
     double? computedValue;
-    //if (toolBarHeight.isAnimating) toolBarHeight.stop();
+
     if (notification is ScrollStartNotification) {
       lastPositionPixel = notification.metrics.pixels;
     } else if (notification is ScrollUpdateNotification) {

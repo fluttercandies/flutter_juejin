@@ -37,6 +37,8 @@ class LoadingBase<T extends DataModel> extends LoadingMoreBase<T> {
   String? lastId;
   bool canRequestMore = true;
 
+  CursorType get cursorType => getCursorType?.call() ?? CursorType.json;
+
   @override
   bool get hasMore => canRequestMore;
 
@@ -62,9 +64,9 @@ class LoadingBase<T extends DataModel> extends LoadingMoreBase<T> {
         addAll(response.models!);
         total = response.total!;
         page = response.page ?? newPage;
-        lastId = getCursorType?.call() != CursorType.json
-            ? response.cursor
-            : (_decodeCursor(response.cursor)?['v']);
+        lastId = cursorType == CursorType.json
+            ? (_decodeCursor(response.cursor)?['v'])
+            : response.cursor;
         canRequestMore = response.canLoadMore;
         onLoadSucceed?.call(this, isLoadMoreAction);
       } else {

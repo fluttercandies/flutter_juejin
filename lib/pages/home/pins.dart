@@ -19,18 +19,17 @@ class PinsPage extends StatefulWidget {
 }
 
 class _PinsPageState extends State<PinsPage> {
-  LoadingBase<PinItemModel> _lb = LoadingBase(
-    request: (_, String? lastId) => RecommendAPI.getRecommendPins(
-      lastId: lastId,
-      sortType: 200,
-    ),
-  );
-
-  set lb(LoadingBase<PinItemModel> value) {
-    _lb = value;
+  SortType _sortType = SortType.newest;
+  set sortType(SortType value) {
+    _sortType = value;
   }
 
-  bool _hotPin = false;
+  late final LoadingBase<PinItemModel> _lb = LoadingBase(
+    request: (_, String? lastId) => RecommendAPI.getRecommendPins(
+      lastId: lastId,
+      sortType: _sortType,
+    ),
+  );
 
   Widget _buildPinSelectedSwitch(BuildContext context) {
     return Container(
@@ -38,10 +37,10 @@ class _PinsPageState extends State<PinsPage> {
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
           borderRadius: RadiusConstants.r20,
-          color: Colors.grey[200]
+          color: Colors.grey[200],
       ),
       child: Stack(
-        alignment: _hotPin ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
+        alignment: _sortType == SortType.hot ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
         children: [
           Container(
             margin: const EdgeInsets.all(2.0),
@@ -51,12 +50,8 @@ class _PinsPageState extends State<PinsPage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () => safeSetState(() {
-                    _hotPin = false;
-                    _lb = LoadingBase(
-                      request: (_, String? lastId) => RecommendAPI.getRecommendPins(
-                        lastId: lastId,
-                      ),
-                    );
+                    _sortType = SortType.newest;
+                    _lb.refresh(true);
                   }),
                   child: Text(
                     '最新',
@@ -65,13 +60,8 @@ class _PinsPageState extends State<PinsPage> {
                 ),
                 GestureDetector(
                   onTap: () => safeSetState(() {
-                    _hotPin = true;
-                    _lb = LoadingBase(
-                      request: (_, String? lastId) => RecommendAPI.getRecommendPins(
-                        lastId: lastId,
-                        sortType: 200,
-                      ),
-                    );
+                    _sortType = SortType.hot;
+                    _lb.refresh(true);
                   }),
                   child: Text(
                     '热门',
@@ -82,7 +72,6 @@ class _PinsPageState extends State<PinsPage> {
             ),
           ),
           Container(
-            alignment: _hotPin ? Alignment.centerRight : Alignment.centerLeft,
             width: 35,
             height: 20,
             decoration: const BoxDecoration(
@@ -91,7 +80,7 @@ class _PinsPageState extends State<PinsPage> {
             ),
             child: Center(
               child: Text(
-                _hotPin ? '热门' : '最新',
+                _sortType == SortType.hot ? '热门' : '最新',
                 style: context.textTheme.caption,
               ),
             ),

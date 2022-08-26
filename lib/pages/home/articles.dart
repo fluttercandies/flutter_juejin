@@ -165,34 +165,48 @@ class _ArticlesPageState extends State<ArticlesPage>
     );
   }
 
-  Widget buildCatalog(BuildContext context) {
-    return Row(
+  Widget _buildCatalog(BuildContext context) {
+    return Stack(
       children: [
-        Expanded(
-          child: TabBar(
-            isScrollable: true,
-            controller: tabController,
-            indicatorColor: context.theme.primaryColor,
-            onTap: (index) {
-              tabTrigger = true;
-              pageIndex = index;
-              pageController
-                  .animateToPage(
-                index,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeIn,
-              )
-                  .whenComplete(() {
-                tabTrigger = false;
-              });
-            },
-            tabs: tabs,
-          ),
+        TabBar(
+          isScrollable: true,
+          controller: tabController,
+          indicatorColor: context.theme.primaryColor,
+          padding: const EdgeInsets.only(right: 48),
+          onTap: (index) {
+            tabTrigger = true;
+            pageIndex = index;
+            pageController
+                .animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeIn,
+            )
+                .whenComplete(() {
+              tabTrigger = false;
+            });
+          },
+          tabs: tabs,
         ),
-        GestureDetector(
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Icon(Icons.menu, size: 24),
+        Positioned(
+          top: 0,
+          bottom: 0,
+          right: 0,
+          child: GestureDetector(
+            child: Container(
+              padding: const EdgeInsets.only(left: 24, right: 8),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    context.colorScheme.background.withAlpha(0),
+                    context.colorScheme.background,
+                    context.colorScheme.background,
+                  ],
+                  stops: const [0, 0.42, 1],
+                ),
+              ),
+              child: const Icon(Icons.menu, size: 24),
+            ),
           ),
         ),
       ],
@@ -306,7 +320,7 @@ class _ArticlesPageState extends State<ArticlesPage>
               ),
             ),
           ),
-          buildCatalog(context),
+          _buildCatalog(context),
           Expanded(
             child: NotificationListener<ScrollNotification>(
               onNotification: handleNotify,
@@ -379,39 +393,126 @@ class __ArticleTabPageState<T extends DataModel>
     }
   }
 
-  Widget _buildTags() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
+  Widget _buildTagDropDown(BuildContext context, OverlayEntry entry) {
+    return Container(
+      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+      color: context.colorScheme.background,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (final tag in tags!)
-            Padding(
-              padding: const EdgeInsets.all(4),
-              child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    if (tagId == tag.tagId) {
-                      tagId = null;
-                    } else {
-                      tagId = tag.tagId;
-                    }
-                    _lb.refresh(true);
-                  });
-                },
-                style: TextButton.styleFrom(
-                  primary: tagId == tag.tagId
-                      ? context.theme.primaryColor
-                      : context.colorScheme.outline,
-                  backgroundColor: context.colorScheme.surface,
-                  shape: const StadiumBorder(),
-                  visualDensity: VisualDensity.compact,
-                  textStyle: context.textTheme.caption,
-                ),
-                child: Text(tag.tagName),
-              ),
+          Expanded(
+            child: Wrap(
+              children: [
+                for (final tag in tags!)
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: TextButton(
+                      onPressed: () {
+                        entry.remove();
+                        setState(() {
+                          if (tagId == tag.tagId) {
+                            tagId = null;
+                          } else {
+                            tagId = tag.tagId;
+                          }
+                          _lb.refresh(true);
+                        });
+                      },
+                      style: TextButton.styleFrom(
+                        primary: tagId == tag.tagId
+                            ? context.theme.primaryColor
+                            : context.colorScheme.outline,
+                        backgroundColor: context.colorScheme.surface,
+                        shape: const StadiumBorder(),
+                        visualDensity: VisualDensity.compact,
+                        textStyle: context.textTheme.caption,
+                      ),
+                      child: Text(tag.tagName),
+                    ),
+                  ),
+              ],
             ),
+          ),
+          GestureDetector(
+            onTap: () {
+              entry.remove();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: const Icon(Icons.keyboard_arrow_up_outlined, size: 24),
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTags() {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.only(left: 8, right: 48),
+          child: Row(
+            children: [
+              for (final tag in tags!)
+                Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        if (tagId == tag.tagId) {
+                          tagId = null;
+                        } else {
+                          tagId = tag.tagId;
+                        }
+                        _lb.refresh(true);
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      primary: tagId == tag.tagId
+                          ? context.theme.primaryColor
+                          : context.colorScheme.outline,
+                      backgroundColor: context.colorScheme.surface,
+                      shape: const StadiumBorder(),
+                      visualDensity: VisualDensity.compact,
+                      textStyle: context.textTheme.caption,
+                    ),
+                    child: Text(tag.tagName),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          bottom: 0,
+          right: 0,
+          child: GestureDetector(
+            onTapUp: (details) {
+              showDropDown(
+                context: context,
+                offset: details.globalPosition.dy - details.localPosition.dy,
+                builder: _buildTagDropDown,
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.only(left: 24, right: 8),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    context.colorScheme.background.withAlpha(0),
+                    context.colorScheme.background,
+                    context.colorScheme.background,
+                  ],
+                  stops: const [0, 0.42, 1],
+                ),
+              ),
+              child: const Icon(Icons.keyboard_arrow_down_outlined, size: 24),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -744,4 +845,26 @@ class _AdvertiseWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+OverlayEntry showDropDown({
+  required BuildContext context,
+  required Widget Function(BuildContext, OverlayEntry) builder,
+  double offset = 0,
+}) {
+  late final OverlayEntry overlayEntry;
+  overlayEntry = OverlayEntry(
+    builder: (context) {
+      return Padding(
+        padding: EdgeInsets.only(top: offset),
+        child: Container(
+          color: Colors.black26,
+          alignment: Alignment.topCenter,
+          child: builder(context, overlayEntry),
+        ),
+      );
+    },
+  );
+  Overlay.of(context)?.insert(overlayEntry);
+  return overlayEntry;
 }

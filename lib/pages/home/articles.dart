@@ -366,7 +366,7 @@ class __ArticleTabPageState<T extends DataModel>
     }
   }
 
-  Future<void> _loadTags(t) async {
+  Future<void> _loadTags(_) async {
     final result = await RecommendAPI.getRecommendTags(
       categoryId: widget.categoryId!,
     );

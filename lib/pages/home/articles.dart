@@ -403,32 +403,35 @@ class __ArticleTabPageState<T extends DataModel>
           Expanded(
             child: Wrap(
               children: [
+                _ArticleTag(
+                  tagName: '全部',
+                  isActive: tagId == null,
+                  onTap: () {
+                    entry.remove();
+                    if (tagId == null) {
+                      return;
+                    }
+                    setState(() {
+                      tagId = null;
+                      _lb.refresh(true);
+                    });
+                  },
+                ),
                 for (final tag in tags!)
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: TextButton(
-                      onPressed: () {
-                        entry.remove();
-                        setState(() {
-                          if (tagId == tag.tagId) {
-                            tagId = null;
-                          } else {
-                            tagId = tag.tagId;
-                          }
-                          _lb.refresh(true);
-                        });
-                      },
-                      style: TextButton.styleFrom(
-                        primary: tagId == tag.tagId
-                            ? context.theme.primaryColor
-                            : context.colorScheme.outline,
-                        backgroundColor: context.colorScheme.surface,
-                        shape: const StadiumBorder(),
-                        visualDensity: VisualDensity.compact,
-                        textStyle: context.textTheme.caption,
-                      ),
-                      child: Text(tag.tagName),
-                    ),
+                  _ArticleTag(
+                    tagName: tag.tagName,
+                    isActive: tagId == tag.tagId,
+                    onTap: () {
+                      entry.remove();
+                      setState(() {
+                        if (tagId == tag.tagId) {
+                          tagId = null;
+                        } else {
+                          tagId = tag.tagId;
+                        }
+                        _lb.refresh(true);
+                      });
+                    },
                   ),
               ],
             ),
@@ -455,31 +458,33 @@ class __ArticleTabPageState<T extends DataModel>
           padding: const EdgeInsets.only(left: 8, right: 48),
           child: Row(
             children: [
+              _ArticleTag(
+                tagName: '全部',
+                isActive: tagId == null,
+                onTap: () {
+                  if (tagId == null) {
+                    return;
+                  }
+                  setState(() {
+                    tagId = null;
+                    _lb.refresh(true);
+                  });
+                },
+              ),
               for (final tag in tags!)
-                Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        if (tagId == tag.tagId) {
-                          tagId = null;
-                        } else {
-                          tagId = tag.tagId;
-                        }
-                        _lb.refresh(true);
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      primary: tagId == tag.tagId
-                          ? context.theme.primaryColor
-                          : context.colorScheme.outline,
-                      backgroundColor: context.colorScheme.surface,
-                      shape: const StadiumBorder(),
-                      visualDensity: VisualDensity.compact,
-                      textStyle: context.textTheme.caption,
-                    ),
-                    child: Text(tag.tagName),
-                  ),
+                _ArticleTag(
+                  tagName: tag.tagName,
+                  isActive: tagId == tag.tagId,
+                  onTap: () {
+                    setState(() {
+                      if (tagId == tag.tagId) {
+                        tagId = null;
+                      } else {
+                        tagId = tag.tagId;
+                      }
+                      _lb.refresh(true);
+                    });
+                  },
                 ),
             ],
           ),
@@ -551,6 +556,41 @@ class __ArticleTabPageState<T extends DataModel>
           ),
         ),
       ],
+    );
+  }
+}
+
+class _ArticleTag extends StatelessWidget {
+  const _ArticleTag({
+    Key? key,
+    required this.tagName,
+    this.isActive = false,
+    this.onTap,
+  }) : super(key: key);
+
+  final bool isActive;
+
+  final VoidCallback? onTap;
+
+  final String tagName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: TextButton(
+        onPressed: onTap,
+        style: TextButton.styleFrom(
+          primary: isActive
+              ? context.theme.primaryColor
+              : context.colorScheme.outline,
+          backgroundColor: context.colorScheme.surface,
+          shape: const StadiumBorder(),
+          visualDensity: VisualDensity.compact,
+          textStyle: context.textTheme.caption,
+        ),
+        child: Text(tagName),
+      ),
     );
   }
 }
@@ -851,21 +891,30 @@ OverlayEntry showDropDown({
   required BuildContext context,
   required Widget Function(BuildContext, OverlayEntry) builder,
   double offset = 0,
+  Color barrierColor = const Color(0x80000000),
+  bool barrierDismissible = true,
 }) {
   late final OverlayEntry overlayEntry;
   overlayEntry = OverlayEntry(
     builder: (context) {
       return GestureDetector(
         onTap: () {
-          overlayEntry.remove();
+          if (barrierDismissible) {
+            overlayEntry.remove();
+          }
         },
         child: Container(
           color: Colors.transparent,
           padding: EdgeInsets.only(top: offset),
           child: Container(
-            color: Colors.black26,
+            color: barrierColor,
             alignment: Alignment.topCenter,
-            child: builder(context, overlayEntry),
+            child: GestureDetector(
+              onTap: () {
+                // void to prevent barrier dismiss
+              },
+              child: builder(context, overlayEntry),
+            ),
           ),
         ),
       );

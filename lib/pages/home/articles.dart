@@ -2,6 +2,8 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
@@ -37,9 +39,11 @@ class _ArticlesPageState extends State<ArticlesPage>
   );
   List<Category>? categories;
   final tabs = <Widget>[
-    const Tab(text: '关注'),
-    const Tab(text: '推荐'),
+    const Tab(text: '关注', key: ValueKey('follows')),
+    const Tab(text: '推荐', key: ValueKey('recommand')),
   ];
+
+  final refreshSubscribe = StreamController<String>.broadcast();
 
   @override
   void initState() {
@@ -51,6 +55,7 @@ class _ArticlesPageState extends State<ArticlesPage>
   void dispose() {
     pageController.dispose();
     tabController.dispose();
+    refreshSubscribe.close();
     super.dispose();
   }
 
@@ -71,11 +76,34 @@ class _ArticlesPageState extends State<ArticlesPage>
     }
   }
 
+  void _onTabTap(index) {
+    if (index == pageIndex) {
+      refreshSubscribe.add((tabs[index].key as ValueKey).value);
+    } else {
+      tabTrigger = true;
+      pageIndex = index;
+      pageController
+          .animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      )
+          .whenComplete(() {
+        tabTrigger = false;
+      });
+    }
+  }
+
   Future<void> _getCates(t) async {
     final cates = await TagAPI.getCategories();
     if (cates.isSucceed) {
       for (final cate in cates.models ?? <Category>[]) {
-        tabs.add(Tab(text: cate.categoryName));
+        tabs.add(
+          Tab(
+            key: ValueKey('category-${cate.categoryId}'),
+            text: cate.categoryName,
+          ),
+        );
       }
 
       tabController.dispose();
@@ -161,19 +189,7 @@ class _ArticlesPageState extends State<ArticlesPage>
           controller: tabController,
           indicatorColor: context.theme.primaryColor,
           padding: const EdgeInsets.only(right: 48),
-          onTap: (index) {
-            tabTrigger = true;
-            pageIndex = index;
-            pageController
-                .animateToPage(
-              index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeIn,
-            )
-                .whenComplete(() {
-              tabTrigger = false;
-            });
-          },
+          onTap: _onTabTap,
           tabs: tabs,
         ),
         Positioned(
@@ -316,18 +332,21 @@ class _ArticlesPageState extends State<ArticlesPage>
               child: PageView(
                 controller: pageController,
                 children: [
-                  const _ArticleTabPage<ArticleItemModel>(
-                    key: ValueKey('follows'),
+                  _ArticleTabPage<ArticleItemModel>(
+                    key: tabs[0].key,
                     isFollow: true,
+                    refreshStream: refreshSubscribe.stream,
                   ),
-                  const _ArticleTabPage<FeedModel>(
-                    key: ValueKey('recommand'),
+                  _ArticleTabPage<FeedModel>(
+                    key: tabs[1].key,
+                    refreshStream: refreshSubscribe.stream,
                   ),
                   if (categories != null)
                     for (final cate in categories ?? <Category>[])
                       _ArticleTabPage<ArticleItemModel>(
                         key: ValueKey('category-${cate.categoryId}'),
                         categoryId: cate.categoryId,
+                        refreshStream: refreshSubscribe.stream,
                       ),
                 ],
               ),
@@ -345,6 +364,7 @@ class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
     this.isFollow = false,
     this.cursorType = CursorType.raw,
     this.categoryId,
+    this.refreshStream,
   }) : super(key: key);
 
   final bool isFollow;
@@ -352,6 +372,8 @@ class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
   final String? categoryId;
 
   final CursorType cursorType;
+
+  final Stream<String>? refreshStream;
 
   @override
   State<_ArticleTabPage<T>> createState() => __ArticleTabPageState<T>();
@@ -377,10 +399,12 @@ class __ArticleTabPageState<T extends DataModel>
 
   final tagRowKey = GlobalKey();
   final tagScrollController = ScrollController();
+  final controller = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    widget.refreshStream?.listen(_onRefreshNotify);
     if (widget.categoryId != null) {
       WidgetsBinding.instance.addPostFrameCallback(_loadTags);
     }
@@ -391,6 +415,20 @@ class __ArticleTabPageState<T extends DataModel>
     _lb.dispose();
     tagScrollController.dispose();
     super.dispose();
+  }
+
+  void _onRefreshNotify(String event) {
+    if (event == (widget.key as ValueKey).value) {
+      if (controller.hasClients && controller.offset > 0) {
+        controller.animateTo(
+          0,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOut,
+        );
+      } else {
+        _lb.refresh(true);
+      }
+    }
   }
 
   Future<void> _loadTags(_) async {
@@ -592,6 +630,7 @@ class __ArticleTabPageState<T extends DataModel>
         Expanded(
           child: RefreshListWrapper<T>(
             loadingBase: _lb,
+            controller: controller,
             padding: const EdgeInsets.symmetric(vertical: 8),
             itemBuilder: itemBuilder,
             dividerBuilder: (_, __) => const Gap.v(8),

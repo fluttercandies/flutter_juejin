@@ -395,7 +395,7 @@ class __ArticleTabPageState<T extends DataModel>
 
   Widget _buildTagDropDown(BuildContext context, OverlayEntry entry) {
     return Container(
-      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+      padding: const EdgeInsets.only(left: 8, bottom: 8),
       color: context.colorScheme.background,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -855,12 +855,18 @@ OverlayEntry showDropDown({
   late final OverlayEntry overlayEntry;
   overlayEntry = OverlayEntry(
     builder: (context) {
-      return Padding(
-        padding: EdgeInsets.only(top: offset),
+      return GestureDetector(
+        onTap: () {
+          overlayEntry.remove();
+        },
         child: Container(
-          color: Colors.black26,
-          alignment: Alignment.topCenter,
-          child: builder(context, overlayEntry),
+          color: Colors.transparent,
+          padding: EdgeInsets.only(top: offset),
+          child: Container(
+            color: Colors.black26,
+            alignment: Alignment.topCenter,
+            child: builder(context, overlayEntry),
+          ),
         ),
       );
     },

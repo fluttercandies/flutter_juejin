@@ -28,31 +28,23 @@ class _ArticlesPageState extends State<ArticlesPage>
   bool tabTrigger = false;
 
   int pageIndex = 1;
-  late PageController pageController;
-  late TabController tabController;
+  late PageController pageController = PageController(initialPage: pageIndex)
+    ..addListener(_onPageChange);
+  late TabController tabController = TabController(
+    length: tabs.length,
+    vsync: this,
+    initialIndex: pageIndex,
+  );
+  List<Category>? categories;
   final tabs = <Widget>[
     const Tab(text: '关注'),
     const Tab(text: '推荐'),
-  ];
-
-  final pages = <Widget>[
-    const _ArticleTabPage<ArticleItemModel>(isFollow: true),
-    const _ArticleTabPage<FeedModel>(),
   ];
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(_getCates);
-
-    pageController = PageController(initialPage: pageIndex);
-    tabController = TabController(
-      length: tabs.length,
-      vsync: this,
-      initialIndex: pageIndex,
-    );
-    pageController.addListener(_onPageChange);
-    tabController.addListener(_onTabChange);
   }
 
   @override
@@ -61,8 +53,6 @@ class _ArticlesPageState extends State<ArticlesPage>
     tabController.dispose();
     super.dispose();
   }
-
-  void _onTabChange() {}
 
   void _onPageChange() {
     if (tabTrigger) {
@@ -86,11 +76,6 @@ class _ArticlesPageState extends State<ArticlesPage>
     if (cates.isSucceed) {
       for (final cate in cates.models ?? <Category>[]) {
         tabs.add(Tab(text: cate.categoryName));
-        pages.add(
-          _ArticleTabPage<ArticleItemModel>(
-            categoryId: cate.categoryId,
-          ),
-        );
       }
 
       tabController.dispose();
@@ -99,7 +84,10 @@ class _ArticlesPageState extends State<ArticlesPage>
         vsync: this,
         initialIndex: pageIndex,
       );
-      setState(() {});
+
+      safeSetState(() {
+        categories = cates.models;
+      });
     } else {
       LogUtil.e(cates.msg);
     }
@@ -284,6 +272,7 @@ class _ArticlesPageState extends State<ArticlesPage>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           ValueListenableBuilder<double>(
             valueListenable: toolBarHeight,
@@ -326,7 +315,21 @@ class _ArticlesPageState extends State<ArticlesPage>
               onNotification: handleNotify,
               child: PageView(
                 controller: pageController,
-                children: pages,
+                children: [
+                  const _ArticleTabPage<ArticleItemModel>(
+                    key: ValueKey('follows'),
+                    isFollow: true,
+                  ),
+                  const _ArticleTabPage<FeedModel>(
+                    key: ValueKey('recommand'),
+                  ),
+                  if (categories != null)
+                    for (final cate in categories ?? <Category>[])
+                      _ArticleTabPage<ArticleItemModel>(
+                        key: ValueKey('category-${cate.categoryId}'),
+                        categoryId: cate.categoryId,
+                      ),
+                ],
               ),
             ),
           ),
@@ -372,6 +375,9 @@ class __ArticleTabPageState<T extends DataModel>
   @override
   bool get wantKeepAlive => true;
 
+  final tagRowKey = GlobalKey();
+  final tagScrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -380,17 +386,41 @@ class __ArticleTabPageState<T extends DataModel>
     }
   }
 
+  @override
+  void dispose() {
+    _lb.dispose();
+    tagScrollController.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadTags(_) async {
     final result = await RecommendAPI.getRecommendTags(
       categoryId: widget.categoryId!,
     );
+
     if (result.isSucceed) {
-      setState(() {
+      safeSetState(() {
         tags = result.models;
       });
     } else {
       LogUtil.e(result.msg);
     }
+  }
+
+  void ensureTagShow() {
+    tagRowKey.currentContext?.visitChildElements((element) {
+      final widget = element.widget;
+      if (widget is _ArticleTag && element.renderObject != null) {
+        if (widget.tagId == tagId) {
+          tagScrollController.position.ensureVisible(
+            element.renderObject!,
+            alignment: 0.5,
+            duration: const Duration(milliseconds: 350),
+            curve: Curves.easeIn,
+          );
+        }
+      }
+    });
   }
 
   Widget _buildTagDropDown(BuildContext context, OverlayEntry entry) {
@@ -404,6 +434,7 @@ class __ArticleTabPageState<T extends DataModel>
             child: Wrap(
               children: [
                 _ArticleTag(
+                  tagId: null,
                   tagName: '全部',
                   isActive: tagId == null,
                   onTap: () {
@@ -415,10 +446,16 @@ class __ArticleTabPageState<T extends DataModel>
                       tagId = null;
                       _lb.refresh(true);
                     });
+                    tagScrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 350),
+                      curve: Curves.easeIn,
+                    );
                   },
                 ),
                 for (final tag in tags!)
                   _ArticleTag(
+                    tagId: tag.tagId,
                     tagName: tag.tagName,
                     isActive: tagId == tag.tagId,
                     onTap: () {
@@ -431,6 +468,7 @@ class __ArticleTabPageState<T extends DataModel>
                         }
                         _lb.refresh(true);
                       });
+                      ensureTagShow();
                     },
                   ),
               ],
@@ -454,11 +492,14 @@ class __ArticleTabPageState<T extends DataModel>
     return Stack(
       children: [
         SingleChildScrollView(
+          controller: tagScrollController,
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.only(left: 8, right: 48),
           child: Row(
+            key: tagRowKey,
             children: [
               _ArticleTag(
+                tagId: null,
                 tagName: '全部',
                 isActive: tagId == null,
                 onTap: () {
@@ -473,6 +514,7 @@ class __ArticleTabPageState<T extends DataModel>
               ),
               for (final tag in tags!)
                 _ArticleTag(
+                  tagId: tag.tagId,
                   tagName: tag.tagName,
                   isActive: tagId == tag.tagId,
                   onTap: () {
@@ -563,6 +605,7 @@ class __ArticleTabPageState<T extends DataModel>
 class _ArticleTag extends StatelessWidget {
   const _ArticleTag({
     Key? key,
+    required this.tagId,
     required this.tagName,
     this.isActive = false,
     this.onTap,
@@ -572,6 +615,7 @@ class _ArticleTag extends StatelessWidget {
 
   final VoidCallback? onTap;
 
+  final String? tagId;
   final String tagName;
 
   @override

@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'log_util.dart';
@@ -20,7 +21,12 @@ class PackageUtil {
   static String get versionNameAndCode => '$versionName+$versionCode';
 
   static Future<void> initInfo() async {
-    packageInfo = await PackageInfo.fromPlatform();
+    initInfoManual(await PackageInfo.fromPlatform());
+  }
+
+  @visibleForTesting
+  static void initInfoManual(PackageInfo info) {
+    packageInfo = info;
     if (const bool.hasEnvironment('meAppVersion')) {
       final List<String> version = const String.fromEnvironment(
         'meAppVersion',

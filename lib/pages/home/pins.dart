@@ -20,6 +20,7 @@ class PinsPage extends StatefulWidget {
 
 class _PinsPageState extends State<PinsPage> {
   SortType _sortType = SortType.latest;
+
   set sortType(SortType value) {
     _sortType = value;
   }
@@ -36,15 +37,20 @@ class _PinsPageState extends State<PinsPage> {
       width: 80,
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
-          borderRadius: RadiusConstants.r20,
-          color: Colors.grey[200],
+        borderRadius: RadiusConstants.r20,
+        color: Colors.grey[200],
       ),
       child: Stack(
-        alignment: _sortType == SortType.recommend ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
+        alignment: _sortType == SortType.recommend
+            ? AlignmentDirectional.centerEnd
+            : AlignmentDirectional.centerStart,
         children: [
           Container(
             margin: const EdgeInsets.all(2.0),
-            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0,),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 4.0,
+              vertical: 4.0,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -112,7 +118,7 @@ class _PinsPageState extends State<PinsPage> {
                   child: Text(
                     '排序',
                     style: context.textTheme.caption?.copyWith(
-                      color: Colors.black,
+                      color: context.textTheme.headlineSmall?.color,
                     ),
                   ),
                 ),
@@ -218,19 +224,19 @@ class _PinItemWidget extends StatelessWidget {
       children: pinInfo.picList
           .map(
             (String p) => FractionallySizedBox(
-          widthFactor: 1 / 3,
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: ClipRRect(
-                borderRadius: RadiusConstants.r6,
-                child: Image.network(p, fit: BoxFit.cover),
+              widthFactor: 1 / 3,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: ClipRRect(
+                    borderRadius: RadiusConstants.r6,
+                    child: Image.network(p, fit: BoxFit.cover),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      )
+          )
           .toList(),
     );
   }

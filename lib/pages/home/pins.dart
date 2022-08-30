@@ -40,7 +40,7 @@ class _PinsPageState extends State<PinsPage> {
           color: Colors.grey[200],
       ),
       child: Stack(
-        alignment: _sortType == SortType.hot ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
+        alignment: _sortType == SortType.recommend ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
         children: [
           Container(
             margin: const EdgeInsets.all(2.0),
@@ -60,7 +60,7 @@ class _PinsPageState extends State<PinsPage> {
                 ),
                 GestureDetector(
                   onTap: () => safeSetState(() {
-                    _sortType = SortType.hot;
+                    _sortType = SortType.recommend;
                     _lb.refresh(true);
                   }),
                   child: Text(
@@ -80,7 +80,7 @@ class _PinsPageState extends State<PinsPage> {
             ),
             child: Center(
               child: Text(
-                _sortType == SortType.hot ? '热门' : '最新',
+                _sortType == SortType.recommend ? '热门' : '最新',
                 style: context.textTheme.caption,
               ),
             ),
@@ -268,22 +268,28 @@ class _PinItemWidget extends StatelessWidget {
 
   Widget _buildTopic(BuildContext context) {
     final Color themeColor = Color.lerp(themeColorLight, Colors.white, .2)!;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-      decoration: BoxDecoration(
-        borderRadius: RadiusConstants.max,
-        color: themeColorLight.withOpacity(.2),
+    return Tapper(
+      onTap: () => context.navigator.pushNamed(
+        Routes.clubPage.name,
+        arguments: Routes.clubPage.d(topic!.topicId, topic: topic),
       ),
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.ac_unit_rounded, color: themeColor, size: 14),
-          const Gap.h(4),
-          Text(
-            topic!.title,
-            style: TextStyle(color: themeColor, fontSize: 11),
-          ),
-          Icon(Icons.chevron_right, color: themeColor, size: 14),
-        ],
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+        decoration: BoxDecoration(
+          borderRadius: RadiusConstants.max,
+          color: themeColorLight.withOpacity(.2),
+        ),
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.ac_unit_rounded, color: themeColor, size: 14),
+            const Gap.h(4),
+            Text(
+              topic!.title,
+              style: TextStyle(color: themeColor, fontSize: 11),
+            ),
+            Icon(Icons.chevron_right, color: themeColor, size: 14),
+          ],
+        ),
       ),
     );
   }

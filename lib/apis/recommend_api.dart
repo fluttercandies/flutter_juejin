@@ -8,16 +8,12 @@ import '../models/response_model.dart';
 import '../utils/http_util.dart';
 
 enum SortType {
-  topic(200),
-  hot(200),
+  recommend(200),
   newest(300);
 
   const SortType(this.value);
 
   final int value;
-
-  @override
-  String toString() => value.toString();
 }
 
 class RecommendAPI {
@@ -61,16 +57,16 @@ class RecommendAPI {
   static Future<ResponseModel<PinItemModel>> getRecommendClub(String clubId, {
     String? lastId,
     int limit = 20,
-    SortType sortType = SortType.hot,
+    SortType sortType = SortType.recommend,
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,
-      url: '$_pins/club',
+      url: '$_pins/topic',
       body: <String, dynamic>{
         'cursor': cursorFromLastIdAndLimit(lastId, limit),
         'limit': limit,
         'sort_type': sortType.value,
-        'club_id': clubId,
+        'topic_id': clubId,
       },
     );
   }

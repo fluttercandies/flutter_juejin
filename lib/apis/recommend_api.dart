@@ -9,7 +9,7 @@ import '../utils/http_util.dart';
 
 enum SortType {
   recommend(200),
-  newest(300);
+  latest(300);
 
   const SortType(this.value);
 
@@ -41,7 +41,7 @@ class RecommendAPI {
   static Future<ResponseModel<PinItemModel>> getRecommendPins({
     String? lastId,
     int limit = 20,
-    SortType sortType = SortType.newest,
+    SortType sortType = SortType.latest,
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,

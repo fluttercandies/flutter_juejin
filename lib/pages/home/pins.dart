@@ -19,7 +19,7 @@ class PinsPage extends StatefulWidget {
 }
 
 class _PinsPageState extends State<PinsPage> {
-  SortType _sortType = SortType.newest;
+  SortType _sortType = SortType.latest;
   set sortType(SortType value) {
     _sortType = value;
   }
@@ -50,7 +50,7 @@ class _PinsPageState extends State<PinsPage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () => safeSetState(() {
-                    _sortType = SortType.newest;
+                    _sortType = SortType.latest;
                     _lb.refresh(true);
                   }),
                   child: Text(

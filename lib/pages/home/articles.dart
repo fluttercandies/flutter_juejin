@@ -618,7 +618,7 @@ class _ArticleTabPageState<T extends DataModel>
           right: 8,
           top: 4,
         ),
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           color: context.theme.cardColor,
           borderRadius: RadiusConstants.r10,
@@ -639,6 +639,11 @@ class _ArticleTabPageState<T extends DataModel>
                     ? context.theme.primaryColor
                     : context.theme.hintColor,
                 shape: const StadiumBorder(),
+                visualDensity: VisualDensity.compact,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14,
+                ),
               ),
               child: const Text('推荐'),
             ),
@@ -654,6 +659,11 @@ class _ArticleTabPageState<T extends DataModel>
                     ? context.theme.primaryColor
                     : context.theme.hintColor,
                 shape: const StadiumBorder(),
+                visualDensity: VisualDensity.compact,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14,
+                ),
               ),
               child: const Text('最新'),
             ),

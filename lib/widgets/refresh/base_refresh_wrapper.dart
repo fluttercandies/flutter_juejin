@@ -58,6 +58,7 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
     this.indicatorText,
     this.indicatorTextStyle,
     this.indicatorWidth,
+    this.prefixSliverBuilder,
     this.refreshHeaderBuilder,
     this.refreshHeaderTextStyle,
     this.lastChildLayoutType = LastChildLayoutType.fullCrossAxisExtent,
@@ -65,6 +66,7 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
   }) : super(key: key);
 
   final LoadingBase<T> loadingBase;
+  final WidgetBuilder? prefixSliverBuilder;
   final RefreshItemBuilder<T> itemBuilder;
   final RefreshSliversBuilder? sliversBuilder;
   final ScrollController? controller;
@@ -219,7 +221,11 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
     if (sliversBuilder != null) {
       return sliversBuilder!(context, refreshHeader, loadingList);
     }
-    return <Widget>[refreshHeader, loadingList];
+    return <Widget>[
+      if (prefixSliverBuilder != null) prefixSliverBuilder!.call(context),
+      refreshHeader,
+      loadingList,
+    ];
   }
 
   @override

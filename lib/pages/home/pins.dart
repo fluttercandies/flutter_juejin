@@ -274,28 +274,22 @@ class _PinItemWidget extends StatelessWidget {
 
   Widget _buildTopic(BuildContext context) {
     final Color themeColor = Color.lerp(themeColorLight, Colors.white, .2)!;
-    return Tapper(
-      onTap: () => context.navigator.pushNamed(
-        Routes.clubPage.name,
-        arguments: Routes.clubPage.d(topic!.topicId, topic: topic),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: RadiusConstants.max,
+        color: themeColorLight.withOpacity(.2),
       ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-        decoration: BoxDecoration(
-          borderRadius: RadiusConstants.max,
-          color: themeColorLight.withOpacity(.2),
-        ),
-        child: Row(
-          children: <Widget>[
-            Icon(Icons.ac_unit_rounded, color: themeColor, size: 14),
-            const Gap.h(4),
-            Text(
-              topic!.title,
-              style: TextStyle(color: themeColor, fontSize: 11),
-            ),
-            Icon(Icons.chevron_right, color: themeColor, size: 14),
-          ],
-        ),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.ac_unit_rounded, color: themeColor, size: 14),
+          const Gap.h(4),
+          Text(
+            topic!.title,
+            style: TextStyle(color: themeColor, fontSize: 11),
+          ),
+          Icon(Icons.chevron_right, color: themeColor, size: 14),
+        ],
       ),
     );
   }

@@ -335,6 +335,7 @@ class _ArticlesPageState extends State<ArticlesPage>
                   _ArticleTabPage<ArticleItemModel>(
                     key: tabs[0].key,
                     isFollow: true,
+                    hasSort: false,
                     refreshStream: refreshSubscribe.stream,
                   ),
                   _ArticleTabPage<FeedModel>(
@@ -365,6 +366,7 @@ class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
     this.cursorType = CursorType.raw,
     this.categoryId,
     this.refreshStream,
+    this.hasSort = true,
   }) : super(key: key);
 
   final bool isFollow;
@@ -373,14 +375,17 @@ class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
 
   final CursorType cursorType;
 
+  final bool hasSort;
+
   final Stream<String>? refreshStream;
 
   @override
-  State<_ArticleTabPage<T>> createState() => __ArticleTabPageState<T>();
+  State<_ArticleTabPage<T>> createState() => _ArticleTabPageState<T>();
 }
 
-class __ArticleTabPageState<T extends DataModel>
-    extends State<_ArticleTabPage<T>> with AutomaticKeepAliveClientMixin {
+class _ArticleTabPageState<T extends DataModel>
+    extends State<_ArticleTabPage<T>>
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   late final LoadingBase<T> _lb = LoadingBase(
     getCursorType: () => tagId == null ? widget.cursorType : CursorType.raw,
     request: (_, String? lastId) => RecommendAPI.getArticles<T>(
@@ -388,8 +393,13 @@ class __ArticleTabPageState<T extends DataModel>
       lastId: lastId,
       categoryId: widget.categoryId,
       tagId: tagId,
+      sortType: sortType,
     ),
   );
+
+  late final sortController = TabController(length: 2, vsync: this)
+    ..addListener(_onSortChanged);
+  int sortType = 200;
 
   String? tagId;
   List<Tag>? tags;
@@ -414,6 +424,7 @@ class __ArticleTabPageState<T extends DataModel>
   void dispose() {
     _lb.dispose();
     tagScrollController.dispose();
+    sortController.dispose();
     super.dispose();
   }
 
@@ -428,6 +439,19 @@ class __ArticleTabPageState<T extends DataModel>
       } else {
         _lb.refresh(true);
       }
+    }
+  }
+
+  void _onSortChanged() {
+    final int newSort;
+    if (sortController.index == 1) {
+      newSort = 300;
+    } else {
+      newSort = 200;
+    }
+    if (newSort != sortType) {
+      sortType = newSort;
+      _lb.refresh(true);
     }
   }
 
@@ -514,6 +538,7 @@ class __ArticleTabPageState<T extends DataModel>
           ),
           GestureDetector(
             onTap: () {
+              Feedback.forTap(context);
               entry.remove();
             },
             child: Container(
@@ -575,6 +600,7 @@ class __ArticleTabPageState<T extends DataModel>
           right: 0,
           child: GestureDetector(
             onTapUp: (details) {
+              Feedback.forTap(context);
               showDropDown(
                 context: context,
                 offset: details.globalPosition.dy - details.localPosition.dy,
@@ -598,6 +624,35 @@ class __ArticleTabPageState<T extends DataModel>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSort() {
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 8,
+        right: 8,
+        top: 4,
+      ),
+      alignment: AlignmentDirectional.centerEnd,
+      child: SizedBox(
+        width: 120,
+        height: 30,
+        child: TabBar(
+          controller: sortController,
+          indicator: BoxDecoration(
+            color: context.colorScheme.surface,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          unselectedLabelColor: context.theme.hintColor,
+          labelColor: context.theme.primaryColor,
+          labelPadding: EdgeInsets.zero,
+          tabs: const [
+            Tab(text: '推荐'),
+            Tab(text: '最新'),
+          ],
+        ),
+      ),
     );
   }
 
@@ -627,6 +682,7 @@ class __ArticleTabPageState<T extends DataModel>
       children: [
         if (widget.categoryId != null && tags != null && tags!.isNotEmpty)
           _buildTags(),
+        if (widget.hasSort) _buildSort(),
         Expanded(
           child: RefreshListWrapper<T>(
             loadingBase: _lb,
@@ -664,7 +720,7 @@ class _ArticleTag extends StatelessWidget {
       child: TextButton(
         onPressed: onTap,
         style: TextButton.styleFrom(
-          primary: isActive
+          foregroundColor: isActive
               ? context.theme.primaryColor
               : context.colorScheme.outline,
           backgroundColor: context.colorScheme.surface,

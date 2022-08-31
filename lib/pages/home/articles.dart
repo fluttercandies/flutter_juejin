@@ -396,9 +396,6 @@ class _ArticleTabPageState<T extends DataModel>
       sortType: sortType,
     ),
   );
-
-  late final sortController = TabController(length: 2, vsync: this)
-    ..addListener(_onSortChanged);
   int sortType = 200;
 
   String? tagId;
@@ -424,7 +421,6 @@ class _ArticleTabPageState<T extends DataModel>
   void dispose() {
     _lb.dispose();
     tagScrollController.dispose();
-    sortController.dispose();
     super.dispose();
   }
 
@@ -439,19 +435,6 @@ class _ArticleTabPageState<T extends DataModel>
       } else {
         _lb.refresh(true);
       }
-    }
-  }
-
-  void _onSortChanged() {
-    final int newSort;
-    if (sortController.index == 1) {
-      newSort = 300;
-    } else {
-      newSort = 200;
-    }
-    if (newSort != sortType) {
-      sortType = newSort;
-      _lb.refresh(true);
     }
   }
 
@@ -627,29 +610,53 @@ class _ArticleTabPageState<T extends DataModel>
     );
   }
 
-  Widget _buildSort() {
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
-        top: 4,
-      ),
-      alignment: AlignmentDirectional.centerEnd,
-      child: SizedBox(
-        width: 120,
-        height: 30,
-        child: TabBar(
-          controller: sortController,
-          indicator: BoxDecoration(
-            color: context.colorScheme.surface,
-            borderRadius: BorderRadius.circular(100),
-          ),
-          unselectedLabelColor: context.theme.hintColor,
-          labelColor: context.theme.primaryColor,
-          labelPadding: EdgeInsets.zero,
-          tabs: const [
-            Tab(text: '推荐'),
-            Tab(text: '最新'),
+  Widget _buildSort(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Container(
+        margin: const EdgeInsets.only(
+          left: 8,
+          right: 8,
+          top: 4,
+        ),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: context.theme.cardColor,
+          borderRadius: RadiusConstants.r10,
+        ),
+        alignment: AlignmentDirectional.centerStart,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  sortType = 200;
+                });
+                _lb.refresh(true);
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: sortType == 200
+                    ? context.theme.primaryColor
+                    : context.theme.hintColor,
+                shape: const StadiumBorder(),
+              ),
+              child: const Text('推荐'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  sortType = 300;
+                });
+                _lb.refresh(true);
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: sortType == 300
+                    ? context.theme.primaryColor
+                    : context.theme.hintColor,
+                shape: const StadiumBorder(),
+              ),
+              child: const Text('最新'),
+            ),
           ],
         ),
       ),
@@ -682,12 +689,12 @@ class _ArticleTabPageState<T extends DataModel>
       children: [
         if (widget.categoryId != null && tags != null && tags!.isNotEmpty)
           _buildTags(),
-        if (widget.hasSort) _buildSort(),
         Expanded(
           child: RefreshListWrapper<T>(
             loadingBase: _lb,
             controller: controller,
             padding: const EdgeInsets.symmetric(vertical: 8),
+            prefixSliverBuilder: widget.hasSort ? _buildSort : null,
             itemBuilder: itemBuilder,
             dividerBuilder: (_, __) => const Gap.v(8),
           ),

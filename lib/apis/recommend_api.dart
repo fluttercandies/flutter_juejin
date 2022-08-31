@@ -49,13 +49,17 @@ class RecommendAPI {
         sortType: sortType,
       ) as Future<ResponseModel<T>>;
     }
-    return getAllFeedArticles(lastId: lastId, limit: limit)
-        as Future<ResponseModel<T>>;
+    return getAllFeedArticles(
+      lastId: lastId,
+      limit: limit,
+      sortType: sortType,
+    ) as Future<ResponseModel<T>>;
   }
 
   static Future<ResponseModel<FeedModel>> getAllFeedArticles({
     String? lastId,
     int limit = 20,
+    int sortType = 200,
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,
@@ -63,7 +67,7 @@ class RecommendAPI {
       body: <String, dynamic>{
         'cursor': cursorFromLastIdAndLimit(lastId, limit),
         'limit': limit,
-        'sort_type': 200,
+        'sort_type': sortType,
       },
     );
   }

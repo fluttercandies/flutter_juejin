@@ -23,7 +23,10 @@ dependencies:
   flutter_inappwebview: ^5.4.3+7
   flutter_localizations:
     sdk: flutter
+  flutter_riverpod: ^1.0.4
+  flutter_secure_storage: ^6.0.0
   flutter_svg: ^2.0.7
+  hive: ^2.2.3
   intl: any
   json_annotation: ^4.6.0
   loading_more_list: ^5.0.0
@@ -32,6 +35,7 @@ dependencies:
   package_info_plus: ^4.2.0
   path_provider: ^2.0.11
   pull_to_refresh_notification: ^3.1.0
+  riverpod: ^1.0.3
   url_launcher: ^6.1.5
   visibility_detector: ^0.4.0+2
 

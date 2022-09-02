@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oktoast/oktoast.dart';
 
 import 'exports.dart';
@@ -73,30 +74,7 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return _buildOKToast(
-      child: MaterialApp(
-        theme: themeBy(brightness: Brightness.light),
-        darkTheme: themeBy(brightness: Brightness.dark),
-        initialRoute: Routes.splashPage.name,
-        navigatorKey: JJ.navigatorKey,
-        navigatorObservers: <NavigatorObserver>[
-          JJ.routeObserver,
-          JJNavigatorObserver(),
-        ],
-        onGenerateTitle: (BuildContext c) => c.l10n.appTitle,
-        onGenerateRoute: (RouteSettings settings) => onGenerateRoute(
-          settings: settings,
-          getRouteSettings: getRouteSettings,
-          notFoundPageBuilder: () => Container(
-            alignment: Alignment.center,
-            color: Colors.black,
-            child: Text(
-              context.l10n.exceptionRouteNotFound(
-                settings.name ?? context.l10n.exceptionRouteUnknown,
-              ),
-              style: const TextStyle(color: Colors.white, inherit: false),
-            ),
-          ),
-        ),
+      child: ProviderScope(
         localizationsDelegates: JJLocalizations.localizationsDelegates,
         supportedLocales: JJLocalizations.supportedLocales,
         scrollBehavior: _ScrollBehavior(),
@@ -106,8 +84,46 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
             _buildBottomPaddingVerticalShield(context),
           ],
         ),
+        child: MaterialApp(
+          theme: themeBy(brightness: Brightness.light),
+          darkTheme: themeBy(brightness: Brightness.dark),
+          initialRoute: Routes.splashPage.name,
+          navigatorKey: JJ.navigatorKey,
+          navigatorObservers: <NavigatorObserver>[
+            JJ.routeObserver,
+            JJNavigatorObserver(),
+          ],
+          onGenerateTitle: (BuildContext c) => c.l10n.appTitle,
+          onGenerateRoute: (RouteSettings settings) => onGenerateRoute(
+            settings: settings,
+            getRouteSettings: getRouteSettings,
+            notFoundPageBuilder: () => Container(
+              alignment: Alignment.center,
+              color: Colors.black,
+              child: Text(
+                context.l10n.exceptionRouteNotFound(
+                  settings.name ?? context.l10n.exceptionRouteUnknown,
+                ),
+                style: const TextStyle(color: Colors.white, inherit: false),
+              ),
+            ),
+          ),
+        ),
       ),
     );
+  }
+}
+
+class _ScrollBehavior extends MaterialScrollBehavior {
+  /// do not wrapper a [Scrollbar] on desktop platforms
+  /// That will cause scroll position error with multi scrollables
+  @override
+  Widget buildScrollbar(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    return child;
   }
 }
 

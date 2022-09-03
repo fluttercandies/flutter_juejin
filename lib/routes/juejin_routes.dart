@@ -10,6 +10,7 @@ const List<String> routeNames = <String>[
   'article-detail-page',
   'club-page',
   'home-page',
+  'login-page',
   'splash-page',
 ];
 
@@ -42,6 +43,15 @@ class Routes {
   ///
   /// HomePage : [Key? key]
   static const _HomePage homePage = _HomePage();
+
+  /// 'login-page'
+  ///
+  /// [name] : 'login-page'
+  ///
+  /// [constructors] :
+  ///
+  /// LoginPage : [Key? key]
+  static const _LoginPage loginPage = _LoginPage();
 
   /// 'splash-page'
   ///
@@ -97,6 +107,22 @@ class _HomePage {
   const _HomePage();
 
   String get name => 'home-page';
+
+  Map<String, dynamic> d({
+    Key? key,
+  }) =>
+      <String, dynamic>{
+        'key': key,
+      };
+
+  @override
+  String toString() => name;
+}
+
+class _LoginPage {
+  const _LoginPage();
+
+  String get name => 'login-page';
 
   Map<String, dynamic> d({
     Key? key,

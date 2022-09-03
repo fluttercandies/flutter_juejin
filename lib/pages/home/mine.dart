@@ -53,19 +53,24 @@ class _MinePageState extends State<MinePage> {
   }
 
   Widget _buildUser(BuildContext context) {
-    return SizedBox(
-      height: 54,
-      child: Row(
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 1,
-            child: ClipOval(
-              child: _buildUserAvatar(context),
+    return GestureDetector(
+      onTap: () => context.navigator.pushNamed(
+        Routes.loginPage.name,
+      ),
+      child: SizedBox(
+        height: 54,
+        child: Row(
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: 1,
+              child: ClipOval(
+                child: _buildUserAvatar(context),
+              ),
             ),
-          ),
-          const Gap.h(16),
-          _buildUsername(context),
-        ],
+            const Gap.h(16),
+            _buildUsername(context),
+          ],
+        ),
       ),
     );
   }

@@ -10,6 +10,7 @@ import 'package:juejin/exports.dart';
 import '../pages/article/detail.dart';
 import '../pages/club/club.dart';
 import '../pages/home.dart';
+import '../pages/login/login.dart';
 import '../pages/splash.dart';
 
 FFRouteSettings getRouteSettings({
@@ -57,6 +58,16 @@ FFRouteSettings getRouteSettings({
         name: name,
         arguments: arguments,
         builder: () => HomePage(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
+      );
+    case 'login-page':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        builder: () => LoginPage(
           key: asT<Key?>(
             safeArguments['key'],
           ),

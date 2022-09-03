@@ -36,6 +36,7 @@ class _SplashPageState extends State<SplashPage> {
       DeviceUtil.initDeviceInfo(forceRefresh: true),
       PackageUtil.initInfo(),
       HttpUtil.init(),
+      HiveUtil.init(),
     ]);
     await DeviceUtil.setHighestRefreshRate();
     await HttpUtil.fetch(FetchType.get, url: 'https://${Urls.domain}');

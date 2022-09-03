@@ -5,25 +5,20 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../exports.dart';
+import '../models/repositories.dart';
 
 class HiveUtil {
-  factory HiveUtil() {
-    _instance ??= HiveUtil._();
-    return _instance!;
-  }
-
   HiveUtil._();
-
-  static HiveUtil? _instance;
 
   static const hiveData = 'hive';
 
   static const userToken = 'user_token';
 
-  late final BoxCollection _collection;
+  static BoxCollection? _collection;
 
-  Future<void> init() async {
+  static BoxCollection get collection => _collection!;
+
+  static Future<void> init() async {
     const secureStorage = FlutterSecureStorage();
     String? secureKey = await secureStorage.read(key: 'key');
     if (secureKey == null) {
@@ -43,7 +38,7 @@ class HiveUtil {
   }
 
   @visibleForTesting
-  Future<void> initByKey(List<int> key, String path) async {
+  static Future<void> initByKey(List<int> key, String path) async {
     Hive.registerAdapter<UserAuthen>(UserAuthenAdapter());
 
     _collection = await BoxCollection.open(
@@ -54,36 +49,36 @@ class HiveUtil {
     );
   }
 
-  Set<String> get boxNames => _collection.boxNames;
+  static Set<String> get boxNames => collection.boxNames;
 
-  void close() {
-    _collection.close();
+  static void close() {
+    collection.close();
   }
 
-  Future<void> deleteFromDisk() {
-    return _collection.deleteFromDisk();
+  static Future<void> deleteFromDisk() {
+    return collection.deleteFromDisk();
   }
 
-  String get name => _collection.name;
+  static String get name => collection.name;
 
-  Future<CollectionBox<V>> openBox<V>(
+  static Future<CollectionBox<V>> openBox<V>(
     String name, {
     bool preload = false,
     CollectionBox<V> Function(String, BoxCollection)? boxCreator,
   }) {
-    return _collection.openBox<V>(
+    return collection.openBox<V>(
       name,
       preload: preload,
       boxCreator: boxCreator,
     );
   }
 
-  Future<void> transaction(
+  static Future<void> transaction(
     Future<void> Function() action, {
     List<String>? boxNames,
     bool readOnly = false,
   }) {
-    return _collection.transaction(
+    return collection.transaction(
       action,
       boxNames: boxNames,
       readOnly: readOnly,

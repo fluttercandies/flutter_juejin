@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:juejin/exports.dart';
 
 void main() {
-  HiveUtil().initByKey(
+  HiveUtil.initByKey(
     [
       69, 65, 214, 189, 167, 95, 128, 69, //
       125, 194, 153, 172, 57, 105, 57, 253,
@@ -14,7 +14,7 @@ void main() {
     '${Directory.current.path}/test/hive',
   );
   test('user_token', () async {
-    final box = await HiveUtil().openBox<UserAuthen>(HiveUtil.userToken);
+    final box = await HiveUtil.openBox<UserAuthen>(HiveUtil.userToken);
 
     expect(box.name, '${HiveUtil.hiveData}_${HiveUtil.userToken}');
 
@@ -24,6 +24,6 @@ void main() {
     final token = await box.get('token');
     expect(token?.token, 'test-token');
 
-    HiveUtil().close();
+    HiveUtil.close();
   });
 }

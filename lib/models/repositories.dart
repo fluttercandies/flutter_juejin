@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import '../exports.dart';
+import 'data_model.dart';
 
 part 'repositories.g.dart';
 

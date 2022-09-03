@@ -64,6 +64,10 @@
   "userNotFollow": "Not follow",
   "userSignInOrUp": "Sign in/Sign up",
 
+  "pinArrangement": "Sort By",
+  "pinLatest": "Hot",
+  "pinNewest": "Latest",
+
   "durationYears": "{many, plural, =1{1 year}other{{many} years}} ago",
   "@durationYears": {
     "placeholders": {"many": {"type": "int"}}

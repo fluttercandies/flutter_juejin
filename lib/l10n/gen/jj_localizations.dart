@@ -352,6 +352,24 @@ abstract class JJLocalizations {
   /// **'Sign in/Sign up'**
   String get userSignInOrUp;
 
+  /// No description provided for @pinArrangement.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort By'**
+  String get pinArrangement;
+
+  /// No description provided for @pinLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot'**
+  String get pinLatest;
+
+  /// No description provided for @pinNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest'**
+  String get pinNewest;
+
   /// No description provided for @durationYears.
   ///
   /// In en, this message translates to:

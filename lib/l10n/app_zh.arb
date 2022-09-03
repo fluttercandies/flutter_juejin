@@ -53,6 +53,11 @@
   "userNotFollow": "未关注",
   "userSignInOrUp": "登录/注册",
 
+  "pinArrangement": "排序",
+  "pinLatest": "热门",
+  "pinNewest": "最新",
+
+
   "durationYears": "{many, plural, =other{{many}年前}}",
   "durationMonths": "{many, plural, =other{{many}月前}}",
   "durationDays": "{many, plural, =other{{many}天前}}",

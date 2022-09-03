@@ -34,7 +34,7 @@ class _PinsPageState extends State<PinsPage> {
 
   Widget _buildPinSelectedSwitch(BuildContext context) {
     return Container(
-      width: 80,
+      width: 90,
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
         borderRadius: RadiusConstants.r20,
@@ -60,7 +60,7 @@ class _PinsPageState extends State<PinsPage> {
                     _lb.refresh(true);
                   }),
                   child: Text(
-                    '最新',
+                    context.l10n.pinNewest,
                     style: context.textTheme.caption,
                   ),
                 ),
@@ -70,7 +70,7 @@ class _PinsPageState extends State<PinsPage> {
                     _lb.refresh(true);
                   }),
                   child: Text(
-                    '热门',
+                    context.l10n.pinLatest,
                     style: context.textTheme.caption,
                   ),
                 ),
@@ -78,7 +78,7 @@ class _PinsPageState extends State<PinsPage> {
             ),
           ),
           Container(
-            width: 35,
+            width: _sortType == SortType.recommend ? 35 : 45,
             height: 20,
             decoration: const BoxDecoration(
               borderRadius: RadiusConstants.r10,
@@ -86,11 +86,35 @@ class _PinsPageState extends State<PinsPage> {
             ),
             child: Center(
               child: Text(
-                _sortType == SortType.recommend ? '热门' : '最新',
+                _sortType == SortType.recommend ? context.l10n.pinLatest : context.l10n.pinNewest,
                 style: context.textTheme.caption,
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPinBar(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        borderRadius: RadiusConstants.r10,
+        color: context.theme.cardColor,
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              context.l10n.pinArrangement,
+              style: context.textTheme.caption?.copyWith(
+                color: context.textTheme.headlineSmall?.color,
+              ),
+            ),
+          ),
+          _buildPinSelectedSwitch(context),
         ],
       ),
     );
@@ -105,27 +129,7 @@ class _PinsPageState extends State<PinsPage> {
             padding: EdgeInsets.symmetric(vertical: 16),
             child: JJLogo(),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-            padding: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              borderRadius: RadiusConstants.r10,
-              color: context.theme.cardColor,
-            ),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    '排序',
-                    style: context.textTheme.caption?.copyWith(
-                      color: context.textTheme.headlineSmall?.color,
-                    ),
-                  ),
-                ),
-                _buildPinSelectedSwitch(context),
-              ],
-            ),
-          ),
+          _buildPinBar(context),
           Expanded(
             child: RefreshListWrapper(
               loadingBase: _lb,

@@ -147,6 +147,15 @@ class JJLocalizationsEn extends JJLocalizations {
   String get userSignInOrUp => 'Sign in/Sign up';
 
   @override
+  String get pinArrangement => 'Sort By';
+
+  @override
+  String get pinLatest => 'Hot';
+
+  @override
+  String get pinNewest => 'Latest';
+
+  @override
   String durationYears(num many) {
     final String pluralString = intl.Intl.pluralLogic(
       many,

@@ -3,13 +3,23 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 
-class HiveUtil implements BoxCollection {
+import '../exports.dart';
+
+class HiveUtil {
   factory HiveUtil() {
-    return HiveUtil._();
+    _instance ??= HiveUtil._();
+    return _instance!;
   }
 
   HiveUtil._();
+
+  static HiveUtil? _instance;
+
+  static const hiveData = 'hive';
+
+  static const userToken = 'user_token';
 
   late final BoxCollection _collection;
 
@@ -27,45 +37,47 @@ class HiveUtil implements BoxCollection {
 
     final encryptionKey = base64Url.decode(secureKey);
 
-    initByKey(encryptionKey);
+    final appDocDir = await getApplicationDocumentsDirectory();
+
+    initByKey(encryptionKey, appDocDir.path);
   }
 
   @visibleForTesting
-  Future<void> initByKey(List<int> key) async {
+  Future<void> initByKey(List<int> key, String path) async {
+    Hive.registerAdapter<UserAuthen>(UserAuthenAdapter());
+
     _collection = await BoxCollection.open(
-      'UserAuthen',
-      {'user_token'},
-      path: './',
+      hiveData,
+      {userToken},
+      path: '${path.replaceFirst(RegExp(r'[\\/]$'), '')}/',
       key: HiveAesCipher(key),
     );
   }
 
-  @override
   Set<String> get boxNames => _collection.boxNames;
 
-  @override
   void close() {
     _collection.close();
   }
 
-  @override
   Future<void> deleteFromDisk() {
     return _collection.deleteFromDisk();
   }
 
-  @override
   String get name => _collection.name;
 
-  @override
   Future<CollectionBox<V>> openBox<V>(
     String name, {
     bool preload = false,
-    CollectionBox<V> Function(String p1, BoxCollection p2)? boxCreator,
+    CollectionBox<V> Function(String, BoxCollection)? boxCreator,
   }) {
-    return _collection.openBox(name, preload: preload, boxCreator: boxCreator);
+    return _collection.openBox<V>(
+      name,
+      preload: preload,
+      boxCreator: boxCreator,
+    );
   }
 
-  @override
   Future<void> transaction(
     Future<void> Function() action, {
     List<String>? boxNames,

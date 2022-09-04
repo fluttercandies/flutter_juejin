@@ -704,7 +704,11 @@ class _ArticleTabPageState<T extends DataModel>
             loadingBase: _lb,
             controller: controller,
             padding: const EdgeInsets.symmetric(vertical: 8),
-            prefixSliverBuilder: widget.hasSort ? _buildSort : null,
+            sliversBuilder: (context, refreshHeader, loadingList) => <Widget>[
+              _buildSort(context),
+              refreshHeader,
+              loadingList,
+            ],
             itemBuilder: itemBuilder,
             dividerBuilder: (_, __) => const Gap.v(8),
           ),

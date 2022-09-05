@@ -19,30 +19,22 @@ class _ArticlesPageState extends State<ArticlesPage>
   final searchTextController = TextEditingController();
   bool searchHasText = false;
 
-  late final toolBarHeight = AnimationController(
-    vsync: this,
-    upperBound: kToolbarHeight,
-    value: kToolbarHeight,
-    duration: const Duration(milliseconds: 300),
-  );
-
-  /// tabbar trigger the page change
-  bool tabTrigger = false;
-
-  int pageIndex = 1;
-  late PageController pageController = PageController(initialPage: pageIndex)
-    ..addListener(_onPageChange);
+  int currentTabIndex = 1;
   late TabController tabController = TabController(
     length: tabs.length,
+    initialIndex: currentTabIndex,
     vsync: this,
-    initialIndex: pageIndex,
-  );
+  )..addListener(_onTabBarChange);
+
+  final scrollController = ScrollController();
+
   List<Category>? categories;
   final tabs = <Widget>[
-    const Tab(text: '关注', key: ValueKey('follows')),
-    const Tab(text: '推荐', key: ValueKey('recommand')),
+    const Tab(text: '关注', key: PageStorageKey('follows')),
+    const Tab(text: '推荐', key: PageStorageKey('recommand')),
   ];
 
+  /// Notice subpage to refresh
   final refreshSubscribe = StreamController<String>.broadcast();
 
   @override
@@ -53,45 +45,9 @@ class _ArticlesPageState extends State<ArticlesPage>
 
   @override
   void dispose() {
-    pageController.dispose();
+    scrollController.dispose();
     tabController.dispose();
-    refreshSubscribe.close();
     super.dispose();
-  }
-
-  void _onPageChange() {
-    if (tabTrigger) {
-      return;
-    }
-    final offset = (pageController.page ?? 0) - pageIndex;
-
-    if (offset >= 0.99) {
-      pageIndex = (pageController.page ?? 0).round();
-      tabController.index = pageIndex;
-    } else if (offset <= -0.99) {
-      pageIndex = (pageController.page ?? 0).round();
-      tabController.index = pageIndex;
-    } else {
-      tabController.offset = offset;
-    }
-  }
-
-  void _onTabTap(index) {
-    if (index == pageIndex) {
-      refreshSubscribe.add((tabs[index].key as ValueKey).value);
-    } else {
-      tabTrigger = true;
-      pageIndex = index;
-      pageController
-          .animateToPage(
-        index,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      )
-          .whenComplete(() {
-        tabTrigger = false;
-      });
-    }
   }
 
   Future<void> _getCates(t) async {
@@ -100,24 +56,47 @@ class _ArticlesPageState extends State<ArticlesPage>
       for (final cate in cates.models ?? <Category>[]) {
         tabs.add(
           Tab(
-            key: ValueKey('category-${cate.categoryId}'),
+            key: PageStorageKey('category-${cate.categoryId}'),
             text: cate.categoryName,
           ),
         );
       }
-
+      tabController.removeListener(_onTabBarChange);
       tabController.dispose();
+
       tabController = TabController(
         length: tabs.length,
+        initialIndex: currentTabIndex,
         vsync: this,
-        initialIndex: pageIndex,
-      );
+      )..addListener(_onTabBarChange);
 
       safeSetState(() {
         categories = cates.models;
       });
     } else {
       LogUtil.e(cates.msg);
+    }
+  }
+
+  void _onTabBarChange() {
+    if (tabController.indexIsChanging) return;
+    if (currentTabIndex == tabController.index) return;
+    setState(() {
+      currentTabIndex = tabController.index;
+    });
+  }
+
+  void _onTabBarTap(int index) {
+    if (index == currentTabIndex) {
+      if (scrollController.offset <= 0) {
+        refreshSubscribe.add((tabs[index].key as PageStorageKey).value);
+      } else {
+        scrollController.animateTo(
+          -20,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeIn,
+        );
+      }
     }
   }
 
@@ -185,12 +164,12 @@ class _ArticlesPageState extends State<ArticlesPage>
     return Stack(
       children: [
         TabBar(
-          isScrollable: true,
           controller: tabController,
+          isScrollable: true,
           indicatorColor: context.theme.primaryColor,
           padding: const EdgeInsets.only(right: 48),
-          onTap: _onTabTap,
-          tabs: tabs,
+          onTap: _onTabBarTap,
+          tabs: tabs.toList(),
         ),
         Positioned(
           top: 0,
@@ -217,143 +196,85 @@ class _ArticlesPageState extends State<ArticlesPage>
     );
   }
 
-  double? lastPositionPixel;
-
-  /// Notify the search header to show or hide
-  bool handleNotify(ScrollNotification notification) {
-    if (notification.metrics.axis != Axis.vertical) {
-      return false;
-    }
-
-    int direction =
-        notification.metrics.axisDirection == AxisDirection.down ? 1 : -1;
-    double? computedValue;
-
-    if (notification is ScrollStartNotification) {
-      lastPositionPixel = notification.metrics.pixels;
-    } else if (notification is ScrollUpdateNotification) {
-      final scrollPixel = notification.scrollDelta! * direction;
-
-      /// Scroll reached top, only need to show
-      if (notification.metrics.extentBefore <= 0) {
-        toolBarHeight.animateTo(kToolbarHeight, curve: Curves.easeOut);
-        return true;
-      }
-
-      /// Scroll reached bottom, only need to hide
-      if (notification.metrics.extentAfter <= 0) {
-        toolBarHeight.animateTo(0, curve: Curves.easeOut);
-        return true;
-      }
-      if (scrollPixel <= 0 && toolBarHeight.value >= kToolbarHeight) {
-        return true;
-      }
-      if (scrollPixel >= 0 && toolBarHeight.value <= 0) {
-        return true;
-      }
-
-      // No animate duration scrolling
-      toolBarHeight
-        ..stop()
-        ..animateTo(
-          toolBarHeight.value - scrollPixel,
-          duration: Duration.zero,
-        );
-    } else if (notification is OverscrollNotification) {
-      if (toolBarHeight.value < kToolbarHeight && notification.overscroll < 0) {
-        computedValue =
-            (notification.overscroll) * direction < 0 ? kToolbarHeight : 0;
-      }
-    } else if (notification is ScrollEndNotification) {
-      if (toolBarHeight.value > 0 && toolBarHeight.value < kToolbarHeight) {
-        final primaryVelocity =
-            (notification.dragDetails?.primaryVelocity ?? 0.0) * direction;
-        if (primaryVelocity != 0) {
-          computedValue = primaryVelocity > 0 ? 0 : kToolbarHeight;
-        } else if (lastPositionPixel != null) {
-          computedValue =
-              (notification.metrics.pixels - lastPositionPixel!) * direction < 0
-                  ? kToolbarHeight
-                  : 0;
-        }
-      }
-    }
-    if (computedValue != null) {
-      toolBarHeight.animateTo(computedValue, curve: Curves.easeOut);
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          ValueListenableBuilder<double>(
-            valueListenable: toolBarHeight,
-            builder: (context, value, child) {
-              return SizedBox(
-                height: value,
-                child: child,
-              );
-            },
-            child: SingleChildScrollView(
-              reverse: true,
-              physics: const NeverScrollableScrollPhysics(),
-              child: SizedBox(
-                height: kToolbarHeight,
-                child: Row(
-                  children: [
-                    const Gap.h(16),
-                    const JJLogo(heroTag: defaultLogoHeroTag),
-                    const Gap.h(16),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: _buildSearch(context),
+      child: NestedScrollView(
+        controller: scrollController,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                context,
+              ),
+              sliver: SliverAppBar(
+                pinned: true,
+                floating: true,
+                snap: true,
+                backgroundColor: context.colorScheme.background,
+                expandedHeight: kToolbarHeight * 2,
+                collapsedHeight: kToolbarHeight,
+                forceElevated: innerBoxIsScrolled,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: _buildCatalog(context),
+                  titlePadding: EdgeInsets.zero,
+                  expandedTitleScale: 1,
+                  background: Container(
+                    alignment: Alignment.topCenter,
+                    child: SizedBox(
+                      height: kToolbarHeight,
+                      child: Row(
+                        children: [
+                          const Gap.h(16),
+                          const JJLogo(heroTag: defaultLogoHeroTag),
+                          const Gap.h(16),
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: _buildSearch(context),
+                            ),
+                          ),
+                          const Gap.h(16),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.search),
+                          ),
+                          const Gap.h(16),
+                        ],
                       ),
                     ),
-                    const Gap.h(16),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.search),
-                    ),
-                    const Gap.h(16),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-          _buildCatalog(context),
-          Expanded(
-            child: NotificationListener<ScrollNotification>(
-              onNotification: handleNotify,
-              child: PageView(
-                controller: pageController,
-                children: [
-                  _ArticleTabPage<ArticleItemModel>(
-                    key: tabs[0].key,
-                    isFollow: true,
-                    hasSort: false,
-                    refreshStream: refreshSubscribe.stream,
-                  ),
-                  _ArticleTabPage<FeedModel>(
-                    key: tabs[1].key,
-                    refreshStream: refreshSubscribe.stream,
-                  ),
-                  if (categories != null)
-                    for (final cate in categories ?? <Category>[])
-                      _ArticleTabPage<ArticleItemModel>(
-                        key: ValueKey('category-${cate.categoryId}'),
-                        categoryId: cate.categoryId,
-                        refreshStream: refreshSubscribe.stream,
-                      ),
-                ],
-              ),
+          ];
+        },
+        body: TabBarView(
+          controller: tabController,
+          children: [
+            _ArticleTabPage<ArticleItemModel>(
+              key: tabs[0].key,
+              isFollow: true,
+              hasSort: false,
+              isActive: currentTabIndex == 0,
+              refreshStream: refreshSubscribe.stream,
             ),
-          ),
-        ],
+            _ArticleTabPage<FeedModel>(
+              key: tabs[1].key,
+              isActive: currentTabIndex == 1,
+              refreshStream: refreshSubscribe.stream,
+            ),
+            if (categories != null)
+              for (int i = 0; i < (categories?.length ?? 0); i++)
+                _ArticleTabPage<ArticleItemModel>(
+                  key: PageStorageKey('category-${categories![i].categoryId}'),
+                  categoryId: categories![i].categoryId,
+                  isActive: currentTabIndex == i + 2,
+                  refreshStream: refreshSubscribe.stream,
+                ),
+          ],
+        ),
       ),
     );
   }
@@ -365,8 +286,9 @@ class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
     this.isFollow = false,
     this.cursorType = CursorType.raw,
     this.categoryId,
-    this.refreshStream,
     this.hasSort = true,
+    this.isActive = false,
+    this.refreshStream,
   }) : super(key: key);
 
   final bool isFollow;
@@ -376,6 +298,8 @@ class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
   final CursorType cursorType;
 
   final bool hasSort;
+
+  final bool isActive;
 
   final Stream<String>? refreshStream;
 
@@ -401,41 +325,33 @@ class _ArticleTabPageState<T extends DataModel>
   String? tagId;
   List<Tag>? tags;
 
+  bool get hasTags =>
+      widget.categoryId != null && tags != null && tags!.isNotEmpty;
+
   @override
   bool get wantKeepAlive => true;
 
   final tagRowKey = GlobalKey();
   final tagScrollController = ScrollController();
-  final controller = ScrollController();
+
+  /// use for hiden
+  final controller = ScrollController(keepScrollOffset: false);
 
   @override
   void initState() {
     super.initState();
-    widget.refreshStream?.listen(_onRefreshNotify);
     if (widget.categoryId != null) {
       WidgetsBinding.instance.addPostFrameCallback(_loadTags);
     }
+    widget.refreshStream?.listen(_onRefreshNotify);
   }
 
   @override
   void dispose() {
     _lb.dispose();
     tagScrollController.dispose();
+    controller.dispose();
     super.dispose();
-  }
-
-  void _onRefreshNotify(String event) {
-    if (event == (widget.key as ValueKey).value) {
-      if (controller.hasClients && controller.offset > 0) {
-        controller.animateTo(
-          0,
-          duration: const Duration(milliseconds: 250),
-          curve: Curves.easeOut,
-        );
-      } else {
-        _lb.refresh(true);
-      }
-    }
   }
 
   Future<void> _loadTags(_) async {
@@ -452,7 +368,13 @@ class _ArticleTabPageState<T extends DataModel>
     }
   }
 
-  void ensureTagShow() {
+  void _onRefreshNotify(String event) {
+    if (event == (widget.key as PageStorageKey).value) {
+      _lb.refresh(true);
+    }
+  }
+
+  void _ensureTagShow() {
     tagRowKey.currentContext?.visitChildElements((element) {
       final widget = element.widget;
       if (widget is _ArticleTag && element.renderObject != null) {
@@ -513,7 +435,7 @@ class _ArticleTabPageState<T extends DataModel>
                         }
                         _lb.refresh(true);
                       });
-                      ensureTagShow();
+                      _ensureTagShow();
                     },
                   ),
               ],
@@ -697,15 +619,29 @@ class _ArticleTabPageState<T extends DataModel>
     super.build(context);
     return Column(
       children: [
-        if (widget.categoryId != null && tags != null && tags!.isNotEmpty)
-          _buildTags(),
+        if (hasTags)
+          Padding(
+            padding: const EdgeInsets.only(
+              top: kToolbarHeight,
+            ),
+            child: _buildTags(),
+          ),
         Expanded(
           child: RefreshListWrapper<T>(
             loadingBase: _lb,
-            controller: controller,
+            //restorationId: (widget.key as PageStorageKey).value,
+            physics:
+                widget.isActive ? null : const NeverScrollableScrollPhysics(),
+            controller: widget.isActive ? null : ScrollController(),
             padding: const EdgeInsets.symmetric(vertical: 8),
             sliversBuilder: (context, refreshHeader, loadingList) => <Widget>[
-              _buildSort(context),
+              if (!hasTags)
+                SliverOverlapInjector(
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                    context,
+                  ),
+                ),
+              if (!widget.isFollow) _buildSort(context),
               refreshHeader,
               loadingList,
             ],

@@ -64,9 +64,9 @@
   "userNotFollow": "Not follow",
   "userSignInOrUp": "Sign in/Sign up",
 
-  "pinArrangement": "Sort By",
-  "pinLatest": "Hot",
-  "pinNewest": "Latest",
+  "arrangement": "Sort By",
+  "recommend": "Hot",
+  "latest": "Latest",
 
   "durationYears": "{many, plural, =1{1 year}other{{many} years}} ago",
   "@durationYears": {

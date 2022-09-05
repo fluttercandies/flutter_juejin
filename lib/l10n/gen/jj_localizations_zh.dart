@@ -147,13 +147,13 @@ class JJLocalizationsZh extends JJLocalizations {
   String get userSignInOrUp => '登录/注册';
 
   @override
-  String get pinArrangement => '排序';
+  String get arrangement => '排序';
 
   @override
-  String get pinLatest => '热门';
+  String get recommend => '热门';
 
   @override
-  String get pinNewest => '最新';
+  String get latest => '最新';
 
   @override
   String durationYears(num many) {

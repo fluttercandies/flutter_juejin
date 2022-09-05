@@ -21,10 +21,6 @@ class PinsPage extends StatefulWidget {
 class _PinsPageState extends State<PinsPage> {
   SortType _sortType = SortType.latest;
 
-  set sortType(SortType value) {
-    _sortType = value;
-  }
-
   late final LoadingBase<PinItemModel> _lb = LoadingBase(
     request: (_, String? lastId) => RecommendAPI.getRecommendPins(
       lastId: lastId,
@@ -38,7 +34,7 @@ class _PinsPageState extends State<PinsPage> {
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
         borderRadius: RadiusConstants.r20,
-        color: Colors.grey[200],
+        color: context.theme.backgroundColor,
       ),
       child: Stack(
         alignment: _sortType == SortType.recommend
@@ -47,10 +43,7 @@ class _PinsPageState extends State<PinsPage> {
         children: [
           Container(
             margin: const EdgeInsets.all(2.0),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 4.0,
-              vertical: 4.0,
-            ),
+            padding: const EdgeInsets.all(4.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -60,7 +53,7 @@ class _PinsPageState extends State<PinsPage> {
                     _lb.refresh(true);
                   }),
                   child: Text(
-                    context.l10n.pinNewest,
+                    context.l10n.latest,
                     style: context.textTheme.caption,
                   ),
                 ),
@@ -70,7 +63,7 @@ class _PinsPageState extends State<PinsPage> {
                     _lb.refresh(true);
                   }),
                   child: Text(
-                    context.l10n.pinLatest,
+                    context.l10n.recommend,
                     style: context.textTheme.caption,
                   ),
                 ),
@@ -86,8 +79,12 @@ class _PinsPageState extends State<PinsPage> {
             ),
             child: Center(
               child: Text(
-                _sortType == SortType.recommend ? context.l10n.pinLatest : context.l10n.pinNewest,
-                style: context.textTheme.caption,
+                _sortType == SortType.recommend
+                    ? context.l10n.recommend
+                    : context.l10n.latest,
+                style: context.textTheme.caption?.copyWith(
+                  color: context.theme.primaryColor,
+                ),
               ),
             ),
           ),
@@ -108,7 +105,7 @@ class _PinsPageState extends State<PinsPage> {
         children: <Widget>[
           Expanded(
             child: Text(
-              context.l10n.pinArrangement,
+              context.l10n.arrangement,
               style: context.textTheme.caption?.copyWith(
                 color: context.textTheme.headlineSmall?.color,
               ),

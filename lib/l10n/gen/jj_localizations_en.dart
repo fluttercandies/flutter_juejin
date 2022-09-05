@@ -147,13 +147,13 @@ class JJLocalizationsEn extends JJLocalizations {
   String get userSignInOrUp => 'Sign in/Sign up';
 
   @override
-  String get pinArrangement => 'Sort By';
+  String get arrangement => 'Sort By';
 
   @override
-  String get pinLatest => 'Hot';
+  String get recommend => 'Hot';
 
   @override
-  String get pinNewest => 'Latest';
+  String get latest => 'Latest';
 
   @override
   String durationYears(num many) {

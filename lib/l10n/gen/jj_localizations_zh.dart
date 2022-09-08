@@ -147,6 +147,15 @@ class JJLocalizationsZh extends JJLocalizations {
   String get userSignInOrUp => '登录/注册';
 
   @override
+  String get arrangement => '排序';
+
+  @override
+  String get recommend => '热门';
+
+  @override
+  String get latest => '最新';
+
+  @override
   String durationYears(num many) {
     return intl.Intl.pluralLogic(
       many,

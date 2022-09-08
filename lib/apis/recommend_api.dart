@@ -7,6 +7,15 @@ import '../models/data_model.dart';
 import '../models/response_model.dart';
 import '../utils/http_util.dart';
 
+enum SortType {
+  recommend(200),
+  latest(300);
+
+  const SortType(this.value);
+
+  final int value;
+}
+
 class RecommendAPI {
   const RecommendAPI._();
 
@@ -32,6 +41,7 @@ class RecommendAPI {
   static Future<ResponseModel<PinItemModel>> getRecommendPins({
     String? lastId,
     int limit = 20,
+    SortType sortType = SortType.latest,
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,
@@ -39,7 +49,24 @@ class RecommendAPI {
       body: <String, dynamic>{
         'cursor': cursorFromLastIdAndLimit(lastId, limit),
         'limit': limit,
-        'sort_type': 300,
+        'sort_type': sortType.value,
+      },
+    );
+  }
+
+  static Future<ResponseModel<PinItemModel>> getRecommendClub(String clubId, {
+    String? lastId,
+    int limit = 20,
+    SortType sortType = SortType.recommend,
+  }) {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_pins/topic',
+      body: <String, dynamic>{
+        'cursor': cursorFromLastIdAndLimit(lastId, limit),
+        'limit': limit,
+        'sort_type': sortType.value,
+        'topic_id': clubId,
       },
     );
   }

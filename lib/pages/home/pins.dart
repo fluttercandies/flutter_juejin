@@ -19,11 +19,103 @@ class PinsPage extends StatefulWidget {
 }
 
 class _PinsPageState extends State<PinsPage> {
+  SortType _sortType = SortType.latest;
+
   late final LoadingBase<PinItemModel> _lb = LoadingBase(
     request: (_, String? lastId) => RecommendAPI.getRecommendPins(
       lastId: lastId,
+      sortType: _sortType,
     ),
   );
+
+  Widget _buildPinSelectedSwitch(BuildContext context) {
+    return Container(
+      width: 90,
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: RadiusConstants.r20,
+        color: context.theme.backgroundColor,
+      ),
+      child: Stack(
+        alignment: _sortType == SortType.recommend
+            ? AlignmentDirectional.centerEnd
+            : AlignmentDirectional.centerStart,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(2.0),
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => safeSetState(() {
+                    _sortType = SortType.latest;
+                    _lb.refresh(true);
+                  }),
+                  child: Text(
+                    context.l10n.latest,
+                    style: context.textTheme.caption,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => safeSetState(() {
+                    _sortType = SortType.recommend;
+                    _lb.refresh(true);
+                  }),
+                  child: Text(
+                    context.l10n.recommend,
+                    style: context.textTheme.caption,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: _sortType == SortType.recommend ? 35 : 45,
+            height: 20,
+            decoration: const BoxDecoration(
+              borderRadius: RadiusConstants.r10,
+              color: Colors.white,
+            ),
+            child: Center(
+              child: Text(
+                _sortType == SortType.recommend
+                    ? context.l10n.recommend
+                    : context.l10n.latest,
+                style: context.textTheme.caption?.copyWith(
+                  color: context.theme.primaryColor,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPinBar(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        borderRadius: RadiusConstants.r10,
+        color: context.theme.cardColor,
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              context.l10n.arrangement,
+              style: context.textTheme.caption?.copyWith(
+                color: context.textTheme.headlineSmall?.color,
+              ),
+            ),
+          ),
+          _buildPinSelectedSwitch(context),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +126,7 @@ class _PinsPageState extends State<PinsPage> {
             padding: EdgeInsets.symmetric(vertical: 16),
             child: JJLogo(),
           ),
+          _buildPinBar(context),
           Expanded(
             child: RefreshListWrapper(
               loadingBase: _lb,

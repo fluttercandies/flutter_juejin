@@ -369,17 +369,17 @@ abstract class JJLocalizations {
   /// **'Latest'**
   String get latest;
 
-  /// No description provided for @cateTabFollowing.
+  /// No description provided for @categoryTabFollowing.
   ///
   /// In en, this message translates to:
   /// **'Following'**
-  String get cateTabFollowing;
+  String get categoryTabFollowing;
 
-  /// No description provided for @cateTabRecommend.
+  /// No description provided for @categoryTabRecommend.
   ///
   /// In en, this message translates to:
   /// **'Recommend'**
-  String get cateTabRecommend;
+  String get categoryTabRecommend;
 
   /// No description provided for @tagAll.
   ///

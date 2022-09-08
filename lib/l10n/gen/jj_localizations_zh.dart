@@ -155,10 +155,10 @@ class JJLocalizationsZh extends JJLocalizations {
   String get latest => '最新';
 
   @override
-  String get cateTabFollowing => '关注';
+  String get categoryTabFollowing => '关注';
 
   @override
-  String get cateTabRecommend => '推荐';
+  String get categoryTabRecommend => '推荐';
 
   @override
   String get tagAll => '全部';

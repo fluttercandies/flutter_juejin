@@ -155,10 +155,10 @@ class JJLocalizationsEn extends JJLocalizations {
   String get latest => 'Latest';
 
   @override
-  String get cateTabFollowing => 'Following';
+  String get categoryTabFollowing => 'Following';
 
   @override
-  String get cateTabRecommend => 'Recommend';
+  String get categoryTabRecommend => 'Recommend';
 
   @override
   String get tagAll => 'All';

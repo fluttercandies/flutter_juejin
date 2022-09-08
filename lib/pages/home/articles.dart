@@ -31,7 +31,7 @@ class _ArticlesPageState extends State<ArticlesPage>
 
   final scrollController = ScrollController();
 
-  bool? isCateLoadError = false;
+  bool? isCategoryLoadError = false;
   List<Category>? categories;
   final tabs = <Widget>[];
 
@@ -41,7 +41,7 @@ class _ArticlesPageState extends State<ArticlesPage>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_getCates);
+    WidgetsBinding.instance.addPostFrameCallback(_getCategories);
   }
 
   @override
@@ -57,34 +57,34 @@ class _ArticlesPageState extends State<ArticlesPage>
     if (tabs.isEmpty) {
       tabs.add(
         Tab(
-          text: context.l10n.cateTabFollowing,
+          text: context.l10n.categoryTabFollowing,
           key: const PageStorageKey('following'),
         ),
       );
       tabs.add(
         Tab(
-          text: context.l10n.cateTabRecommend,
+          text: context.l10n.categoryTabRecommend,
           key: const PageStorageKey('recommend'),
         ),
       );
     }
   }
 
-  Future<void> _getCates(t) async {
-    if (isCateLoadError == true) {
+  Future<void> _getCategories(t) async {
+    if (isCategoryLoadError == true) {
       setState(() {
-        isCateLoadError = null;
+        isCategoryLoadError = null;
       });
     }
-    final cates = await TagAPI.getCategories();
+    final categoryList = await TagAPI.getCategoryBriefs();
     if (!mounted) return;
 
-    if (cates.isSucceed) {
-      for (final cate in cates.models ?? <Category>[]) {
+    if (categoryList.isSucceed) {
+      for (final category in categoryList.models ?? <Category>[]) {
         tabs.add(
           Tab(
-            key: PageStorageKey('category-${cate.categoryId}'),
-            text: cate.categoryName,
+            key: PageStorageKey('category-${category.categoryId}'),
+            text: category.categoryName,
           ),
         );
       }
@@ -98,14 +98,14 @@ class _ArticlesPageState extends State<ArticlesPage>
       )..addListener(_onTabBarChange);
 
       safeSetState(() {
-        isCateLoadError = false;
-        categories = cates.models;
+        isCategoryLoadError = false;
+        categories = categoryList.models;
       });
     } else {
       setState(() {
-        isCateLoadError = true;
+        isCategoryLoadError = true;
       });
-      LogUtil.e(cates.msg);
+      LogUtil.e(categoryList.msg);
     }
   }
 
@@ -211,8 +211,8 @@ class _ArticlesPageState extends State<ArticlesPage>
           bottom: 0,
           right: 0,
           child: GestureDetector(
-            onTap: isCateLoadError == true
-                ? () => _getCates(0)
+            onTap: isCategoryLoadError == true
+                ? () => _getCategories(0)
                 : null, // TODO(shirne) edit and sort cates
             child: Container(
               padding: const EdgeInsets.only(left: 24, right: 8),
@@ -226,7 +226,7 @@ class _ArticlesPageState extends State<ArticlesPage>
                   stops: const [0, 0.42, 1],
                 ),
               ),
-              child: isCateLoadError == true
+              child: isCategoryLoadError == true
                   ? const Icon(Icons.replay_outlined, size: 24)
                   : const Icon(Icons.menu, size: 24),
             ),
@@ -362,10 +362,10 @@ class _ArticleTabPageState<T extends DataModel>
   SortType sortType = SortType.recommend;
 
   String? tagId;
-  List<Tag>? tags;
+  List<Tag>? tagList;
 
   bool get hasTags =>
-      widget.categoryId != null && tags != null && tags!.isNotEmpty;
+      widget.categoryId != null && tagList != null && tagList!.isNotEmpty;
 
   @override
   bool get wantKeepAlive => true;
@@ -400,7 +400,7 @@ class _ArticleTabPageState<T extends DataModel>
 
     if (result.isSucceed) {
       safeSetState(() {
-        tags = result.models;
+        tagList = result.models;
       });
     } else {
       LogUtil.e(result.msg);
@@ -441,7 +441,7 @@ class _ArticleTabPageState<T extends DataModel>
               children: [
                 _ArticleTag(
                   tagId: null,
-                  tagName: '全部',
+                  tagName: context.l10n.tagAll,
                   isActive: tagId == null,
                   onTap: () {
                     entry.remove();
@@ -459,7 +459,7 @@ class _ArticleTabPageState<T extends DataModel>
                     );
                   },
                 ),
-                for (final tag in tags!)
+                for (final tag in tagList!)
                   _ArticleTag(
                     tagId: tag.tagId,
                     tagName: tag.tagName,
@@ -519,7 +519,7 @@ class _ArticleTabPageState<T extends DataModel>
                   });
                 },
               ),
-              for (final tag in tags!)
+              for (final tag in tagList!)
                 _ArticleTag(
                   tagId: tag.tagId,
                   tagName: tag.tagName,

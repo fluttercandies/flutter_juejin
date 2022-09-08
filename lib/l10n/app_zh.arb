@@ -57,8 +57,8 @@
   "recommend": "热门",
   "latest": "最新",
   
-  "cateTabFollowing": "关注",
-  "cateTabRecommend": "推荐",
+  "categoryTabFollowing": "关注",
+  "categoryTabRecommend": "推荐",
 
   "tagAll": "全部",
   "sortRecommend": "推荐",

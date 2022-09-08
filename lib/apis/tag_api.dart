@@ -12,7 +12,7 @@ class TagAPI {
 
   static const String _api = '${Urls.apiHost}/tag_api/v1';
 
-  static Future<ResponseModel<Category>> getCategories() {
+  static Future<ResponseModel<Category>> getCategoryBriefs() {
     return HttpUtil.fetchModel(
       FetchType.get,
       url: '$_api/query_category_briefs',

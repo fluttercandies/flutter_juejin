@@ -68,8 +68,8 @@
   "recommend": "Hot",
   "latest": "Latest",
 
-  "cateTabFollowing": "Following",
-  "cateTabRecommend": "Recommend",
+  "categoryTabFollowing": "Following",
+  "categoryTabRecommend": "Recommend",
 
   "tagAll": "All",
   "sortRecommend": "Recommend",

@@ -7,6 +7,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
+/// from tabs.dart
+const double _kTabHeight = 46.0;
+
 class ArticlesPage extends StatefulWidget {
   const ArticlesPage({Key? key}) : super(key: key);
 
@@ -28,11 +31,9 @@ class _ArticlesPageState extends State<ArticlesPage>
 
   final scrollController = ScrollController();
 
+  bool? isCateLoadError = false;
   List<Category>? categories;
-  final tabs = <Widget>[
-    const Tab(text: '关注', key: PageStorageKey('follows')),
-    const Tab(text: '推荐', key: PageStorageKey('recommand')),
-  ];
+  final tabs = <Widget>[];
 
   /// Notice subpage to refresh
   final refreshSubscribe = StreamController<String>.broadcast();
@@ -50,8 +51,34 @@ class _ArticlesPageState extends State<ArticlesPage>
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (tabs.isEmpty) {
+      tabs.add(
+        Tab(
+          text: context.l10n.cateTabFollowing,
+          key: const PageStorageKey('following'),
+        ),
+      );
+      tabs.add(
+        Tab(
+          text: context.l10n.cateTabRecommend,
+          key: const PageStorageKey('recommend'),
+        ),
+      );
+    }
+  }
+
   Future<void> _getCates(t) async {
+    if (isCateLoadError == true) {
+      setState(() {
+        isCateLoadError = null;
+      });
+    }
     final cates = await TagAPI.getCategories();
+    if (!mounted) return;
+
     if (cates.isSucceed) {
       for (final cate in cates.models ?? <Category>[]) {
         tabs.add(
@@ -71,9 +98,13 @@ class _ArticlesPageState extends State<ArticlesPage>
       )..addListener(_onTabBarChange);
 
       safeSetState(() {
+        isCateLoadError = false;
         categories = cates.models;
       });
     } else {
+      setState(() {
+        isCateLoadError = true;
+      });
       LogUtil.e(cates.msg);
     }
   }
@@ -163,19 +194,26 @@ class _ArticlesPageState extends State<ArticlesPage>
   Widget _buildCatalog(BuildContext context) {
     return Stack(
       children: [
-        TabBar(
-          controller: tabController,
-          isScrollable: true,
-          indicatorColor: context.theme.primaryColor,
-          padding: const EdgeInsets.only(right: 48),
-          onTap: _onTabBarTap,
-          tabs: tabs.toList(),
+        Container(
+          height: _kTabHeight,
+          alignment: Alignment.centerLeft,
+          child: TabBar(
+            controller: tabController,
+            isScrollable: true,
+            indicatorColor: context.theme.primaryColor,
+            padding: const EdgeInsets.only(right: 48),
+            onTap: _onTabBarTap,
+            tabs: tabs.toList(),
+          ),
         ),
         Positioned(
           top: 0,
           bottom: 0,
           right: 0,
           child: GestureDetector(
+            onTap: isCateLoadError == true
+                ? () => _getCates(0)
+                : null, // TODO(shirne) edit and sort cates
             child: Container(
               padding: const EdgeInsets.only(left: 24, right: 8),
               decoration: BoxDecoration(
@@ -188,7 +226,9 @@ class _ArticlesPageState extends State<ArticlesPage>
                   stops: const [0, 0.42, 1],
                 ),
               ),
-              child: const Icon(Icons.menu, size: 24),
+              child: isCateLoadError == true
+                  ? const Icon(Icons.replay_outlined, size: 24)
+                  : const Icon(Icons.menu, size: 24),
             ),
           ),
         ),
@@ -212,8 +252,7 @@ class _ArticlesPageState extends State<ArticlesPage>
                 floating: true,
                 snap: true,
                 backgroundColor: context.colorScheme.background,
-                expandedHeight: kToolbarHeight * 2,
-                collapsedHeight: kToolbarHeight,
+                expandedHeight: kToolbarHeight + _kTabHeight,
                 forceElevated: innerBoxIsScrolled,
                 flexibleSpace: FlexibleSpaceBar(
                   title: _buildCatalog(context),
@@ -468,7 +507,7 @@ class _ArticleTabPageState<T extends DataModel>
             children: [
               _ArticleTag(
                 tagId: null,
-                tagName: '全部',
+                tagName: context.l10n.tagAll,
                 isActive: tagId == null,
                 onTap: () {
                   if (tagId == null) {
@@ -567,7 +606,7 @@ class _ArticleTabPageState<T extends DataModel>
                   fontSize: 14,
                 ),
               ),
-              child: const Text('推荐'),
+              child: Text(context.l10n.sortRecommend),
             ),
             TextButton(
               onPressed: () {
@@ -587,7 +626,7 @@ class _ArticleTabPageState<T extends DataModel>
                   fontSize: 14,
                 ),
               ),
-              child: const Text('最新'),
+              child: Text(context.l10n.sortLatest),
             ),
           ],
         ),

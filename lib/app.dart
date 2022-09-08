@@ -101,6 +101,7 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
         ),
         localizationsDelegates: JJLocalizations.localizationsDelegates,
         supportedLocales: JJLocalizations.supportedLocales,
+        scrollBehavior: _ScrollBehavior(),
         builder: (BuildContext context, Widget? child) => Stack(
           children: <Widget>[
             _buildAnnotatedRegion(context, child!),
@@ -109,5 +110,18 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+}
+
+class _ScrollBehavior extends MaterialScrollBehavior {
+  /// do not wrapper a [Scrollbar] on desktop platforms
+  /// That will cause scroll position error with multi scrollables
+  @override
+  Widget buildScrollbar(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    return child;
   }
 }

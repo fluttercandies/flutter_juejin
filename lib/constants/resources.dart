@@ -65,4 +65,6 @@ class R {
 
   static const String ASSETS_ICON_USER_VIP_LV5_WEBP =
       'assets/icon/user/vip_lv5.webp';
+
+  static const String PIN_DETAIL_HEAD_BG_WEBP = 'assets/icon/pins/pin_detail_head_bg.webp';
 }

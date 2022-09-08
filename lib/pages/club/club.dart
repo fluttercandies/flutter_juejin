@@ -10,23 +10,195 @@ import 'package:juejin/exports.dart';
 import '../components/comments.dart';
 
 const _pinContentMaxLines = 3;
+const double _topicTopPadding = kToolbarHeight + 26;
 
-class PinsPage extends StatefulWidget {
-  const PinsPage({Key? key}) : super(key: key);
+@FFRoute(name: 'club-page')
+class ClubPage extends StatefulWidget {
+  const ClubPage(this.id, {Key? key, this.topic}) : super(key: key);
+
+  final String id;
+  final PinTopic? topic;
 
   @override
-  State<PinsPage> createState() => _PinsPageState();
+  State<ClubPage> createState() => _ClubPageState();
 }
 
-class _PinsPageState extends State<PinsPage> {
-  SortType _sortType = SortType.latest;
+class _ClubPageState extends State<ClubPage> {
+  final GlobalKey _topicInfoKey = GlobalKey();
+
+  double _topicInfoScrollOffset = 0;
+
+  SortType _sortType = SortType.recommend;
 
   late final LoadingBase<PinItemModel> _lb = LoadingBase(
-    request: (_, String? lastId) => RecommendAPI.getRecommendPins(
+    request: (_, String? lastId) => RecommendAPI.getRecommendClub(
+      widget.id,
       lastId: lastId,
       sortType: _sortType,
     ),
   );
+
+  ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) {
+      scrollController.addListener(() {
+        double infoHeight = _topicInfoKey.currentContext?.size?.height ?? 1.0;
+        double currentScrollPixel = scrollController.position.pixels;
+
+        safeSetState(
+          () => _topicInfoScrollOffset =
+              currentScrollPixel / (infoHeight - _topicTopPadding) > 1.0
+                  ? 1.0 : currentScrollPixel / (infoHeight - _topicTopPadding),
+        );
+      });
+    });
+  }
+
+  Widget _buildTopicAppBar(BuildContext context, {Widget? title}) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 24.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              size: 14,
+              color: headlineTextColorDark,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+          if (title != null) title,
+          IconButton(
+            icon: const Icon(
+              Icons.more_horiz,
+              size: 14,
+              color: headlineTextColorDark,
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopicTitle(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Container(
+          margin: const EdgeInsets.only(right: 6.0),
+          width: 70,
+          height: 70,
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: ClipRRect(
+                borderRadius: RadiusConstants.r6,
+                child: Image.network(
+                  widget.topic!.icon,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.topic!.title,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: headlineTextColorDark,
+                ),
+              ),
+              const Gap.v(6.0),
+              Text(
+                '沸点${widget.topic!.msgCount} · 掘友${widget.topic!.followerCount}',
+                style: context.textTheme.caption?.copyWith(
+                  color: headlineTextColorDark,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Tapper(
+          onTap: () {},
+          child: Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+            decoration: BoxDecoration(
+              borderRadius: RadiusConstants.max,
+              color: context.theme.primaryColor,
+            ),
+            child: Text(
+              '加入',
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: headlineTextColorDark,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTopicBody(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // PIN TITLE
+          _buildTopicTitle(context),
+          const Gap.v(6.0),
+          // PIN DESCRIPTION (CAPTION)
+          Text(
+            widget.topic!.description,
+            style: context.textTheme.caption?.copyWith(
+              color: headlineTextColorDark,
+            ),
+          ),
+          const Gap.v(6.0),
+          // MORE INFO (caption)
+          Text(
+            '更多详细信息 >',
+            style: context.textTheme.caption?.copyWith(
+              color: headlineTextColorDark,
+            ),
+          ),
+          const Gap.v(6.0),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopicItem(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Container(
+        key: _topicInfoKey,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(R.PIN_DETAIL_HEAD_BG_WEBP),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          children: <Widget>[
+            _buildTopicAppBar(context),
+            const Gap.v(5.0),
+            _buildTopicBody(context),
+            const Gap.v(5.0),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildPinSelectedSwitch(BuildContext context) {
     return Container(
@@ -34,12 +206,12 @@ class _PinsPageState extends State<PinsPage> {
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
         borderRadius: RadiusConstants.r20,
-        color: context.theme.backgroundColor,
+        color: Colors.grey[200],
       ),
       child: Stack(
         alignment: _sortType == SortType.recommend
-            ? AlignmentDirectional.centerEnd
-            : AlignmentDirectional.centerStart,
+            ? AlignmentDirectional.centerStart
+            : AlignmentDirectional.centerEnd,
         children: [
           Container(
             margin: const EdgeInsets.all(2.0),
@@ -49,21 +221,21 @@ class _PinsPageState extends State<PinsPage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () => safeSetState(() {
-                    _sortType = SortType.latest;
-                    _lb.refresh(true);
-                  }),
-                  child: Text(
-                    context.l10n.latest,
-                    style: context.textTheme.caption,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => safeSetState(() {
                     _sortType = SortType.recommend;
                     _lb.refresh(true);
                   }),
                   child: Text(
                     context.l10n.recommend,
+                    style: context.textTheme.caption,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => safeSetState(() {
+                    _sortType = SortType.topicLatest;
+                    _lb.refresh(true);
+                  }),
+                  child: Text(
+                    context.l10n.latest,
                     style: context.textTheme.caption,
                   ),
                 ),
@@ -83,7 +255,7 @@ class _PinsPageState extends State<PinsPage> {
                     ? context.l10n.recommend
                     : context.l10n.latest,
                 style: context.textTheme.caption?.copyWith(
-                  color: context.theme.primaryColor,
+                  color: context.textTheme.headlineMedium?.color,
                 ),
               ),
             ),
@@ -95,12 +267,8 @@ class _PinsPageState extends State<PinsPage> {
 
   Widget _buildPinBar(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-      padding: const EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        borderRadius: RadiusConstants.r10,
-        color: context.theme.cardColor,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      color: context.theme.cardColor,
       child: Row(
         children: <Widget>[
           Expanded(
@@ -119,26 +287,66 @@ class _PinsPageState extends State<PinsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: JJLogo(),
+    return Scaffold(
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: context.theme.backgroundColor.withOpacity(_topicInfoScrollOffset),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            size: 14,
+            color: headlineTextColorLight.withOpacity(_topicInfoScrollOffset),
           ),
-          _buildPinBar(context),
-          Expanded(
-            child: RefreshListWrapper(
-              loadingBase: _lb,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              itemBuilder: (PinItemModel model) => _PinItemWidget(
-                model,
-                key: ValueKey<String>(model.msgId),
-              ),
-              dividerBuilder: (_, __) => const Gap.v(8),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: AnimatedOpacity(
+          duration: const Duration(milliseconds: 500),
+          opacity: _topicInfoScrollOffset  == 0.0 ? 0 : 1,
+          child: Text(
+            widget.topic?.title ?? '',
+            style: context.textTheme.titleSmall?.copyWith(
+              color: headlineTextColorLight,
             ),
           ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.more_horiz,
+              size: 20,
+              color: headlineTextColorLight.withOpacity(_topicInfoScrollOffset),
+            ),
+            onPressed: () {},
+          ),
         ],
+        elevation: 0,
+        bottom: _topicInfoScrollOffset == 1.0 ? PreferredSize(
+          preferredSize: const Size.fromHeight(40.0),
+          child: _buildPinBar(context),
+        ) : null,
+      ),
+      body: RefreshListWrapper(
+        loadingBase: _lb,
+        controller: scrollController,
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        itemBuilder: (PinItemModel model) => _PinItemWidget(
+          model,
+          key: ValueKey<String>(model.msgId),
+        ),
+        sliversBuilder: (
+          BuildContext context,
+          Widget refreshHeader,
+          Widget loadingList,
+        ) =>
+            <Widget>[
+          _buildTopicItem(context),
+          SliverToBoxAdapter(child: _buildPinBar(context)),
+          refreshHeader,
+          loadingList,
+        ],
+        dividerBuilder: (_, __) => const Gap.v(8),
       ),
     );
   }
@@ -225,19 +433,19 @@ class _PinItemWidget extends StatelessWidget {
       children: pinInfo.picList
           .map(
             (String p) => FractionallySizedBox(
-              widthFactor: 1 / 3,
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: ClipRRect(
-                    borderRadius: RadiusConstants.r6,
-                    child: Image.network(p, fit: BoxFit.cover),
-                  ),
-                ),
+          widthFactor: 1 / 3,
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: ClipRRect(
+                borderRadius: RadiusConstants.r6,
+                child: Image.network(p, fit: BoxFit.cover),
               ),
             ),
-          )
+          ),
+        ),
+      )
           .toList(),
     );
   }
@@ -313,7 +521,7 @@ class _PinItemWidget extends StatelessWidget {
           child: Stack(
             children: List<Widget>.generate(
               users.length,
-              (int index) => PositionedDirectional(
+                  (int index) => PositionedDirectional(
                 top: 0,
                 bottom: 0,
                 start: index * (size - offset),
@@ -413,10 +621,7 @@ class _PinItemWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 6),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: RadiusConstants.r10,
-        color: context.theme.cardColor,
-      ),
+      color: context.theme.cardColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

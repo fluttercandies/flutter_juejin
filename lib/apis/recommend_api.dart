@@ -9,7 +9,8 @@ import '../utils/http_util.dart';
 
 enum SortType {
   recommend(200),
-  latest(300);
+  latest(300),
+  topicLatest(500);
 
   const SortType(this.value);
 

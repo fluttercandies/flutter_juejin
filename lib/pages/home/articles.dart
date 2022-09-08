@@ -320,7 +320,7 @@ class _ArticleTabPageState<T extends DataModel>
       sortType: sortType,
     ),
   );
-  int sortType = 200;
+  SortType sortType = SortType.recommend;
 
   String? tagId;
   List<Tag>? tags;
@@ -552,12 +552,12 @@ class _ArticleTabPageState<T extends DataModel>
             TextButton(
               onPressed: () {
                 setState(() {
-                  sortType = 200;
+                  sortType = SortType.recommend;
                 });
                 _lb.refresh(true);
               },
               style: TextButton.styleFrom(
-                foregroundColor: sortType == 200
+                foregroundColor: sortType == SortType.recommend
                     ? context.theme.primaryColor
                     : context.theme.hintColor,
                 shape: const StadiumBorder(),
@@ -572,12 +572,12 @@ class _ArticleTabPageState<T extends DataModel>
             TextButton(
               onPressed: () {
                 setState(() {
-                  sortType = 300;
+                  sortType = SortType.latest;
                 });
                 _lb.refresh(true);
               },
               style: TextButton.styleFrom(
-                foregroundColor: sortType == 300
+                foregroundColor: sortType == SortType.latest
                     ? context.theme.primaryColor
                     : context.theme.hintColor,
                 shape: const StadiumBorder(),

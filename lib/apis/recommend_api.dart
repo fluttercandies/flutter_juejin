@@ -28,14 +28,12 @@ class RecommendAPI {
     String? lastId,
     String? categoryId,
     String? tagId,
-    int sortType = 200,
+    SortType sortType = SortType.recommend,
     int limit = 20,
-    int idType = 2,
   }) {
     if (isFollow) {
       return getRecommendFollowFeedArticles(
         lastId: lastId,
-        idType: idType,
         limit: limit,
       ) as Future<ResponseModel<T>>;
     }
@@ -44,7 +42,6 @@ class RecommendAPI {
         lastId: lastId,
         categoryId: categoryId,
         tagId: tagId,
-        idType: idType,
         limit: limit,
         sortType: sortType,
       ) as Future<ResponseModel<T>>;
@@ -59,7 +56,7 @@ class RecommendAPI {
   static Future<ResponseModel<FeedModel>> getAllFeedArticles({
     String? lastId,
     int limit = 20,
-    int sortType = 200,
+    SortType sortType = SortType.recommend,
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,
@@ -67,7 +64,7 @@ class RecommendAPI {
       body: <String, dynamic>{
         'cursor': cursorFromLastIdAndLimit(lastId, limit),
         'limit': limit,
-        'sort_type': sortType,
+        'sort_type': sortType.value,
       },
     );
   }
@@ -75,7 +72,6 @@ class RecommendAPI {
   static Future<ResponseModel<ArticleItemModel>>
       getRecommendFollowFeedArticles({
     String? lastId,
-    int idType = 2,
     int limit = 20,
   }) {
     return HttpUtil.fetchModel(
@@ -84,7 +80,7 @@ class RecommendAPI {
       body: <String, dynamic>{
         'cursor': lastId,
         'limit': limit,
-        'id_type': idType,
+        'id_type': 2,
       },
     );
   }
@@ -93,9 +89,8 @@ class RecommendAPI {
     String? lastId,
     required String categoryId,
     String? tagId,
-    int idType = 2,
     int limit = 20,
-    int sortType = 200,
+    SortType sortType = SortType.recommend,
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,
@@ -104,9 +99,9 @@ class RecommendAPI {
         'cate_id': categoryId,
         if (tagId != null) 'tag_id': tagId,
         'cursor': lastId,
-        'id_type': idType,
+        'id_type': 2,
         'limit': limit,
-        'sort_type': sortType,
+        'sort_type': sortType.value,
       },
     );
   }
@@ -139,7 +134,8 @@ class RecommendAPI {
     );
   }
 
-  static Future<ResponseModel<PinItemModel>> getRecommendClub(String clubId, {
+  static Future<ResponseModel<PinItemModel>> getRecommendClub(
+    String clubId, {
     String? lastId,
     int limit = 20,
     SortType sortType = SortType.recommend,

@@ -79,7 +79,8 @@ class ResponseModel<T extends DataModel> {
     final bool hasData = data != null;
     final bool isModels = data is List;
     return ResponseModel<T>(
-      code: json['err_no'] ?? codeSucceed,
+      // network error returned code 1
+      code: json['err_no'] ?? json['code'] ?? codeSucceed,
       msg: json['err_msg'] ?? errorExternalRequest,
       data: hasData && !isModels ? makeModel<T>(data as Json) : null,
       rawData: json['data'],

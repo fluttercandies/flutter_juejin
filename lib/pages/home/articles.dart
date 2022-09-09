@@ -359,19 +359,13 @@ class _ArticleTabPageState<T extends DataModel>
       sortType: sortType,
     ),
   );
+
   SortType sortType = SortType.recommend;
 
   String? tagId;
-  List<Tag>? tagList;
-
-  bool get hasTags =>
-      widget.categoryId != null && tagList != null && tagList!.isNotEmpty;
 
   @override
   bool get wantKeepAlive => true;
-
-  final tagRowKey = GlobalKey();
-  final tagScrollController = ScrollController();
 
   /// use for hiden
   final controller = ScrollController(keepScrollOffset: false);
@@ -379,196 +373,20 @@ class _ArticleTabPageState<T extends DataModel>
   @override
   void initState() {
     super.initState();
-    if (widget.categoryId != null) {
-      WidgetsBinding.instance.addPostFrameCallback(_loadTags);
-    }
     widget.refreshStream?.listen(_onRefreshNotify);
   }
 
   @override
   void dispose() {
     _lb.dispose();
-    tagScrollController.dispose();
     controller.dispose();
     super.dispose();
-  }
-
-  Future<void> _loadTags(_) async {
-    final result = await RecommendAPI.getRecommendTags(
-      categoryId: widget.categoryId!,
-    );
-
-    if (result.isSucceed) {
-      safeSetState(() {
-        tagList = result.models;
-      });
-    } else {
-      LogUtil.e(result.msg);
-    }
   }
 
   void _onRefreshNotify(String event) {
     if (event == (widget.key as PageStorageKey).value) {
       _lb.refresh(true);
     }
-  }
-
-  void _ensureTagShow() {
-    tagRowKey.currentContext?.visitChildElements((element) {
-      final widget = element.widget;
-      if (widget is _ArticleTag && element.renderObject != null) {
-        if (widget.tagId == tagId) {
-          tagScrollController.position.ensureVisible(
-            element.renderObject!,
-            alignment: 0.5,
-            duration: const Duration(milliseconds: 350),
-            curve: Curves.easeIn,
-          );
-        }
-      }
-    });
-  }
-
-  Widget _buildTagDropDown(BuildContext context, OverlayEntry entry) {
-    return Container(
-      padding: const EdgeInsets.only(left: 8, bottom: 8),
-      color: context.colorScheme.background,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Wrap(
-              children: [
-                _ArticleTag(
-                  tagId: null,
-                  tagName: context.l10n.tagAll,
-                  isActive: tagId == null,
-                  onTap: () {
-                    entry.remove();
-                    if (tagId == null) {
-                      return;
-                    }
-                    setState(() {
-                      tagId = null;
-                      _lb.refresh(true);
-                    });
-                    tagScrollController.animateTo(
-                      0,
-                      duration: const Duration(milliseconds: 350),
-                      curve: Curves.easeIn,
-                    );
-                  },
-                ),
-                for (final tag in tagList!)
-                  _ArticleTag(
-                    tagId: tag.tagId,
-                    tagName: tag.tagName,
-                    isActive: tagId == tag.tagId,
-                    onTap: () {
-                      entry.remove();
-                      setState(() {
-                        if (tagId == tag.tagId) {
-                          tagId = null;
-                        } else {
-                          tagId = tag.tagId;
-                        }
-                        _lb.refresh(true);
-                      });
-                      _ensureTagShow();
-                    },
-                  ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Feedback.forTap(context);
-              entry.remove();
-            },
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: const Icon(Icons.keyboard_arrow_up_outlined, size: 24),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTags() {
-    return Stack(
-      children: [
-        SingleChildScrollView(
-          controller: tagScrollController,
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.only(left: 8, right: 48),
-          child: Row(
-            key: tagRowKey,
-            children: [
-              _ArticleTag(
-                tagId: null,
-                tagName: context.l10n.tagAll,
-                isActive: tagId == null,
-                onTap: () {
-                  if (tagId == null) {
-                    return;
-                  }
-                  setState(() {
-                    tagId = null;
-                    _lb.refresh(true);
-                  });
-                },
-              ),
-              for (final tag in tagList!)
-                _ArticleTag(
-                  tagId: tag.tagId,
-                  tagName: tag.tagName,
-                  isActive: tagId == tag.tagId,
-                  onTap: () {
-                    setState(() {
-                      if (tagId == tag.tagId) {
-                        tagId = null;
-                      } else {
-                        tagId = tag.tagId;
-                      }
-                      _lb.refresh(true);
-                    });
-                  },
-                ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 0,
-          bottom: 0,
-          right: 0,
-          child: GestureDetector(
-            onTapUp: (details) {
-              Feedback.forTap(context);
-              showDropDown(
-                context: context,
-                offset: details.globalPosition.dy - details.localPosition.dy,
-                builder: _buildTagDropDown,
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.only(left: 24, right: 8),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    context.colorScheme.background.withAlpha(0),
-                    context.colorScheme.background,
-                    context.colorScheme.background,
-                  ],
-                  stops: const [0, 0.42, 1],
-                ),
-              ),
-              child: const Icon(Icons.keyboard_arrow_down_outlined, size: 24),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _buildSort(BuildContext context) {
@@ -658,23 +476,28 @@ class _ArticleTabPageState<T extends DataModel>
     super.build(context);
     return Column(
       children: [
-        if (hasTags)
+        if (widget.categoryId != null)
           Padding(
             padding: const EdgeInsets.only(
               top: kToolbarHeight,
             ),
-            child: _buildTags(),
+            child: _ArticleTagRow(
+              categoryId: widget.categoryId!,
+              onTagChanged: (String? newTag) {
+                tagId = newTag;
+                _lb.refresh(true);
+              },
+            ),
           ),
         Expanded(
           child: RefreshListWrapper<T>(
             loadingBase: _lb,
-            //restorationId: (widget.key as PageStorageKey).value,
             physics:
                 widget.isActive ? null : const NeverScrollableScrollPhysics(),
             controller: widget.isActive ? null : ScrollController(),
             padding: const EdgeInsets.symmetric(vertical: 8),
             sliversBuilder: (context, refreshHeader, loadingList) => <Widget>[
-              if (!hasTags)
+              if (widget.categoryId == null)
                 SliverOverlapInjector(
                   handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                     context,
@@ -686,6 +509,217 @@ class _ArticleTabPageState<T extends DataModel>
             ],
             itemBuilder: itemBuilder,
             dividerBuilder: (_, __) => const Gap.v(8),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ArticleTagRow extends StatefulWidget {
+  const _ArticleTagRow({
+    Key? key,
+    required this.categoryId,
+    this.onTagChanged,
+  }) : super(key: key);
+
+  final String categoryId;
+
+  final void Function(String?)? onTagChanged;
+
+  @override
+  State<_ArticleTagRow> createState() => _ArticleTagRowState();
+}
+
+class _ArticleTagRowState extends State<_ArticleTagRow> {
+  String? tagId;
+  List<Tag>? tagList;
+
+  bool get hasTags => tagList != null && tagList!.isNotEmpty;
+
+  final tagRowKey = GlobalKey();
+  final tagScrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback(_loadTags);
+  }
+
+  @override
+  void dispose() {
+    tagScrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadTags(_) async {
+    final result = await RecommendAPI.getRecommendTags(
+      categoryId: widget.categoryId,
+    );
+
+    if (result.isSucceed) {
+      safeSetState(() {
+        tagList = result.models;
+      });
+    } else {
+      LogUtil.e(result.msg);
+    }
+  }
+
+  void _ensureTagShow() {
+    tagRowKey.currentContext?.visitChildElements((element) {
+      final widget = element.widget;
+      if (widget is _ArticleTag && element.renderObject != null) {
+        if (widget.tagId == tagId) {
+          tagScrollController.position.ensureVisible(
+            element.renderObject!,
+            alignment: 0.5,
+            duration: const Duration(milliseconds: 350),
+            curve: Curves.easeIn,
+          );
+        }
+      }
+    });
+  }
+
+  Widget _buildTagDropDown(BuildContext context, OverlayEntry entry) {
+    return Container(
+      padding: const EdgeInsets.only(left: 8, bottom: 8),
+      color: context.colorScheme.background,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Wrap(
+              children: [
+                _ArticleTag(
+                  tagId: null,
+                  tagName: context.l10n.tagAll,
+                  isActive: tagId == null,
+                  onTap: () {
+                    entry.remove();
+                    if (tagId == null) {
+                      return;
+                    }
+                    setState(() {
+                      tagId = null;
+                    });
+                    tagScrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 350),
+                      curve: Curves.easeIn,
+                    );
+                    widget.onTagChanged?.call(tagId);
+                  },
+                ),
+                for (final tag in tagList!)
+                  _ArticleTag(
+                    tagId: tag.tagId,
+                    tagName: tag.tagName,
+                    isActive: tagId == tag.tagId,
+                    onTap: () {
+                      entry.remove();
+                      setState(() {
+                        if (tagId == tag.tagId) {
+                          tagId = null;
+                        } else {
+                          tagId = tag.tagId;
+                        }
+                      });
+                      _ensureTagShow();
+                      widget.onTagChanged?.call(tagId);
+                    },
+                  ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Feedback.forTap(context);
+              entry.remove();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: const Icon(Icons.keyboard_arrow_up_outlined, size: 24),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          controller: tagScrollController,
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.only(left: 8, right: 48),
+          child: Row(
+            key: tagRowKey,
+            children: [
+              _ArticleTag(
+                tagId: null,
+                tagName: context.l10n.tagAll,
+                isActive: tagId == null,
+                onTap: () {
+                  if (tagId == null) {
+                    return;
+                  }
+                  setState(() {
+                    tagId = null;
+                  });
+                  widget.onTagChanged?.call(tagId);
+                },
+              ),
+              for (final tag in tagList ?? [])
+                _ArticleTag(
+                  tagId: tag.tagId,
+                  tagName: tag.tagName,
+                  isActive: tagId == tag.tagId,
+                  onTap: () {
+                    setState(() {
+                      if (tagId == tag.tagId) {
+                        tagId = null;
+                      } else {
+                        tagId = tag.tagId;
+                      }
+                      widget.onTagChanged?.call(tagId);
+                    });
+                  },
+                ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          bottom: 0,
+          right: 0,
+          child: GestureDetector(
+            onTapUp: (details) {
+              Feedback.forTap(context);
+              showDropDown(
+                context: context,
+                offset: details.globalPosition.dy - details.localPosition.dy,
+                builder: _buildTagDropDown,
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.only(left: 24, right: 8),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    context.colorScheme.background.withAlpha(0),
+                    context.colorScheme.background,
+                    context.colorScheme.background,
+                  ],
+                  stops: const [0, 0.42, 1],
+                ),
+              ),
+              child: const Icon(Icons.keyboard_arrow_down_outlined, size: 24),
+            ),
           ),
         ),
       ],

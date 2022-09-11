@@ -219,7 +219,10 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
     if (sliversBuilder != null) {
       return sliversBuilder!(context, refreshHeader, loadingList);
     }
-    return <Widget>[refreshHeader, loadingList];
+    return <Widget>[
+      refreshHeader,
+      loadingList,
+    ];
   }
 
   @override

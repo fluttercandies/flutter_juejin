@@ -68,6 +68,13 @@
   "recommend": "Hot",
   "latest": "Latest",
 
+  "categoryTabFollowing": "Following",
+  "categoryTabRecommend": "Recommend",
+
+  "tagAll": "All",
+  "sortRecommend": "Recommend",
+  "sortLatest": "Latest",
+
   "durationYears": "{many, plural, =1{1 year}other{{many} years}} ago",
   "@durationYears": {
     "placeholders": {"many": {"type": "int"}}

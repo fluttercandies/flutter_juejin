@@ -1,6 +1,5 @@
-
-
 import 'package:intl/intl.dart' as intl;
+
 import 'jj_localizations.dart';
 
 /// The translations for English (`en`).
@@ -154,6 +153,21 @@ class JJLocalizationsEn extends JJLocalizations {
 
   @override
   String get latest => 'Latest';
+
+  @override
+  String get categoryTabFollowing => 'Following';
+
+  @override
+  String get categoryTabRecommend => 'Recommend';
+
+  @override
+  String get tagAll => 'All';
+
+  @override
+  String get sortRecommend => 'Recommend';
+
+  @override
+  String get sortLatest => 'Latest';
 
   @override
   String durationYears(num many) {

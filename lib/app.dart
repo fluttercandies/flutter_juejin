@@ -75,15 +75,6 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return _buildOKToast(
       child: ProviderScope(
-        localizationsDelegates: JJLocalizations.localizationsDelegates,
-        supportedLocales: JJLocalizations.supportedLocales,
-        scrollBehavior: _ScrollBehavior(),
-        builder: (BuildContext context, Widget? child) => Stack(
-          children: <Widget>[
-            _buildAnnotatedRegion(context, child!),
-            _buildBottomPaddingVerticalShield(context),
-          ],
-        ),
         child: MaterialApp(
           theme: themeBy(brightness: Brightness.light),
           darkTheme: themeBy(brightness: Brightness.dark),
@@ -108,22 +99,18 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
               ),
             ),
           ),
+          localizationsDelegates: JJLocalizations.localizationsDelegates,
+          supportedLocales: JJLocalizations.supportedLocales,
+          scrollBehavior: _ScrollBehavior(),
+          builder: (BuildContext context, Widget? child) => Stack(
+            children: <Widget>[
+              _buildAnnotatedRegion(context, child!),
+              _buildBottomPaddingVerticalShield(context),
+            ],
+          ),
         ),
       ),
     );
-  }
-}
-
-class _ScrollBehavior extends MaterialScrollBehavior {
-  /// do not wrapper a [Scrollbar] on desktop platforms
-  /// That will cause scroll position error with multi scrollables
-  @override
-  Widget buildScrollbar(
-    BuildContext context,
-    Widget child,
-    ScrollableDetails details,
-  ) {
-    return child;
   }
 }
 

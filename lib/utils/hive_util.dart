@@ -10,13 +10,10 @@ import '../models/repositories.dart';
 class HiveUtil {
   HiveUtil._();
 
-  static const hiveData = 'hive';
-
   static const userToken = 'user_token';
 
-  static BoxCollection? _collection;
-
-  static BoxCollection get collection => _collection!;
+  static Box<UserAuthen>? _box;
+  static Box<UserAuthen> get box => _box!;
 
   static Future<void> init() async {
     const secureStorage = FlutterSecureStorage();
@@ -41,47 +38,29 @@ class HiveUtil {
   static Future<void> initByKey(List<int> key, String path) async {
     Hive.registerAdapter<UserAuthen>(UserAuthenAdapter());
 
-    _collection = await BoxCollection.open(
-      hiveData,
-      {userToken},
+    _box = await Hive.openBox<UserAuthen>(
+      HiveUtil.userToken,
+      encryptionCipher: HiveAesCipher(key),
       path: '${path.replaceFirst(RegExp(r'[\\/]$'), '')}/',
-      key: HiveAesCipher(key),
     );
   }
 
-  static Set<String> get boxNames => collection.boxNames;
+  /// open another box
+  static Future<Box<V>> openBox<V>(String name) {
+    assert(name != HiveUtil.userToken, 'Please use HiveUtil.box');
+    return Hive.openBox<V>(
+      name,
+      path: box.path,
+    );
+  }
+
+  static String get name => box.name;
 
   static void close() {
-    collection.close();
+    box.close();
   }
 
   static Future<void> deleteFromDisk() {
-    return collection.deleteFromDisk();
-  }
-
-  static String get name => collection.name;
-
-  static Future<CollectionBox<V>> openBox<V>(
-    String name, {
-    bool preload = false,
-    CollectionBox<V> Function(String, BoxCollection)? boxCreator,
-  }) {
-    return collection.openBox<V>(
-      name,
-      preload: preload,
-      boxCreator: boxCreator,
-    );
-  }
-
-  static Future<void> transaction(
-    Future<void> Function() action, {
-    List<String>? boxNames,
-    bool readOnly = false,
-  }) {
-    return collection.transaction(
-      action,
-      boxNames: boxNames,
-      readOnly: readOnly,
-    );
+    return box.deleteFromDisk();
   }
 }

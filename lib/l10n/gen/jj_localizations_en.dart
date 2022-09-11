@@ -156,6 +156,9 @@ class JJLocalizationsEn extends JJLocalizations {
   String get latest => 'Latest';
 
   @override
+  String get join => 'Join';
+
+  @override
   String durationYears(num many) {
     final String pluralString = intl.Intl.pluralLogic(
       many,

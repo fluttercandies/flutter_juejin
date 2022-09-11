@@ -68,6 +68,8 @@
   "recommend": "Hot",
   "latest": "Latest",
 
+  "join": "Join",
+
   "durationYears": "{many, plural, =1{1 year}other{{many} years}} ago",
   "@durationYears": {
     "placeholders": {"many": {"type": "int"}}

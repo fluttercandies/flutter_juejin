@@ -370,6 +370,12 @@ abstract class JJLocalizations {
   /// **'Latest'**
   String get latest;
 
+  /// No description provided for @join.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get join;
+
   /// No description provided for @durationYears.
   ///
   /// In en, this message translates to:

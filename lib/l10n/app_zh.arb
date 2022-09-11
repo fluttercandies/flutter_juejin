@@ -57,6 +57,8 @@
   "recommend": "热门",
   "latest": "最新",
 
+  "join": "加入",
+
   "durationYears": "{many, plural, =other{{many}年前}}",
   "durationMonths": "{many, plural, =other{{many}月前}}",
   "durationDays": "{many, plural, =other{{many}天前}}",

@@ -405,6 +405,48 @@ abstract class JJLocalizations {
   /// **'Latest'**
   String get sortLatest;
 
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get loginTitle;
+
+  /// No description provided for @loginSlogan.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to experience more'**
+  String get loginSlogan;
+
+  /// No description provided for @hintUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone/email'**
+  String get hintUsername;
+
+  /// No description provided for @hintPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get hintPassword;
+
+  /// No description provided for @buttonSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get buttonSignIn;
+
+  /// No description provided for @linkSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account'**
+  String get linkSignUp;
+
+  /// No description provided for @linkRetrieve.
+  ///
+  /// In en, this message translates to:
+  /// **'Fogot password?'**
+  String get linkRetrieve;
+
   /// No description provided for @durationYears.
   ///
   /// In en, this message translates to:

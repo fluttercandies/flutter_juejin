@@ -78,6 +78,14 @@
   "sortRecommend": "Recommend",
   "sortLatest": "Latest",
 
+  "loginTitle": "Sign in",
+  "loginSlogan": "Log in to experience more",
+  "hintUsername":"Phone/email",
+  "hintPassword":"Password",
+  "buttonSignIn":"Sign in",
+  "linkSignUp":"Create an account",
+  "linkRetrieve":"Fogot password?",
+
   "durationYears": "{many, plural, =1{1 year} other{{many} years}} ago",
   "@durationYears": {
     "placeholders": {"many": {"type": "int"}}

@@ -65,6 +65,14 @@
   "sortLatest": "最新",
 
   "join": "加入",
+  
+  "loginTitle": "登录",
+  "loginSlogan": "登录体验更多精彩",
+  "hintUsername":"手机号/邮箱",
+  "hintPassword":"密码",
+  "buttonSignIn":"登录",
+  "linkSignUp":"注册新用户",
+  "linkRetrieve":"找回密码",
 
   "durationYears": "{many, plural, other{{many}年前}}",
   "durationMonths": "{many, plural, other{{many}月前}}",

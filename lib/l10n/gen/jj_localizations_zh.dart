@@ -194,6 +194,15 @@ class JJLocalizationsZh extends JJLocalizations {
   String get linkRetrieve => '找回密码';
 
   @override
+  String get needUsername => '请填写用户名';
+
+  @override
+  String get incorectUsername => '请填写手机号码或者邮箱';
+
+  @override
+  String get needPassword => '请填写密码';
+
+  @override
   String durationYears(int many) {
     String _temp0 = intl.Intl.pluralLogic(
       many,

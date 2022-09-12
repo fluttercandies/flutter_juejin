@@ -11,9 +11,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? _username;
+  String? _password;
+
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> _doLogin() async {
+    if (_formKey.currentState!.validate()) {
+      final result = await PassportAPI.login(_username!, _password!);
+      if (result.isSucceed) {
+        print(result);
+      } else {
+        showToast(result.msg);
+      }
+    }
   }
 
   @override
@@ -32,6 +48,8 @@ class _LoginPageState extends State<LoginPage> {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
                 SizedBox(
@@ -63,6 +81,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const Gap.v(16),
                 TextFormField(
+                  validator: (v) {
+                    if (v == null || v.isEmpty) {
+                      return context.l10n.needUsername;
+                    }
+                    if (!v.isMobile() && !v.isEmail()) {
+                      return context.l10n.incorectUsername;
+                    }
+                    return null;
+                  },
+                  onChanged: (v) => _username = v,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: context.l10n.hintUsername,
@@ -75,6 +103,13 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   obscureText: true,
                   obscuringCharacter: '*',
+                  validator: (v) {
+                    if (v?.isEmpty ?? true) {
+                      return context.l10n.needPassword;
+                    }
+                    return null;
+                  },
+                  onChanged: (v) => _password = v,
                   keyboardType: TextInputType.visiblePassword,
                   decoration: InputDecoration(
                     hintText: context.l10n.hintPassword,
@@ -83,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const Gap.v(8),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _doLogin,
                   child: Center(
                     child: Text(context.l10n.buttonSignIn),
                   ),
@@ -92,12 +127,16 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showToast('Comming soon');
+                      },
                       child: Text(context.l10n.linkSignUp),
                     ),
                     const Spacer(),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showToast('Comming soon');
+                      },
                       child: Text(context.l10n.linkRetrieve),
                     ),
                   ],

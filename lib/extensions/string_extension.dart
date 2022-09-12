@@ -4,6 +4,12 @@
 
 import 'package:flutter/widgets.dart' show Characters;
 
+final mobileRegExp = RegExp(r'^1[3-9]\d{9}$');
+final emailRegExp = RegExp(
+  r'^[a-z][0-9a-z\-_ \.]*@([a-z0-9]+\.)+?[a-z]+$',
+  caseSensitive: false,
+);
+
 extension StringExtension on String {
   String get notBreak => Characters(this).join('\u{200B}');
 
@@ -15,6 +21,10 @@ extension StringExtension on String {
 
   String removeFirst(Pattern pattern, [int startIndex = 0]) =>
       replaceFirst(pattern, '', startIndex);
+
+  bool isMobile() => mobileRegExp.hasMatch(this);
+
+  bool isEmail() => emailRegExp.hasMatch(this);
 }
 
 extension NullableStringExtension on String? {

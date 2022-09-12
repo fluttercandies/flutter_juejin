@@ -86,6 +86,10 @@
   "linkSignUp":"Create an account",
   "linkRetrieve":"Fogot password?",
 
+  "needUsername": "Please enter a mobile number or email",
+  "incorectUsername": "Username must be a mobile number or email",
+  "needPassword": "Please enter your password",
+
   "durationYears": "{many, plural, =1{1 year} other{{many} years}} ago",
   "@durationYears": {
     "placeholders": {"many": {"type": "int"}}

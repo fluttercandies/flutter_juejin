@@ -447,6 +447,24 @@ abstract class JJLocalizations {
   /// **'Fogot password?'**
   String get linkRetrieve;
 
+  /// No description provided for @needUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a mobile number or email'**
+  String get needUsername;
+
+  /// No description provided for @incorectUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be a mobile number or email'**
+  String get incorectUsername;
+
+  /// No description provided for @needPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get needPassword;
+
   /// No description provided for @durationYears.
   ///
   /// In en, this message translates to:

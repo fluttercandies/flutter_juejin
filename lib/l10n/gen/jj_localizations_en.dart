@@ -194,6 +194,15 @@ class JJLocalizationsEn extends JJLocalizations {
   String get linkRetrieve => 'Fogot password?';
 
   @override
+  String get needUsername => 'Please enter a mobile number or email';
+
+  @override
+  String get incorectUsername => 'Username must be a mobile number or email';
+
+  @override
+  String get needPassword => 'Please enter your password';
+
+  @override
   String durationYears(int many) {
     String _temp0 = intl.Intl.pluralLogic(
       many,

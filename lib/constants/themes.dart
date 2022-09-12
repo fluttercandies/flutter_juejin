@@ -70,16 +70,19 @@ ThemeData themeBy({
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: themeColorDark,
+        shape: const StadiumBorder(),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: themeColorDark.withAlpha(200),
+        shape: const StadiumBorder(),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: themeColorDark.withAlpha(200),
+        shape: const StadiumBorder(),
       ),
     ),
     textSelectionTheme: TextSelectionThemeData(

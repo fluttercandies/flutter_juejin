@@ -188,6 +188,13 @@ class NestedWebViewController {
 
   bool _disposed = false;
 
+  void dispose() {
+    progressNotifier.dispose();
+    scrollHeightNotifier.dispose();
+    _controller = null;
+    _disposed = true;
+  }
+
   void onWebViewCreated(InAppWebViewController controller) {
     _controller = controller;
     _controller?.addJavaScriptHandler(
@@ -275,13 +282,6 @@ class NestedWebViewController {
       launchUrl(uri);
     }
     return NavigationActionPolicy.CANCEL;
-  }
-
-  void dispose() {
-    progressNotifier.dispose();
-    scrollHeightNotifier.dispose();
-    _controller = null;
-    _disposed = true;
   }
 }
 

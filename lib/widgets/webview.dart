@@ -186,11 +186,23 @@ class NestedWebViewController {
   final ValueNotifier<int> progressNotifier = ValueNotifier<int>(0);
   WebViewStatus _status = WebViewStatus.loading;
 
+  bool _disposed = false;
+
+  void dispose() {
+    progressNotifier.dispose();
+    scrollHeightNotifier.dispose();
+    _controller = null;
+    _disposed = true;
+  }
+
   void onWebViewCreated(InAppWebViewController controller) {
     _controller = controller;
     _controller?.addJavaScriptHandler(
       handlerName: 'JJHeightNotifier',
       callback: (List<dynamic> arguments) async {
+        if (_disposed) {
+          return;
+        }
         final int height = int.parse(arguments.first);
         scrollHeightNotifier.value = height.toDouble();
       },
@@ -198,16 +210,19 @@ class NestedWebViewController {
   }
 
   void onLoadStart(InAppWebViewController controller, Uri? uri) {
+    if (_disposed) {
+      return;
+    }
     if (uri?.toString() == initialUrl || _status == WebViewStatus.failed) {
       _status = WebViewStatus.loading;
     }
   }
 
   Future<void> onLoadStop(InAppWebViewController controller, Uri? uri) async {
-    if (uri.toString().contains('/appview/post/')) {
+    if (!_disposed && uri.toString().contains('/appview/post/')) {
       await _controller?.evaluateJavascript(source: removeHeaderJs);
     }
-    if (_status != WebViewStatus.failed) {
+    if (!_disposed && _status != WebViewStatus.failed) {
       await _controller?.evaluateJavascript(source: scrollHeightJs);
       onLoadComplete?.call();
     }
@@ -219,6 +234,9 @@ class NestedWebViewController {
     int code,
     String message,
   ) {
+    if (_disposed) {
+      return;
+    }
     LogUtil.e(
       'WebView onLoadError:\n'
       ' - [$uri]\n'
@@ -230,6 +248,9 @@ class NestedWebViewController {
   }
 
   void onProgressChanged(InAppWebViewController controller, int progress) {
+    if (_disposed) {
+      return;
+    }
     progressNotifier.value = progress;
   }
 

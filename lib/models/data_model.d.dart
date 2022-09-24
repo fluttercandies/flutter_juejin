@@ -25,4 +25,5 @@ final Map<Type, DataFactory> dataModelFactories = <Type, DataFactory>{
   UserGrowthInfo: UserGrowthInfo.fromJson,
   UserInteract: UserInteract.fromJson,
   UserOrg: UserOrg.fromJson,
+  UserPassportModel: UserPassportModel.fromJson,
 };

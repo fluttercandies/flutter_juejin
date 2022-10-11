@@ -68,7 +68,15 @@
   "recommend": "Hot",
   "latest": "Latest",
 
+
   "join": "Join",
+
+  "categoryTabFollowing": "Following",
+  "categoryTabRecommend": "Recommend",
+
+  "tagAll": "All",
+  "sortRecommend": "Recommend",
+  "sortLatest": "Latest",
 
   "durationYears": "{many, plural, =1{1 year}other{{many} years}} ago",
   "@durationYears": {

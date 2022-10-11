@@ -56,6 +56,13 @@
   "arrangement": "排序",
   "recommend": "热门",
   "latest": "最新",
+  
+  "categoryTabFollowing": "关注",
+  "categoryTabRecommend": "推荐",
+
+  "tagAll": "全部",
+  "sortRecommend": "推荐",
+  "sortLatest": "最新",
 
   "join": "加入",
 

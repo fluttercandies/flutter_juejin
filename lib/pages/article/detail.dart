@@ -51,6 +51,13 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     });
   }
 
+  @override
+  void dispose() {
+    _controller?.dispose();
+    _authorInTitle.dispose();
+    super.dispose();
+  }
+
   Future<void> _fetchDetail() async {
     final Brightness brightness = overlayContext.brightness;
     return tryCatchResponse(
@@ -236,6 +243,9 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
           child: VisibilityDetector(
             key: ValueKey<String>('article-$articleId-author'),
             onVisibilityChanged: (VisibilityInfo info) {
+              if (!mounted) {
+                return;
+              }
               _authorInTitle.value = info.visibleFraction < 0.2;
             },
             child: _buildAuthorInHeader(context),

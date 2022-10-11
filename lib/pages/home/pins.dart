@@ -226,19 +226,19 @@ class _PinItemWidget extends StatelessWidget {
       children: pinInfo.picList
           .map(
             (String p) => FractionallySizedBox(
-          widthFactor: 1 / 3,
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: ClipRRect(
-                borderRadius: RadiusConstants.r6,
-                child: Image.network(p, fit: BoxFit.cover),
+              widthFactor: 1 / 3,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: ClipRRect(
+                    borderRadius: RadiusConstants.r6,
+                    child: Image.network(p, fit: BoxFit.cover),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      )
+          )
           .toList(),
     );
   }

@@ -155,6 +155,9 @@ class JJLocalizationsZh extends JJLocalizations {
   String get latest => '最新';
 
   @override
+  String get join => '加入';
+
+  @override
   String get categoryTabFollowing => '关注';
 
   @override

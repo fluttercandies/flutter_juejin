@@ -155,6 +155,9 @@ class JJLocalizationsEn extends JJLocalizations {
   String get latest => 'Latest';
 
   @override
+  String get join => 'Join';
+  
+  @override
   String get categoryTabFollowing => 'Following';
 
   @override

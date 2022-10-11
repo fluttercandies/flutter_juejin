@@ -314,7 +314,7 @@ class _PinItemWidget extends StatelessWidget {
           child: Stack(
             children: List<Widget>.generate(
               users.length,
-                  (int index) => PositionedDirectional(
+              (int index) => PositionedDirectional(
                 top: 0,
                 bottom: 0,
                 start: index * (size - offset),

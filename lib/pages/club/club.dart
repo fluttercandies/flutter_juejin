@@ -1,4 +1,3 @@
-
 // Copyright 2022 The FlutterCandies author. All rights reserved.
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
@@ -51,9 +50,10 @@ class _ClubPageState extends State<ClubPage> {
         double currentScrollPixel = scrollController.position.pixels;
 
         safeSetState(
-              () => _topicInfoScrollOffset =
-          currentScrollPixel / (infoHeight - _topicTopPadding) > 1.0
-              ? 1.0 : currentScrollPixel / (infoHeight - _topicTopPadding),
+          () => _topicInfoScrollOffset =
+              currentScrollPixel / (infoHeight - _topicTopPadding) > 1.0
+                  ? 1.0
+                  : currentScrollPixel / (infoHeight - _topicTopPadding),
         );
       });
     });
@@ -131,8 +131,10 @@ class _ClubPageState extends State<ClubPage> {
         Tapper(
           onTap: () {},
           child: Container(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 6.0,
+            ),
             decoration: BoxDecoration(
               borderRadius: RadiusConstants.max,
               color: context.theme.primaryColor,
@@ -292,7 +294,9 @@ class _ClubPageState extends State<ClubPage> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: context.theme.backgroundColor.withOpacity(_topicInfoScrollOffset),
+        backgroundColor: context.theme.backgroundColor.withOpacity(
+          _topicInfoScrollOffset,
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
@@ -304,7 +308,7 @@ class _ClubPageState extends State<ClubPage> {
         ),
         title: AnimatedOpacity(
           duration: const Duration(milliseconds: 500),
-          opacity: _topicInfoScrollOffset  == 0.0 ? 0 : 1,
+          opacity: _topicInfoScrollOffset == 0.0 ? 0 : 1,
           child: Text(
             widget.topic?.title ?? '',
             style: context.textTheme.titleSmall?.copyWith(
@@ -323,10 +327,12 @@ class _ClubPageState extends State<ClubPage> {
           ),
         ],
         elevation: 0,
-        bottom: _topicInfoScrollOffset == 1.0 ? PreferredSize(
-          preferredSize: const Size.fromHeight(40.0),
-          child: _buildPinBar(context),
-        ) : null,
+        bottom: _topicInfoScrollOffset == 1.0
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(40.0),
+                child: _buildPinBar(context),
+              )
+            : null,
       ),
       body: RefreshListWrapper(
         loadingBase: _lb,
@@ -337,11 +343,11 @@ class _ClubPageState extends State<ClubPage> {
           key: ValueKey<String>(model.msgId),
         ),
         sliversBuilder: (
-            BuildContext context,
-            Widget refreshHeader,
-            Widget loadingList,
-            ) =>
-        <Widget>[
+          BuildContext context,
+          Widget refreshHeader,
+          Widget loadingList,
+        ) =>
+            <Widget>[
           _buildTopicItem(context),
           SliverToBoxAdapter(child: _buildPinBar(context)),
           refreshHeader,
@@ -434,19 +440,19 @@ class _PinItemWidget extends StatelessWidget {
       children: pinInfo.picList
           .map(
             (String p) => FractionallySizedBox(
-          widthFactor: 1 / 3,
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: ClipRRect(
-                borderRadius: RadiusConstants.r6,
-                child: Image.network(p, fit: BoxFit.cover),
+              widthFactor: 1 / 3,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: ClipRRect(
+                    borderRadius: RadiusConstants.r6,
+                    child: Image.network(p, fit: BoxFit.cover),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      )
+          )
           .toList(),
     );
   }
@@ -522,7 +528,7 @@ class _PinItemWidget extends StatelessWidget {
           child: Stack(
             children: List<Widget>.generate(
               users.length,
-                  (int index) => PositionedDirectional(
+              (int index) => PositionedDirectional(
                 top: 0,
                 bottom: 0,
                 start: index * (size - offset),

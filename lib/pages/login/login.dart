@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../exports.dart';
 
 @FFRoute(name: 'login-page')
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? _username;
@@ -23,11 +24,16 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _doLogin() async {
     if (_formKey.currentState!.validate()) {
-      final result = await PassportAPI.login(_username!, _password!);
-      if (result.isSucceed) {
-        print(result);
-      } else {
-        showToast(result.msg);
+      try {
+        final result = await PassportAPI.login(_username!, _password!);
+        if (result.isSucceed) {
+          showToast(context.l10n.loginSuccess);
+          ref.read(tokenProvider.notifier).update(result.data!.sessionKey);
+        } else {
+          showToast(result.msg);
+        }
+      } on ModelMakeError catch (e) {
+        showToast(e.json['description'] ?? '${e.json}');
       }
     }
   }
@@ -40,109 +46,80 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 64),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: context.surfaceColor,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 25,
-                  width: 80,
-                  child: OverflowBox(
-                    maxHeight: 80,
-                    alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: FittedBox(
-                        child: CircleAvatar(
-                          backgroundColor: context.surfaceColor,
-                          child: SvgPicture.asset(
-                            'assets/brand.svg',
-                          ),
-                        ),
-                      ),
-                    ),
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(context.l10n.loginSlogan),
+                ],
+              ),
+              const Gap.v(16),
+              TextFormField(
+                validator: (v) {
+                  if (v == null || v.isEmpty) {
+                    return context.l10n.needUsername;
+                  }
+                  if (!v.isMobile() && !v.isEmail()) {
+                    return context.l10n.incorectUsername;
+                  }
+                  return null;
+                },
+                onChanged: (v) => _username = v,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: context.l10n.hintUsername,
+                  prefixIcon: const Icon(Icons.person_outline),
+                  focusColor: Colors.red,
+                  prefixIconColor: Colors.red,
+                ),
+              ),
+              const Gap.v(8),
+              TextFormField(
+                obscureText: true,
+                obscuringCharacter: '*',
+                validator: (v) {
+                  if (v?.isEmpty ?? true) {
+                    return context.l10n.needPassword;
+                  }
+                  return null;
+                },
+                onChanged: (v) => _password = v,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: InputDecoration(
+                  hintText: context.l10n.hintPassword,
+                  prefixIcon: const Icon(Icons.lock_outline),
+                ),
+              ),
+              const Gap.v(8),
+              ElevatedButton(
+                onPressed: _doLogin,
+                child: Center(
+                  child: Text(context.l10n.buttonSignIn),
+                ),
+              ),
+              const Gap.v(8),
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      showToast('Comming soon');
+                    },
+                    child: Text(context.l10n.linkSignUp),
                   ),
-                ),
-                const Gap.v(8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(context.l10n.loginSlogan),
-                  ],
-                ),
-                const Gap.v(16),
-                TextFormField(
-                  validator: (v) {
-                    if (v == null || v.isEmpty) {
-                      return context.l10n.needUsername;
-                    }
-                    if (!v.isMobile() && !v.isEmail()) {
-                      return context.l10n.incorectUsername;
-                    }
-                    return null;
-                  },
-                  onChanged: (v) => _username = v,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: context.l10n.hintUsername,
-                    prefixIcon: const Icon(Icons.person_outline),
-                    focusColor: Colors.red,
-                    prefixIconColor: Colors.red,
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      showToast('Comming soon');
+                    },
+                    child: Text(context.l10n.linkRetrieve),
                   ),
-                ),
-                const Gap.v(8),
-                TextFormField(
-                  obscureText: true,
-                  obscuringCharacter: '*',
-                  validator: (v) {
-                    if (v?.isEmpty ?? true) {
-                      return context.l10n.needPassword;
-                    }
-                    return null;
-                  },
-                  onChanged: (v) => _password = v,
-                  keyboardType: TextInputType.visiblePassword,
-                  decoration: InputDecoration(
-                    hintText: context.l10n.hintPassword,
-                    prefixIcon: const Icon(Icons.lock_outline),
-                  ),
-                ),
-                const Gap.v(8),
-                ElevatedButton(
-                  onPressed: _doLogin,
-                  child: Center(
-                    child: Text(context.l10n.buttonSignIn),
-                  ),
-                ),
-                const Gap.v(8),
-                Row(
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        showToast('Comming soon');
-                      },
-                      child: Text(context.l10n.linkSignUp),
-                    ),
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        showToast('Comming soon');
-                      },
-                      child: Text(context.l10n.linkRetrieve),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

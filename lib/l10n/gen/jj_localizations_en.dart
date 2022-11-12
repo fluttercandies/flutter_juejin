@@ -194,6 +194,9 @@ class JJLocalizationsEn extends JJLocalizations {
   String get linkRetrieve => 'Fogot password?';
 
   @override
+  String get loginSuccess => 'Login success';
+
+  @override
   String get needUsername => 'Please enter a mobile number or email';
 
   @override

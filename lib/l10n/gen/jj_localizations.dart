@@ -447,6 +447,12 @@ abstract class JJLocalizations {
   /// **'Fogot password?'**
   String get linkRetrieve;
 
+  /// No description provided for @loginSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Login success'**
+  String get loginSuccess;
+
   /// No description provided for @needUsername.
   ///
   /// In en, this message translates to:

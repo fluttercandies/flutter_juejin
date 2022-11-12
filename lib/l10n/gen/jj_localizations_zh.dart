@@ -194,6 +194,9 @@ class JJLocalizationsZh extends JJLocalizations {
   String get linkRetrieve => '找回密码';
 
   @override
+  String get loginSuccess => '登录成功';
+
+  @override
   String get needUsername => '请填写用户名';
 
   @override

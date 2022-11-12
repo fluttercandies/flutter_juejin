@@ -86,6 +86,8 @@
   "linkSignUp":"Create an account",
   "linkRetrieve":"Fogot password?",
 
+  "loginSuccess": "Login success",
+
   "needUsername": "Please enter a mobile number or email",
   "incorectUsername": "Username must be a mobile number or email",
   "needPassword": "Please enter your password",

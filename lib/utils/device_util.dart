@@ -65,18 +65,21 @@ class DeviceUtil {
 
   /// Search for the highest refresh rate with the same screen size and save.
   static Future<void> _getHighestRefreshRate() async {
-    final DisplayMode current = await FlutterDisplayMode.active;
-    final List<DisplayMode> modes = await FlutterDisplayMode.supported;
-    final Iterable<DisplayMode> matchedModes = modes.where(
-      (DisplayMode mode) =>
-          mode.width == current.width && mode.height == current.height,
-    );
-    if (matchedModes.isNotEmpty) {
-      _highestRefreshRateMode = matchedModes.reduce(
-        (DisplayMode value, DisplayMode element) =>
-            value.refreshRate > element.refreshRate ? value : element,
+    // API only supported android M
+    try {
+      final DisplayMode current = await FlutterDisplayMode.active;
+      final List<DisplayMode> modes = await FlutterDisplayMode.supported;
+      final Iterable<DisplayMode> matchedModes = modes.where(
+        (DisplayMode mode) =>
+            mode.width == current.width && mode.height == current.height,
       );
-    }
+      if (matchedModes.isNotEmpty) {
+        _highestRefreshRateMode = matchedModes.reduce(
+          (DisplayMode value, DisplayMode element) =>
+              value.refreshRate > element.refreshRate ? value : element,
+        );
+      }
+    } catch (_) {}
   }
 
   static Future<void> setHighestRefreshRate() async {

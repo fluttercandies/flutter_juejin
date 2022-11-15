@@ -81,7 +81,7 @@ class ResponseModel<T extends DataModel> {
     return ResponseModel<T>(
       // network error returned code 1
       code: json['err_no'] ?? json['code'] ?? codeSucceed,
-      msg: json['err_msg'] ?? errorExternalRequest,
+      msg: json['err_msg'] ?? json['message'] ?? errorExternalRequest,
       data: hasData && !isModels ? makeModel<T>(data as Json) : null,
       rawData: json['data'],
       page: int.tryParse(json['cursor'] ?? ''),

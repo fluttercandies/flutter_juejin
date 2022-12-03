@@ -15,6 +15,12 @@ void main() {
       version: '1',
     ),
   );
+
+  // uncomment this line to test api
+  // HttpOverrides.global = null;
+
+  // HttpUtil.isLogging = true;
+
   HttpUtil.initFromDirectory(Directory.systemTemp);
 
   test('RecommendAPI', () async {

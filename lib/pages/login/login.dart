@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,21 +42,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.l10n.loginTitle),
-      ),
+      appBar: AppBar(),
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(context.l10n.loginSlogan),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32.0),
+                child: Text(
+                  context.l10n.loginSlogan,
+                  style: context.textTheme.headline6,
+                ),
               ),
               const Gap.v(16),
               TextFormField(
@@ -102,22 +104,33 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
               ),
               const Gap.v(8),
-              Row(
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      showToast('Comming soon');
-                    },
-                    child: Text(context.l10n.linkSignUp),
-                  ),
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () {
-                      showToast('Comming soon');
-                    },
-                    child: Text(context.l10n.linkRetrieve),
-                  ),
-                ],
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: AnimatedPadding(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutQuart,
+          padding: EdgeInsets.only(
+            left: 16.0,
+            right: 16,
+            bottom: math.max(16, context.bottomViewInsets),
+          ),
+          child: Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  showToast('Comming soon');
+                },
+                child: Text(context.l10n.linkSignUp),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  showToast('Comming soon');
+                },
+                child: Text(context.l10n.linkRetrieve),
               ),
             ],
           ),

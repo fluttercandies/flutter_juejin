@@ -1,4 +1,5 @@
 export 'package:collection/collection.dart';
+export 'package:diox/diox.dart';
 export 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 export 'package:flutter/services.dart' show HapticFeedback, TextInputFormatter;
 export 'package:flutter_svg/flutter_svg.dart' show SvgPicture;

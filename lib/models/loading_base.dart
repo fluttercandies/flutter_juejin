@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:dio/dio.dart' show DioError, DioErrorType;
+import 'package:diox/diox.dart' show DioError, DioErrorType;
 import 'package:flutter/foundation.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 

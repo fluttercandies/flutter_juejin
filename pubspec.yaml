@@ -11,8 +11,8 @@ dependencies:
   collection: ^1.16.0
   cookie_jar: ^3.0.1
   device_info_plus: ^8.0.0
-  dio: ^4.0.6
-  dio_cookie_manager: ^2.0.0
+  diox: ^5.0.0-dev.1
+  diox_cookie_manager: ^2.0.0
   equatable: ^2.0.3
   extended_sliver: ^2.1.3
   extended_text: ^9.1.0
@@ -31,8 +31,8 @@ dependencies:
   oktoast: ^3.2.0
   open_file: #^3.2.1
     git:
-      url: git@github.com:AstroxNetwork/open_file.git
-      ref: 5ca974973e7eeffa92ee296017d3f8e4dfde3d10
+      url: https://github.com/AstroxNetwork/open_file
+      ref: 5ca9749
   package_info_plus: ^1.4.2
   path_provider: ^2.0.11
   pull_to_refresh_notification: ^2.3.0

@@ -342,7 +342,9 @@ class HttpUtil {
     }
     headers ??= <String, String?>{};
     // System headers.
-    headers[HttpHeaders.contentTypeHeader] ??= Headers.jsonContentType;
+    if (body != null) {
+      headers[HttpHeaders.contentTypeHeader] ??= Headers.jsonContentType;
+    }
     headers[HttpHeaders.userAgentHeader] = 'Xitu Juejin Flutter APP'
         '(${PackageUtil.versionNameAndCode})';
 
@@ -378,6 +380,7 @@ class HttpUtil {
       case FetchType.get:
         response = await dio.getUri(
           replacedUri,
+          data: body,
           options: options,
           cancelToken: cancelToken,
         );

@@ -90,7 +90,7 @@ TextTheme _textThemeBy({
     leadingDistribution: TextLeadingDistribution.even,
     textBaseline: isCJK ? TextBaseline.ideographic : TextBaseline.alphabetic,
   );
-  final TextStyle displayTextColor = baseStyle.copyWith(
+  final TextStyle displayTextStyle = baseStyle.copyWith(
     color: themeGroup.captionTextColor,
   );
   final TextStyle headlineTextStyle = baseStyle.copyWith(
@@ -111,9 +111,9 @@ TextTheme _textThemeBy({
       : typography.black;
   return baseTextTheme.merge(
     TextTheme(
-      displayLarge: displayTextColor,
-      displayMedium: displayTextColor,
-      displaySmall: displayTextColor,
+      displayLarge: displayTextStyle,
+      displayMedium: displayTextStyle,
+      displaySmall: displayTextStyle,
       headlineLarge: headlineTextStyle.copyWith(fontSize: 28),
       headlineMedium: headlineTextStyle.copyWith(fontSize: 24),
       headlineSmall: headlineTextStyle.copyWith(fontSize: 20),

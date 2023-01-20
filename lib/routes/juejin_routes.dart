@@ -8,6 +8,7 @@ import 'package:juejin/exports.dart';
 
 const List<String> routeNames = <String>[
   'article-detail-page',
+  'club-page',
   'home-page',
   'splash-page',
 ];
@@ -23,6 +24,15 @@ class Routes {
   ///
   /// ArticleDetailPage : [String(required) id, Key? key, ArticleItemModel? item]
   static const _ArticleDetailPage articleDetailPage = _ArticleDetailPage();
+
+  /// 'club-page'
+  ///
+  /// [name] : 'club-page'
+  ///
+  /// [constructors] :
+  ///
+  /// ClubPage : [String(required) id, Key? key, PinTopic? topic]
+  static const _ClubPage clubPage = _ClubPage();
 
   /// 'home-page'
   ///
@@ -57,6 +67,26 @@ class _ArticleDetailPage {
         'id': id,
         'key': key,
         'item': item,
+      };
+
+  @override
+  String toString() => name;
+}
+
+class _ClubPage {
+  const _ClubPage();
+
+  String get name => 'club-page';
+
+  Map<String, dynamic> d(
+    String id, {
+    Key? key,
+    PinTopic? topic,
+  }) =>
+      <String, dynamic>{
+        'id': id,
+        'key': key,
+        'topic': topic,
       };
 
   @override

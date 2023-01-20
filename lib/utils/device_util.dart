@@ -65,17 +65,44 @@ class DeviceUtil {
 
   /// Search for the highest refresh rate with the same screen size and save.
   static Future<void> _getHighestRefreshRate() async {
+    if (!Platform.isAndroid || androidInfo?.version.sdkInt == null) {
+      return;
+    }
+    // Apply only on Android 23+.
+    final int sdkInt = androidInfo!.version.sdkInt;
+    if (sdkInt < 23) {
+      return;
+    }
+    // Delay 1 second since bindings will need to reconnect.
+    await Future.delayed(const Duration(seconds: 1));
     final DisplayMode current = await FlutterDisplayMode.active;
-    final List<DisplayMode> modes = await FlutterDisplayMode.supported;
-    final Iterable<DisplayMode> matchedModes = modes.where(
-      (DisplayMode mode) =>
-          mode.width == current.width && mode.height == current.height,
-    );
-    if (matchedModes.isNotEmpty) {
-      _highestRefreshRateMode = matchedModes.reduce(
-        (DisplayMode value, DisplayMode element) =>
-            value.refreshRate > element.refreshRate ? value : element,
+    // Search for the highest refresh rate with the same screen size and save.
+    if (_highestRefreshRateMode == null) {
+      final List<DisplayMode> modes = await FlutterDisplayMode.supported;
+      final Iterable<DisplayMode> matchedModes = modes.where(
+        (DisplayMode mode) =>
+            mode.width == current.width && mode.height == current.height,
       );
+      if (matchedModes.isNotEmpty) {
+        _highestRefreshRateMode = matchedModes.reduce(
+          (DisplayMode value, DisplayMode element) =>
+              value.refreshRate > element.refreshRate ? value : element,
+        );
+      }
+    }
+    final DisplayMode? highest = _highestRefreshRateMode;
+    if (highest == null) {
+      return;
+    }
+    // Apply when the current refresh rate is lower than the highest.
+    if (current.refreshRate < highest.refreshRate) {
+      _logRefreshRateChanges(current, highest);
+      await FlutterDisplayMode.setPreferredMode(highest);
+      final DisplayMode newMode = await FlutterDisplayMode.active;
+      // Only apply resampling when the refresh rate has been updated.
+      if (newMode.refreshRate > current.refreshRate) {
+        GestureBinding.instance.resamplingEnabled = true;
+      }
     }
   }
 

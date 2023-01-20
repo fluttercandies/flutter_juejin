@@ -7,8 +7,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:diox/diox.dart';
+import 'package:diox_cookie_manager/diox_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -34,9 +34,9 @@ class HttpUtil {
   static late final PersistCookieJar cookieJar;
   static late final CookieManager cookieManager;
   static final BaseOptions baseOptions = BaseOptions(
-    connectTimeout: 30000,
-    sendTimeout: 30000,
-    receiveTimeout: 30000,
+    connectTimeout: const Duration(seconds: 30),
+    sendTimeout: const Duration(seconds: 30),
+    receiveTimeout: const Duration(seconds: 30),
     receiveDataWhenStatusError: true,
   );
 
@@ -58,13 +58,13 @@ class HttpUtil {
   static ResponseModel<T> _successModel<T extends DataModel>() =>
       ResponseModel<T>.succeed();
 
-  static ResponseModel<T> _failModel<T extends DataModel>(String message) =>
+  static ResponseModel<T> _failModel<T extends DataModel>(String? message) =>
       ResponseModel<T>.failed(
         msg: '${ResponseModel.errorInternalRequest}: $message',
       );
 
   static ResponseModel<T> _cancelledModel<T extends DataModel>(
-    String message,
+    String? message,
     String url,
   ) =>
       ResponseModel<T>.cancelled(msg: '$message, $url');
@@ -327,12 +327,14 @@ class HttpUtil {
       url = 'https://$url';
     }
     queryParameters
-      ?..putIfAbsent('app_id', () => '$appId')
+      ?..putIfAbsent('aid', () => '$appId')
+      ..putIfAbsent('app_id', () => '$appId')
       ..putIfAbsent('app_name', () => '稀土掘金')
       ..putIfAbsent('channel', () => 'Flutter')
       ..putIfAbsent('device_platform', () => Platform.operatingSystem)
       ..putIfAbsent('device_type', () => DeviceUtil.deviceModel)
       ..putIfAbsent('os_version', () => DeviceUtil.osVersion)
+      ..putIfAbsent('spider', () => '0')
       ..putIfAbsent('version_code', () => '${PackageUtil.versionCode}')
       ..putIfAbsent('version_name', () => PackageUtil.versionName);
     if (body is Map) {
@@ -340,6 +342,9 @@ class HttpUtil {
     }
     headers ??= <String, String?>{};
     // System headers.
+    if (body != null) {
+      headers[HttpHeaders.contentTypeHeader] ??= Headers.jsonContentType;
+    }
     headers[HttpHeaders.userAgentHeader] = 'Xitu Juejin Flutter APP'
         '(${PackageUtil.versionNameAndCode})';
 
@@ -375,6 +380,7 @@ class HttpUtil {
       case FetchType.get:
         response = await dio.getUri(
           replacedUri,
+          data: body,
           options: options,
           cancelToken: cancelToken,
         );
@@ -469,37 +475,48 @@ class HttpUtil {
         handler.resolve(res);
       },
       onError: (DioError e, ErrorInterceptorHandler handler) async {
-        if (e.type == DioErrorType.cancel) {
-          e.response ??= Response<Json>(
-            requestOptions: e.requestOptions,
-            data: _cancelledModel(
-              e.message,
-              e.requestOptions.uri.toString(),
-            ).toJson(),
+        DioError error = e;
+        if (error.type == DioErrorType.cancel) {
+          error = error.copyWith(
+            response: error.response ??
+                Response<Json>(
+                  requestOptions: error.requestOptions,
+                  data: _cancelledModel(
+                    error.message,
+                    error.requestOptions.uri.toString(),
+                  ).toJson(),
+                ),
           );
-          handler.resolve(e.response!);
+          handler.resolve(error.response!);
           return;
         }
         if (kDebugMode) {
-          _log(e, stackTrace: e.stackTrace, isError: true);
+          _log(error, stackTrace: error.stackTrace, isError: true);
         }
-        final bool isConnectionTimeout = e.type == DioErrorType.connectTimeout;
-        final bool isStatusError = e.response != null &&
-            e.response!.statusCode != null &&
-            e.response!.statusCode! >= HttpStatus.internalServerError;
+        final bool isConnectionTimeout =
+            error.type == DioErrorType.connectionTimeout;
+        final bool isStatusError = error.response != null &&
+            error.response!.statusCode != null &&
+            error.response!.statusCode! >= HttpStatus.internalServerError;
         if (!isConnectionTimeout && isStatusError) {
           _log(
-            'Error when requesting ${e.requestOptions.uri}\n$e\n'
-            'Raw response data: ${e.response?.data}',
+            'Error when requesting ${error.requestOptions.uri}\n'
+            '$error\n'
+            'Raw response data: ${error.response?.data}',
             isError: true,
           );
         }
-        if (e.response?.data is String) {
-          e.response!.data = _failModel(e.response!.data! as String).toJson();
+        if (error.response?.data is String) {
+          error.response!.data = _failModel(
+            error.response!.data! as String,
+          ).toJson();
         }
-        e.response ??= Response<Json>(
-          requestOptions: e.requestOptions,
-          data: _failModel(e.message).toJson(),
+        error = error.copyWith(
+          response: error.response ??
+              Response<Json>(
+                requestOptions: e.requestOptions,
+                data: _failModel(e.message).toJson(),
+              ),
         );
         e.response!.data ??= _failModel(e.message).toJson();
         handler.resolve(e.response!);

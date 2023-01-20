@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -9,14 +8,14 @@ import 'package:intl/intl.dart' as intl;
 import 'jj_localizations_en.dart';
 import 'jj_localizations_zh.dart';
 
-/// Callers can lookup localized strings with an instance of JJLocalizations returned
-/// by `JJLocalizations.of(context)`.
+/// Callers can lookup localized strings with an instance of JJLocalizations
+/// returned by `JJLocalizations.of(context)`.
 ///
 /// Applications need to include `JJLocalizations.delegate()` in their app's
-/// localizationDelegates list, and the locales they support in the app's
-/// supportedLocales list. For example:
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
 ///
-/// ```
+/// ```dart
 /// import 'gen/jj_localizations.dart';
 ///
 /// return MaterialApp(
@@ -31,14 +30,14 @@ import 'jj_localizations_zh.dart';
 /// Please make sure to update your pubspec.yaml to include the following
 /// packages:
 ///
-/// ```
+/// ```yaml
 /// dependencies:
 ///   # Internationalization support.
 ///   flutter_localizations:
 ///     sdk: flutter
 ///   intl: any # Use the pinned version from flutter_localizations
 ///
-///   # rest of dependencies
+///   # Rest of dependencies
 /// ```
 ///
 /// ## iOS Applications
@@ -369,6 +368,42 @@ abstract class JJLocalizations {
   /// In en, this message translates to:
   /// **'Latest'**
   String get latest;
+
+  /// No description provided for @join.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get join;
+
+  /// No description provided for @categoryTabFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get categoryTabFollowing;
+
+  /// No description provided for @categoryTabRecommend.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommend'**
+  String get categoryTabRecommend;
+
+  /// No description provided for @tagAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get tagAll;
+
+  /// No description provided for @sortRecommend.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommend'**
+  String get sortRecommend;
+
+  /// No description provided for @sortLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest'**
+  String get sortLatest;
 
   /// No description provided for @durationYears.
   ///

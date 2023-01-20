@@ -113,7 +113,7 @@ class UserInfoModel extends DataModel {
       children: <Widget>[
         Text(userName),
         const SizedBox(width: 4),
-        buildLevelImage(width: levelWidth, height: levelHeight),
+        if (level > 0) buildLevelImage(width: levelWidth, height: levelHeight),
         if (userGrowthInfo.vipLevel > 0)
           Padding(
             padding: const EdgeInsetsDirectional.only(start: 4),

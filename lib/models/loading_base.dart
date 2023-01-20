@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:dio/dio.dart' show DioError, DioErrorType;
+import 'package:diox/diox.dart' show DioError, DioErrorType;
 import 'package:flutter/foundation.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 
@@ -23,19 +23,21 @@ class LoadingBase<T extends DataModel> extends LoadingMoreBase<T> {
     this.onRefresh,
     this.onLoadSucceed,
     this.onLoadFailed,
-    this.cursorType = CursorType.json,
+    this.getCursorType,
   });
 
   Future<ResponseModel<T>> Function(int page, String? lastId) request;
   final VoidCallback? onRefresh;
   final Function(LoadingBase<T> lb, bool isMore)? onLoadSucceed;
   final Function(LoadingBase<T> lb, bool isMore, Object e)? onLoadFailed;
-  final CursorType cursorType;
+  final CursorType Function()? getCursorType;
 
   int total = 0;
   int page = 1;
   String? lastId;
   bool canRequestMore = true;
+
+  CursorType get cursorType => getCursorType?.call() ?? CursorType.json;
 
   @override
   bool get hasMore => canRequestMore;

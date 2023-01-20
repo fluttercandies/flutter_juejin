@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:juejin/exports.dart';
 
 import '../pages/article/detail.dart';
+import '../pages/club/club.dart';
 import '../pages/home.dart';
 import '../pages/splash.dart';
 
@@ -32,6 +33,22 @@ FFRouteSettings getRouteSettings({
           ),
           item: asT<ArticleItemModel?>(
             safeArguments['item'],
+          ),
+        ),
+      );
+    case 'club-page':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        builder: () => ClubPage(
+          asT<String>(
+            safeArguments['id'],
+          )!,
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          topic: asT<PinTopic?>(
+            safeArguments['topic'],
           ),
         ),
       );

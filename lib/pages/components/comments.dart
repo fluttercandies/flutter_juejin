@@ -18,7 +18,7 @@ class CommentsWidget extends StatefulWidget {
 
 class _CommentsWidgetState extends State<CommentsWidget> {
   late final LoadingBase<CommentItemModel> _lb = LoadingBase(
-    cursorType: CursorType.raw,
+    getCursorType: () => CursorType.raw,
     request: (_, String? lastId) => InteractAPI.getCommentByTypeAndId(
       type: widget.type,
       id: widget.id,

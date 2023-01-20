@@ -9,7 +9,8 @@ import '../utils/http_util.dart';
 
 enum SortType {
   recommend(200),
-  latest(300);
+  latest(300),
+  topicLatest(500);
 
   const SortType(this.value);
 
@@ -23,9 +24,40 @@ class RecommendAPI {
   static const String _articles = '$_api/article';
   static const String _pins = '$_api/short_msg';
 
+  static Future<ResponseModel<T>> getArticles<T extends DataModel>({
+    bool isFollow = false,
+    String? lastId,
+    String? categoryId,
+    String? tagId,
+    SortType sortType = SortType.recommend,
+    int limit = 20,
+  }) {
+    if (isFollow) {
+      return getRecommendFollowFeedArticles(
+        lastId: lastId,
+        limit: limit,
+      ) as Future<ResponseModel<T>>;
+    }
+    if (categoryId != null) {
+      return getRecommendCateFeedArticles(
+        lastId: lastId,
+        categoryId: categoryId,
+        tagId: tagId,
+        limit: limit,
+        sortType: sortType,
+      ) as Future<ResponseModel<T>>;
+    }
+    return getAllFeedArticles(
+      lastId: lastId,
+      limit: limit,
+      sortType: sortType,
+    ) as Future<ResponseModel<T>>;
+  }
+
   static Future<ResponseModel<FeedModel>> getAllFeedArticles({
     String? lastId,
     int limit = 20,
+    SortType sortType = SortType.recommend,
   }) {
     return HttpUtil.fetchModel(
       FetchType.post,
@@ -33,7 +65,56 @@ class RecommendAPI {
       body: <String, dynamic>{
         'cursor': cursorFromLastIdAndLimit(lastId, limit),
         'limit': limit,
-        'sort_type': 200,
+        'sort_type': sortType.value,
+      },
+    );
+  }
+
+  static Future<ResponseModel<ArticleItemModel>>
+      getRecommendFollowFeedArticles({
+    String? lastId,
+    int limit = 20,
+  }) {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_articles/recommend_follow_feed',
+      body: <String, dynamic>{
+        'cursor': lastId,
+        'limit': limit,
+        'id_type': 2,
+      },
+    );
+  }
+
+  static Future<ResponseModel<ArticleItemModel>> getRecommendCateFeedArticles({
+    String? lastId,
+    required String categoryId,
+    String? tagId,
+    int limit = 20,
+    SortType sortType = SortType.recommend,
+  }) {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_articles/recommend_cate${tagId != null ? '_tag' : ''}_feed',
+      body: <String, dynamic>{
+        'cate_id': categoryId,
+        if (tagId != null) 'tag_id': tagId,
+        'cursor': lastId,
+        'id_type': 2,
+        'limit': limit,
+        'sort_type': sortType.value,
+      },
+    );
+  }
+
+  static Future<ResponseModel<Tag>> getRecommendTags({
+    required String categoryId,
+  }) {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_api/tag/recommend_tag_list',
+      body: <String, dynamic>{
+        'cate_id': categoryId,
       },
     );
   }
@@ -54,7 +135,8 @@ class RecommendAPI {
     );
   }
 
-  static Future<ResponseModel<PinItemModel>> getRecommendClub(String clubId, {
+  static Future<ResponseModel<PinItemModel>> getRecommendClub(
+    String clubId, {
     String? lastId,
     int limit = 20,
     SortType sortType = SortType.recommend,

@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
-import 'package:dio/dio.dart' show DioError, DioErrorType;
+import 'package:diox/diox.dart' show DioError, DioErrorType;
 import 'package:flutter/foundation.dart';
 import 'package:oktoast/oktoast.dart' show ToastPosition;
 
@@ -81,7 +81,7 @@ class ResponseModel<T extends DataModel> {
     return ResponseModel<T>(
       // network error returned code 1
       code: json['err_no'] ?? json['code'] ?? codeSucceed,
-      msg: json['err_msg'] ?? errorExternalRequest,
+      msg: json['err_msg'] ?? json['message'] ?? errorExternalRequest,
       data: hasData && !isModels ? makeModel<T>(data as Json) : null,
       rawData: json['data'],
       page: int.tryParse(json['cursor'] ?? ''),
@@ -235,7 +235,7 @@ Future<void> tryCatchResponse<T extends DataModel>({
   } catch (e, s) {
     if (e is DioError) {
       // 处理 401 的操作。
-      if (e.type == DioErrorType.response) {
+      if (e.type == DioErrorType.badResponse) {
         if (e.response?.statusCode == HttpStatus.unauthorized) {
           showToast(localizations.exceptionAuthenticationExpired);
           LogUtil.w(

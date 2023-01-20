@@ -1,6 +1,5 @@
-
-
 import 'package:intl/intl.dart' as intl;
+
 import 'jj_localizations.dart';
 
 /// The translations for Chinese (`zh`).
@@ -154,6 +153,24 @@ class JJLocalizationsZh extends JJLocalizations {
 
   @override
   String get latest => '最新';
+
+  @override
+  String get join => '加入';
+
+  @override
+  String get categoryTabFollowing => '关注';
+
+  @override
+  String get categoryTabRecommend => '推荐';
+
+  @override
+  String get tagAll => '全部';
+
+  @override
+  String get sortRecommend => '推荐';
+
+  @override
+  String get sortLatest => '最新';
 
   @override
   String durationYears(num many) {

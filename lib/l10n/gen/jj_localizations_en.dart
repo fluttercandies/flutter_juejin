@@ -156,7 +156,7 @@ class JJLocalizationsEn extends JJLocalizations {
 
   @override
   String get join => 'Join';
-  
+
   @override
   String get categoryTabFollowing => 'Following';
 
@@ -173,61 +173,58 @@ class JJLocalizationsEn extends JJLocalizations {
   String get sortLatest => 'Latest';
 
   @override
-  String durationYears(num many) {
-    final String pluralString = intl.Intl.pluralLogic(
+  String durationYears(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      one: '1 year',
       other: '$many years',
+      one: '1 year',
     );
-
-    return '$pluralString ago';
+    return '$_temp0 ago';
   }
 
   @override
-  String durationMonths(num many) {
-    final String pluralString = intl.Intl.pluralLogic(
+  String durationMonths(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      one: '1 month',
       other: '$many months',
+      one: '1 month',
     );
-
-    return '$pluralString ago';
+    return '$_temp0 ago';
   }
 
   @override
-  String durationDays(num many) {
-    final String pluralString = intl.Intl.pluralLogic(
+  String durationDays(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      one: '1 day',
       other: '$many days',
+      one: '1 day',
     );
-
-    return '$pluralString ago';
+    return '$_temp0 ago';
   }
 
   @override
-  String durationHours(num many) {
-    final String pluralString = intl.Intl.pluralLogic(
+  String durationHours(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      one: '1 hour',
       other: '$many hours',
+      one: '1 hour',
     );
-
-    return '$pluralString ago';
+    return '$_temp0 ago';
   }
 
   @override
-  String durationMinutes(num many) {
-    return intl.Intl.pluralLogic(
+  String durationMinutes(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      zero: 'Just now',
-      one: '1 minute ago',
       other: '$many minutes ago',
+      one: '1 minute ago',
+      zero: 'Just now',
     );
+    return '$_temp0';
   }
 }

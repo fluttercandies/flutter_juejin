@@ -173,48 +173,53 @@ class JJLocalizationsZh extends JJLocalizations {
   String get sortLatest => '最新';
 
   @override
-  String durationYears(num many) {
-    return intl.Intl.pluralLogic(
+  String durationYears(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
       other: '$many年前',
     );
+    return '$_temp0';
   }
 
   @override
-  String durationMonths(num many) {
-    return intl.Intl.pluralLogic(
+  String durationMonths(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
       other: '$many月前',
     );
+    return '$_temp0';
   }
 
   @override
-  String durationDays(num many) {
-    return intl.Intl.pluralLogic(
+  String durationDays(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
       other: '$many天前',
     );
+    return '$_temp0';
   }
 
   @override
-  String durationHours(num many) {
-    return intl.Intl.pluralLogic(
+  String durationHours(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
       other: '$many小时前',
     );
+    return '$_temp0';
   }
 
   @override
-  String durationMinutes(num many) {
-    return intl.Intl.pluralLogic(
+  String durationMinutes(int many) {
+    String _temp0 = intl.Intl.pluralLogic(
       many,
       locale: localeName,
-      zero: '刚刚',
       other: '$many分钟前',
+      zero: '刚刚',
     );
+    return '$_temp0';
   }
 }

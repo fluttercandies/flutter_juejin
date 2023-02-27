@@ -14,19 +14,12 @@ import '../extensions/num_extension.dart';
 import '../utils/log_util.dart';
 
 part 'data_model.d.dart';
-
 part 'data_model.g.dart';
-
-part 'item/advertise_item_model.dart';
-
-part 'item/article_item_model.dart';
-
-part 'item/comment_item_model.dart';
-
-part 'item/post_item_model.dart';
-
 part 'feed_model.dart';
-
+part 'item/advertise_item_model.dart';
+part 'item/article_item_model.dart';
+part 'item/comment_item_model.dart';
+part 'item/post_item_model.dart';
 part 'user_model.dart';
 
 typedef Json = Map<String, dynamic>;

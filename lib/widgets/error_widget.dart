@@ -40,7 +40,7 @@ class JJErrorWidget extends StatelessWidget {
           ),
         ),
         child: DefaultTextStyle.merge(
-          style: TextStyle(color: Theme.of(context).textTheme.caption?.color),
+          style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

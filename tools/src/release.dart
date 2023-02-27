@@ -157,7 +157,8 @@ class ReleaseCommand extends JJCommand {
       '🚬　[$PROJECT_NAME] Building ${buildType.name} release for Android...',
       color: 33,
     );
-    shell = shell.clone();
+    final ShellOptions options = shell.options.clone();
+    shell = Shell(options: options);
     await shell.run('flutter build ${buildType.name} --release $arguments');
     final String filename = await _filenameBuilder(yamlMap);
     final String targetDirectory = '${path.current}/$RELEASE_DIR/$filename';
@@ -192,7 +193,8 @@ class ReleaseCommand extends JJCommand {
     required String arguments,
     required YamlMap yamlMap,
   }) async {
-    shell = shell.clone();
+    final ShellOptions options = shell.options.clone();
+    shell = Shell(options: options);
     shell = shell.pushd('ios');
     await shell.run('pod install');
     shell = shell.popd();

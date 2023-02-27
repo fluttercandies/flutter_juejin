@@ -23,8 +23,8 @@ const Color headlineTextColorDark = Colors.white;
 const Color headlineTextColorLight = Colors.black;
 const Color primaryTextColorDark = Colors.white70;
 const Color primaryTextColorLight = Color(0xff555557);
-const Color captionTextColorDark = Color(0xff9c9ca4);
-const Color captionTextColorLight = captionTextColorDark;
+const Color bodySmallTextColorDark = Color(0xff9c9ca4);
+const Color bodySmallTextColorLight = bodySmallTextColorDark;
 
 ThemeData themeBy({
   required Brightness brightness,
@@ -99,7 +99,7 @@ TextTheme _textThemeBy({
     color: themeGroup.primaryTextColor,
   );
   final TextStyle captionTextStyle = baseStyle.copyWith(
-    color: themeGroup.captionTextColor,
+    color: themeGroup.bodySmallTextColor,
   );
   final Typography typography = Typography.material2014(
     platform: defaultTargetPlatform,
@@ -138,7 +138,7 @@ const JJTheme defaultThemeGroupDark = JJTheme(
   listColor: listColorDark,
   headlineTextColor: headlineTextColorDark,
   primaryTextColor: primaryTextColorDark,
-  captionTextColor: captionTextColorDark,
+  bodySmallTextColor: bodySmallTextColorDark,
 );
 
 const JJTheme defaultThemeGroupLight = JJTheme(
@@ -151,7 +151,7 @@ const JJTheme defaultThemeGroupLight = JJTheme(
   listColor: listColorLight,
   headlineTextColor: headlineTextColorLight,
   primaryTextColor: primaryTextColorLight,
-  captionTextColor: captionTextColorLight,
+  bodySmallTextColor: bodySmallTextColorLight,
 );
 
 class JJTheme extends ThemeExtension<JJTheme> {
@@ -165,7 +165,7 @@ class JJTheme extends ThemeExtension<JJTheme> {
     required this.listColor,
     required this.headlineTextColor,
     required this.primaryTextColor,
-    required this.captionTextColor,
+    required this.bodySmallTextColor,
   });
 
   factory JJTheme.fromBrightness(Brightness brightness) {
@@ -184,7 +184,7 @@ class JJTheme extends ThemeExtension<JJTheme> {
   final Color listColor;
   final Color headlineTextColor;
   final Color primaryTextColor;
-  final Color captionTextColor;
+  final Color bodySmallTextColor;
 
   @override
   ThemeExtension<JJTheme> copyWith({
@@ -197,7 +197,7 @@ class JJTheme extends ThemeExtension<JJTheme> {
     Color? listColor,
     Color? headlineTextColor,
     Color? primaryTextColor,
-    Color? captionTextColor,
+    Color? bodySmallTextColor,
   }) {
     return JJTheme(
       brightness: brightness ?? this.brightness,
@@ -209,7 +209,7 @@ class JJTheme extends ThemeExtension<JJTheme> {
       listColor: listColor ?? this.listColor,
       headlineTextColor: headlineTextColor ?? this.headlineTextColor,
       primaryTextColor: primaryTextColor ?? this.primaryTextColor,
-      captionTextColor: captionTextColor ?? this.captionTextColor,
+      bodySmallTextColor: bodySmallTextColor ?? this.bodySmallTextColor,
     );
   }
 
@@ -234,7 +234,8 @@ class JJTheme extends ThemeExtension<JJTheme> {
       listColor: _lerp(listColor, other.listColor, t),
       headlineTextColor: _lerp(headlineTextColor, other.headlineTextColor, t),
       primaryTextColor: _lerp(primaryTextColor, other.primaryTextColor, t),
-      captionTextColor: _lerp(captionTextColor, other.captionTextColor, t),
+      bodySmallTextColor:
+          _lerp(bodySmallTextColor, other.bodySmallTextColor, t),
     );
   }
 }

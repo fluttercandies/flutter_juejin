@@ -111,7 +111,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 ),
                 child: Text(
                   detail.userInteract.followText(context),
-                  style: context.textTheme.caption,
+                  style: context.textTheme.bodySmall,
                 ),
               ),
             ],
@@ -140,7 +140,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   Text(
                     '${articleInfo.createTimeString(context)} · '
                     '${context.l10n.articleViews(articleInfo.viewCount)}',
-                    style: context.textTheme.caption,
+                    style: context.textTheme.bodySmall,
                   ),
                 ],
               ),
@@ -235,7 +235,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             ).copyWith(top: 16),
             child: Text(
               articleInfo.title,
-              style: context.textTheme.headline5,
+              style: context.textTheme.headlineSmall,
             ),
           ),
         ),

@@ -756,7 +756,7 @@ class _ArticleTag extends StatelessWidget {
           backgroundColor: context.colorScheme.surface,
           shape: const StadiumBorder(),
           visualDensity: VisualDensity.compact,
-          textStyle: context.textTheme.caption,
+          textStyle: context.textTheme.bodySmall,
         ),
         child: Text(tagName),
       ),
@@ -780,7 +780,7 @@ class _ArticleWidget extends StatelessWidget {
 
   Widget _buildInfo(BuildContext context) {
     return DefaultTextStyle.merge(
-      style: context.textTheme.caption,
+      style: context.textTheme.bodySmall,
       child: Row(
         children: <Widget>[
           Text(
@@ -831,10 +831,10 @@ class _ArticleWidget extends StatelessWidget {
 
   Widget _buildInteractions(BuildContext context) {
     return DefaultTextStyle.merge(
-      style: context.textTheme.caption,
+      style: context.textTheme.bodySmall,
       child: IconTheme(
         data: IconTheme.of(context).copyWith(
-          color: context.textTheme.caption?.color,
+          color: context.textTheme.bodySmall?.color,
           size: 14,
         ),
         child: Row(
@@ -879,7 +879,7 @@ class _ArticleWidget extends StatelessWidget {
       ),
       child: Text(
         article.category.categoryName,
-        style: context.textTheme.caption,
+        style: context.textTheme.bodySmall,
       ),
     );
   }
@@ -960,7 +960,7 @@ class _AdvertiseWidget extends StatelessWidget {
 
   Widget _buildInfo(BuildContext context) {
     return DefaultTextStyle.merge(
-      style: context.textTheme.caption,
+      style: context.textTheme.bodySmall,
       child: Row(
         children: <Widget>[
           Text(
@@ -987,7 +987,7 @@ class _AdvertiseWidget extends StatelessWidget {
             ),
             child: Text(
               context.l10n.advertiseAbbr,
-              style: context.textTheme.caption,
+              style: context.textTheme.bodySmall,
             ),
           ),
         ],
@@ -1089,6 +1089,6 @@ OverlayEntry showDropDown({
       );
     },
   );
-  Overlay.of(context)?.insert(overlayEntry);
+  Overlay.of(context).insert(overlayEntry);
   return overlayEntry;
 }

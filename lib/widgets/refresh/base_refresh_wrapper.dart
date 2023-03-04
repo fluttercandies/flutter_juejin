@@ -276,7 +276,7 @@ class ListMoreIndicator extends StatelessWidget {
             isRequesting
                 ? context.l10n.listLoadingMore
                 : context.l10n.listNoMoreToLoad,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),
@@ -383,7 +383,7 @@ class ListEmptyIndicator extends StatelessWidget {
       style: textStyle ??
           Theme.of(context)
               .textTheme
-              .caption!
+              .bodySmall!
               .copyWith(fontSize: 17, height: 1.4),
       textAlign: TextAlign.center,
       child: child,

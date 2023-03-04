@@ -78,7 +78,7 @@ class _MinePageState extends State<MinePage> {
             value?.toString() ?? '0',
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          Text(name, style: context.textTheme.caption),
+          Text(name, style: context.textTheme.bodySmall),
         ],
       );
     }

@@ -121,7 +121,7 @@ class _ClubPageState extends State<ClubPage> {
               const Gap.v(6.0),
               Text(
                 '沸点${widget.topic!.msgCount} · 掘友${widget.topic!.followerCount}',
-                style: context.textTheme.caption?.copyWith(
+                style: context.textTheme.bodySmall?.copyWith(
                   color: headlineTextColorDark,
                 ),
               ),
@@ -160,18 +160,18 @@ class _ClubPageState extends State<ClubPage> {
           // PIN TITLE
           _buildTopicTitle(context),
           const Gap.v(6.0),
-          // PIN DESCRIPTION (CAPTION)
+          // PIN DESCRIPTION (bodySmall)
           Text(
             widget.topic!.description,
-            style: context.textTheme.caption?.copyWith(
+            style: context.textTheme.bodySmall?.copyWith(
               color: headlineTextColorDark,
             ),
           ),
           const Gap.v(6.0),
-          // MORE INFO (caption)
+          // MORE INFO (bodySmall)
           Text(
             '更多详细信息 >',
-            style: context.textTheme.caption?.copyWith(
+            style: context.textTheme.bodySmall?.copyWith(
               color: headlineTextColorDark,
             ),
           ),
@@ -229,7 +229,7 @@ class _ClubPageState extends State<ClubPage> {
                   }),
                   child: Text(
                     context.l10n.recommend,
-                    style: context.textTheme.caption,
+                    style: context.textTheme.bodySmall,
                   ),
                 ),
                 GestureDetector(
@@ -239,7 +239,7 @@ class _ClubPageState extends State<ClubPage> {
                   }),
                   child: Text(
                     context.l10n.latest,
-                    style: context.textTheme.caption,
+                    style: context.textTheme.bodySmall,
                   ),
                 ),
               ],
@@ -257,7 +257,7 @@ class _ClubPageState extends State<ClubPage> {
                 _sortType == SortType.recommend
                     ? context.l10n.recommend
                     : context.l10n.latest,
-                style: context.textTheme.caption?.copyWith(
+                style: context.textTheme.bodySmall?.copyWith(
                   color: context.textTheme.headlineMedium?.color,
                 ),
               ),
@@ -277,7 +277,7 @@ class _ClubPageState extends State<ClubPage> {
           Expanded(
             child: Text(
               context.l10n.arrangement,
-              style: context.textTheme.caption?.copyWith(
+              style: context.textTheme.bodySmall?.copyWith(
                 color: context.textTheme.headlineSmall?.color,
               ),
             ),
@@ -294,7 +294,7 @@ class _ClubPageState extends State<ClubPage> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: context.theme.backgroundColor.withOpacity(
+        backgroundColor: context.theme.colorScheme.background.withOpacity(
           _topicInfoScrollOffset,
         ),
         centerTitle: true,
@@ -385,7 +385,7 @@ class _PinItemWidget extends StatelessWidget {
     }
     final String info = sb.toString();
     return DefaultTextStyle.merge(
-      style: context.textTheme.caption,
+      style: context.textTheme.bodySmall,
       child: Row(
         children: <Widget>[
           Flexible(
@@ -478,7 +478,7 @@ class _PinItemWidget extends StatelessWidget {
                   context.l10n.pinHotCommentLikes(
                     comment.commentInfo.diggCount,
                   ),
-                  style: context.textTheme.caption,
+                  style: context.textTheme.bodySmall,
                 ),
             ],
           ),
@@ -547,17 +547,17 @@ class _PinItemWidget extends StatelessWidget {
           ),
         ),
         const Gap.h(4),
-        Text(context.l10n.pinLiked, style: context.textTheme.caption),
+        Text(context.l10n.pinLiked, style: context.textTheme.bodySmall),
       ],
     );
   }
 
   Widget _buildInteractions(BuildContext context) {
     return DefaultTextStyle.merge(
-      style: context.textTheme.caption,
+      style: context.textTheme.bodySmall,
       child: IconTheme(
         data: IconTheme.of(context).copyWith(
-          color: context.textTheme.caption?.color,
+          color: context.textTheme.bodySmall?.color,
           size: 14,
         ),
         child: Row(

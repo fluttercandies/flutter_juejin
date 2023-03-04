@@ -27,11 +27,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     if (_formKey.currentState!.validate()) {
       try {
         final result = await PassportAPI.login(_username!, _password!);
-        if (result.isSucceed) {
-          showToast(context.l10n.loginSuccess);
-          ref.read(tokenProvider.notifier).update(result.data!.sessionKey);
-        } else {
-          showToast(result.msg);
+        if (context.mounted) {
+          if (result.isSucceed) {
+            showToast(context.l10n.loginSuccess);
+            ref.read(tokenProvider.notifier).update(result.data!.sessionKey);
+          } else {
+            showToast(result.msg);
+          }
         }
       } on ModelMakeError catch (e) {
         showToast(e.json['description'] ?? '${e.json}');
@@ -56,7 +58,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 padding: const EdgeInsets.symmetric(vertical: 32.0),
                 child: Text(
                   context.l10n.loginSlogan,
-                  style: context.textTheme.headline6,
+                  style: context.textTheme.titleLarge,
                 ),
               ),
               const Gap.v(16),

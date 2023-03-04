@@ -9,6 +9,8 @@ const _tokenKey = 'token';
 class TokenNotifier extends StateNotifier<UserAuthen> {
   TokenNotifier(super.state);
 
+  bool get isLogin => state.token.isNotEmpty;
+
   void restore() {
     final data = HiveUtil.box.get(_tokenKey);
     if (data != null) {
@@ -41,6 +43,10 @@ class TokenNotifier extends StateNotifier<UserAuthen> {
 
 class UserPassportNotifier extends StateNotifier<UserPassportModel> {
   UserPassportNotifier(super.state);
+
+  void update(UserPassportModel data) {
+    state = data;
+  }
 }
 
 final tokenProvider = StateNotifierProvider<TokenNotifier, UserAuthen>((ref) {

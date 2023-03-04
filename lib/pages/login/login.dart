@@ -30,7 +30,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         if (context.mounted) {
           if (result.isSucceed) {
             showToast(context.l10n.loginSuccess);
-            ref.read(tokenProvider.notifier).update(result.data!.sessionKey);
+            ref.read(userProvider.notifier).update(result.data!);
           } else {
             showToast(result.msg);
           }

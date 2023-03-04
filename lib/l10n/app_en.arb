@@ -78,23 +78,23 @@
   "sortRecommend": "Recommend",
   "sortLatest": "Latest",
 
-  "durationYears": "{many, plural, =1{1 year}other{{many} years}} ago",
+  "durationYears": "{many, plural, =1{1 year} other{{many} years}} ago",
   "@durationYears": {
     "placeholders": {"many": {"type": "int"}}
   },
-  "durationMonths": "{many, plural, =1{1 month}other{{many} months}} ago",
+  "durationMonths": "{many, plural, =1{1 month} other{{many} months}} ago",
   "@durationMonths": {
     "placeholders": {"many": {"type": "int"}}
   },
-  "durationDays": "{many, plural, =1{1 day}other{{many} days}} ago",
+  "durationDays": "{many, plural, =1{1 day} other{{many} days}} ago",
   "@durationDays": {
     "placeholders": {"many": {"type": "int"}}
   },
-  "durationHours": "{many, plural, =1{1 hour}other{{many} hours}} ago",
+  "durationHours": "{many, plural, =1{1 hour} other{{many} hours}} ago",
   "@durationHours": {
     "placeholders": {"many": {"type": "int"}}
   },
-  "durationMinutes": "{many, plural, =0{Just now}=1{1 minute ago}other{{many} minutes ago}}",
+  "durationMinutes": "{many, plural, =0{Just now} =1{1 minute ago} other{{many} minutes ago}}",
   "@durationMinutes": {
     "placeholders": {"many": {"type": "int"}}
   }

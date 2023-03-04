@@ -96,7 +96,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: Text(
                           context.l10n.pinTotalCommentCount(count),
-                          style: context.textTheme.caption,
+                          style: context.textTheme.bodySmall,
                         ),
                       ),
                     ),
@@ -146,10 +146,10 @@ class _CommentItem extends StatelessWidget {
 
   Widget _buildInteractions(BuildContext context) {
     return DefaultTextStyle.merge(
-      style: context.textTheme.caption,
+      style: context.textTheme.bodySmall,
       child: IconTheme(
         data: IconTheme.of(context).copyWith(
-          color: context.textTheme.caption?.color,
+          color: context.textTheme.bodySmall?.color,
           size: 14,
         ),
         child: Row(
@@ -220,14 +220,15 @@ class _CommentItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       item.userInfo.userName,
-                      style: context.textTheme.caption?.copyWith(fontSize: 14),
+                      style:
+                          context.textTheme.bodySmall?.copyWith(fontSize: 14),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   const Gap.v(8),
                   Text(
                     item.commentInfo.createTimeString(context),
-                    style: context.textTheme.caption,
+                    style: context.textTheme.bodySmall,
                   ),
                 ],
               ),
@@ -267,10 +268,10 @@ class _ReplyItem extends StatelessWidget {
 
   Widget _buildInteractions(BuildContext context) {
     return DefaultTextStyle.merge(
-      style: context.textTheme.caption,
+      style: context.textTheme.bodySmall,
       child: IconTheme(
         data: IconTheme.of(context).copyWith(
-          color: context.textTheme.caption?.color,
+          color: context.textTheme.bodySmall?.color,
           size: 14,
         ),
         child: Row(
@@ -340,14 +341,15 @@ class _ReplyItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       reply.userInfo.userName,
-                      style: context.textTheme.caption?.copyWith(fontSize: 14),
+                      style:
+                          context.textTheme.bodySmall?.copyWith(fontSize: 14),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   const Gap.v(8),
                   Text(
                     reply.replyInfo.createTimeString(context),
-                    style: context.textTheme.caption,
+                    style: context.textTheme.bodySmall,
                   ),
                 ],
               ),

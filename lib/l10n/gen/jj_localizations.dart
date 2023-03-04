@@ -408,32 +408,32 @@ abstract class JJLocalizations {
   /// No description provided for @durationYears.
   ///
   /// In en, this message translates to:
-  /// **'{many, plural, =1{1 year}other{{many} years}} ago'**
-  String durationYears(num many);
+  /// **'{many, plural, =1{1 year} other{{many} years}} ago'**
+  String durationYears(int many);
 
   /// No description provided for @durationMonths.
   ///
   /// In en, this message translates to:
-  /// **'{many, plural, =1{1 month}other{{many} months}} ago'**
-  String durationMonths(num many);
+  /// **'{many, plural, =1{1 month} other{{many} months}} ago'**
+  String durationMonths(int many);
 
   /// No description provided for @durationDays.
   ///
   /// In en, this message translates to:
-  /// **'{many, plural, =1{1 day}other{{many} days}} ago'**
-  String durationDays(num many);
+  /// **'{many, plural, =1{1 day} other{{many} days}} ago'**
+  String durationDays(int many);
 
   /// No description provided for @durationHours.
   ///
   /// In en, this message translates to:
-  /// **'{many, plural, =1{1 hour}other{{many} hours}} ago'**
-  String durationHours(num many);
+  /// **'{many, plural, =1{1 hour} other{{many} hours}} ago'**
+  String durationHours(int many);
 
   /// No description provided for @durationMinutes.
   ///
   /// In en, this message translates to:
-  /// **'{many, plural, =0{Just now}=1{1 minute ago}other{{many} minutes ago}}'**
-  String durationMinutes(num many);
+  /// **'{many, plural, =0{Just now} =1{1 minute ago} other{{many} minutes ago}}'**
+  String durationMinutes(int many);
 }
 
 class _JJLocalizationsDelegate extends LocalizationsDelegate<JJLocalizations> {

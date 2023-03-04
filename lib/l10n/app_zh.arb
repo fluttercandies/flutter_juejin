@@ -66,9 +66,9 @@
 
   "join": "加入",
 
-  "durationYears": "{many, plural, =other{{many}年前}}",
-  "durationMonths": "{many, plural, =other{{many}月前}}",
-  "durationDays": "{many, plural, =other{{many}天前}}",
-  "durationHours": "{many, plural, =other{{many}小时前}}",
-  "durationMinutes": "{many, plural,=0{刚刚}other{{many}分钟前}}"
+  "durationYears": "{many, plural, other{{many}年前}}",
+  "durationMonths": "{many, plural, other{{many}月前}}",
+  "durationDays": "{many, plural, other{{many}天前}}",
+  "durationHours": "{many, plural, other{{many}小时前}}",
+  "durationMinutes": "{many, plural,=0{刚刚} other{{many}分钟前}}"
 }

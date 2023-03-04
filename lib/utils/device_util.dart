@@ -44,7 +44,7 @@ class DeviceUtil {
       deviceInfo = await _deviceInfoPlugin.androidInfo;
       androidInfo = deviceInfo as AndroidDeviceInfo;
 
-      deviceModel = androidInfo!.device ?? androidInfo!.brand ?? deviceModel;
+      deviceModel = androidInfo!.device;
       osName = 'Android';
       osVersion = androidInfo!.version.sdkInt.toString();
     } else if (Platform.isIOS) {
@@ -111,7 +111,7 @@ class DeviceUtil {
       return;
     }
     // Apply only on Android 23+.
-    final int sdkInt = androidInfo!.version.sdkInt!;
+    final int sdkInt = androidInfo!.version.sdkInt;
     if (sdkInt < 23) {
       return;
     }

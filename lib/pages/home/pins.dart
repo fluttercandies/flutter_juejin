@@ -1,4 +1,3 @@
-
 // Copyright 2022 The FlutterCandies author. All rights reserved.
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
@@ -35,7 +34,7 @@ class _PinsPageState extends State<PinsPage> {
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
         borderRadius: RadiusConstants.r20,
-        color: context.theme.backgroundColor,
+        color: context.theme.colorScheme.background,
       ),
       child: Stack(
         alignment: _sortType == SortType.recommend
@@ -55,7 +54,7 @@ class _PinsPageState extends State<PinsPage> {
                   }),
                   child: Text(
                     context.l10n.latest,
-                    style: context.textTheme.caption,
+                    style: context.textTheme.bodySmall,
                   ),
                 ),
                 GestureDetector(
@@ -65,7 +64,7 @@ class _PinsPageState extends State<PinsPage> {
                   }),
                   child: Text(
                     context.l10n.recommend,
-                    style: context.textTheme.caption,
+                    style: context.textTheme.bodySmall,
                   ),
                 ),
               ],
@@ -83,7 +82,7 @@ class _PinsPageState extends State<PinsPage> {
                 _sortType == SortType.recommend
                     ? context.l10n.recommend
                     : context.l10n.latest,
-                style: context.textTheme.caption?.copyWith(
+                style: context.textTheme.bodySmall?.copyWith(
                   color: context.theme.primaryColor,
                 ),
               ),
@@ -107,7 +106,7 @@ class _PinsPageState extends State<PinsPage> {
           Expanded(
             child: Text(
               context.l10n.arrangement,
-              style: context.textTheme.caption?.copyWith(
+              style: context.textTheme.bodySmall?.copyWith(
                 color: context.textTheme.headlineSmall?.color,
               ),
             ),
@@ -171,7 +170,7 @@ class _PinItemWidget extends StatelessWidget {
     }
     final String info = sb.toString();
     return DefaultTextStyle.merge(
-      style: context.textTheme.caption,
+      style: context.textTheme.bodySmall,
       child: Row(
         children: <Widget>[
           Flexible(
@@ -264,7 +263,7 @@ class _PinItemWidget extends StatelessWidget {
                   context.l10n.pinHotCommentLikes(
                     comment.commentInfo.diggCount,
                   ),
-                  style: context.textTheme.caption,
+                  style: context.textTheme.bodySmall,
                 ),
             ],
           ),
@@ -333,17 +332,17 @@ class _PinItemWidget extends StatelessWidget {
           ),
         ),
         const Gap.h(4),
-        Text(context.l10n.pinLiked, style: context.textTheme.caption),
+        Text(context.l10n.pinLiked, style: context.textTheme.bodySmall),
       ],
     );
   }
 
   Widget _buildInteractions(BuildContext context) {
     return DefaultTextStyle.merge(
-      style: context.textTheme.caption,
+      style: context.textTheme.bodySmall,
       child: IconTheme(
         data: IconTheme.of(context).copyWith(
-          color: context.textTheme.caption?.color,
+          color: context.textTheme.bodySmall?.color,
           size: 14,
         ),
         child: Row(

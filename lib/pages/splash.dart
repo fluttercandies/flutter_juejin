@@ -42,7 +42,19 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     await DeviceUtil.setHighestRefreshRate();
     await HttpUtil.fetch(FetchType.get, url: 'https://${Urls.domain}');
 
-    ref.read(tokenProvider.notifier).restore();
+    final tokenNotifier = ref.read(tokenProvider.notifier);
+    tokenNotifier.restore();
+
+    if (tokenNotifier.isLogin) {
+      HttpUtil.setHeaders('token', tokenNotifier.token);
+      PassportAPI.restore().then((data) {
+        if (data.isSucceed) {
+          ref.read(userProvider.notifier).update(data.data!);
+        } else {
+          tokenNotifier.logout();
+        }
+      });
+    }
 
     if (mounted) {
       navigator.pushReplacementNamed(Routes.homePage.name);

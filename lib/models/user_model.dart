@@ -352,6 +352,7 @@ class UserPassportModel extends DataModel {
     this.description = '',
     this.email = '',
     this.newUser = 0,
+    this.firstLoginApp = 0,
     required this.sessionKey,
     this.isRecommendAllowed = 0,
     this.recommendHintMessage = '',
@@ -365,7 +366,7 @@ class UserPassportModel extends DataModel {
     this.countryCode = 0,
     this.hasPassword = 0,
     this.shareToRepost = 0,
-    this.userDecoration = 0,
+    this.userDecoration = '',
     this.userPrivacyExtend = 0,
     this.oldUserId = 0,
     this.oldUserIdStr = '',
@@ -402,6 +403,8 @@ class UserPassportModel extends DataModel {
 
   bool get isEmpty => userId == 0;
 
+  bool get isLogin => !isEmpty && sessionKey.isNotEmpty;
+
   final int appId;
   final int userId;
   final String userIdStr;
@@ -428,6 +431,7 @@ class UserPassportModel extends DataModel {
   final String description;
   final String email;
   final int newUser;
+  final int firstLoginApp;
   final String sessionKey;
   final int isRecommendAllowed;
   final String recommendHintMessage;
@@ -441,7 +445,7 @@ class UserPassportModel extends DataModel {
   final int countryCode;
   final int hasPassword;
   final int shareToRepost;
-  final int userDecoration;
+  final String userDecoration;
   final int userPrivacyExtend;
   final int oldUserId;
   final String oldUserIdStr;

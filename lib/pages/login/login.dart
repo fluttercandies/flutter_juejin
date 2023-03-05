@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../exports.dart';
@@ -31,6 +32,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           if (result.isSucceed) {
             showToast(context.l10n.loginSuccess);
             ref.read(userProvider.notifier).update(result.data!);
+            context.navigator.pop();
           } else {
             showToast(result.msg);
           }
@@ -44,7 +46,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -98,7 +104,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   prefixIcon: const Icon(Icons.lock_outline),
                 ),
               ),
-              const Gap.v(8),
+              const Gap.v(16),
               ElevatedButton(
                 onPressed: _doLogin,
                 child: Center(
@@ -123,14 +129,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             children: [
               TextButton(
                 onPressed: () {
-                  showToast('Comming soon');
+                  showToast(context.l10n.notSupported);
                 },
                 child: Text(context.l10n.linkSignUp),
               ),
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  showToast('Comming soon');
+                  showToast(context.l10n.notSupported);
                 },
                 child: Text(context.l10n.linkRetrieve),
               ),

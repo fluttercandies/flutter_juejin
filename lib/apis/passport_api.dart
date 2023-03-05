@@ -35,4 +35,13 @@ class PassportAPI {
       contentType: Headers.formUrlEncodedContentType,
     );
   }
+
+  /// TODO(shirne): refresh token
+  static Future<ResponseModel<UserPassportModel>> restore() {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_user/refresh/',
+      contentType: Headers.formUrlEncodedContentType,
+    );
+  }
 }

@@ -10,6 +10,7 @@ class TokenNotifier extends StateNotifier<UserAuthen> {
   TokenNotifier(super.state);
 
   bool get isLogin => state.token.isNotEmpty;
+  String get token => state.token;
 
   void restore() {
     final data = HiveUtil.box.get(_tokenKey);

@@ -31,7 +31,7 @@ class HiveUtil {
 
     final appDocDir = await getApplicationDocumentsDirectory();
 
-    initByKey(encryptionKey, appDocDir.path);
+    await initByKey(encryptionKey, appDocDir.path);
   }
 
   @visibleForTesting

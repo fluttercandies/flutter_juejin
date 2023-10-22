@@ -203,7 +203,8 @@ class _PinItemWidget extends StatelessWidget {
                         color: context.textTheme.headlineSmall?.color,
                       ),
                     ),
-                    if (user.userGrowthInfo.vipLevel > 0)
+                    if (user.userGrowthInfo != null &&
+                        user.userGrowthInfo!.vipLevel > 0)
                       Padding(
                         padding: const EdgeInsetsDirectional.only(start: 4),
                         child: user.buildVipImage(size: 16),

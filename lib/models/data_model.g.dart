@@ -6,6 +6,16 @@ part of 'data_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+FeedModel _$FeedModelFromJson(Map<String, dynamic> json) => FeedModel(
+      itemType: FeedModel._feedItemTypeFromJson(json['item_type'] as int),
+      itemInfo: FeedModel._handleItemInfoType(json, 'item_info') as Object,
+    );
+
+Map<String, dynamic> _$FeedModelToJson(FeedModel instance) => <String, dynamic>{
+      'item_type': FeedModel._feedItemTypeToJson(instance.itemType),
+      'item_info': instance.itemInfo,
+    };
+
 AdvertiseItemModel _$AdvertiseItemModelFromJson(Map<String, dynamic> json) =>
     AdvertiseItemModel(
       id: json['id'] as int,
@@ -19,7 +29,7 @@ AdvertiseItemModel _$AdvertiseItemModelFromJson(Map<String, dynamic> json) =>
       advertType: json['advert_type'] as int,
       stationType: json['station_type'] as int,
       authorName: json['author_name'] as String,
-      authorId: json['author_id'] as int,
+      authorId: json['author_id'] as String,
       title: json['title'] as String,
       brief: json['brief'] as String,
       url: json['url'] as String,
@@ -93,7 +103,9 @@ ArticleItemModel _$ArticleItemModelFromJson(Map<String, dynamic> json) =>
       reqId: json['req_id'] as String,
       status: ArticleStatus.fromJson(json['status'] as Map<String, dynamic>),
       authorInteract: json['author_interact'],
-      extra: ArticleExtra.fromJson(json['extra'] as Map<String, dynamic>),
+      extra: json['extra'] == null
+          ? null
+          : ArticleExtra.fromJson(json['extra'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ArticleItemModelToJson(ArticleItemModel instance) =>
@@ -108,7 +120,7 @@ Map<String, dynamic> _$ArticleItemModelToJson(ArticleItemModel instance) =>
       'req_id': instance.reqId,
       'status': instance.status.toJson(),
       'author_interact': instance.authorInteract,
-      'extra': instance.extra.toJson(),
+      'extra': instance.extra?.toJson(),
     };
 
 ArticleInfo _$ArticleInfoFromJson(Map<String, dynamic> json) => ArticleInfo(
@@ -195,7 +207,7 @@ Map<String, dynamic> _$ArticleStatusToJson(ArticleStatus instance) =>
     };
 
 ArticleExtra _$ArticleExtraFromJson(Map<String, dynamic> json) => ArticleExtra(
-      boostType: json['boost_type'] as String,
+      boostType: json['boost_type'] as String?,
     );
 
 Map<String, dynamic> _$ArticleExtraToJson(ArticleExtra instance) =>
@@ -210,12 +222,12 @@ Category _$CategoryFromJson(Map<String, dynamic> json) => Category(
       rank: json['rank'] as int,
       backGround: json['back_ground'] as String,
       icon: json['icon'] as String,
-      ctime: json['ctime'] as int,
-      mtime: json['mtime'] as int,
       showType: json['show_type'] as int,
       itemType: json['item_type'] as int,
       promoteTagCap: json['promote_tag_cap'] as int,
       promotePriority: json['promote_priority'] as int,
+      ctime: json['ctime'] as int?,
+      mtime: json['mtime'] as int?,
     );
 
 Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
@@ -586,16 +598,6 @@ Map<String, dynamic> _$HotCommentToJson(HotComment instance) =>
       'is_author': instance.isAuthor,
     };
 
-FeedModel _$FeedModelFromJson(Map<String, dynamic> json) => FeedModel(
-      itemType: FeedModel._feedItemTypeFromJson(json['item_type'] as int),
-      itemInfo: FeedModel._handleItemInfoType(json, 'item_info') as Object,
-    );
-
-Map<String, dynamic> _$FeedModelToJson(FeedModel instance) => <String, dynamic>{
-      'item_type': FeedModel._feedItemTypeToJson(instance.itemType),
-      'item_info': instance.itemInfo,
-    };
-
 UserInfoModel _$UserInfoModelFromJson(Map<String, dynamic> json) =>
     UserInfoModel(
       userId: json['user_id'] as String,
@@ -632,12 +634,14 @@ UserInfoModel _$UserInfoModelFromJson(Map<String, dynamic> json) =>
       annualListType: json['annual_list_type'] as int,
       extraMap: json['extramap'],
       isLogout: json['is_logout'] as int,
-      annualInfo: (json['annual_info'] as List<dynamic>)
-          .map((e) => e as Object)
+      annualInfo: (json['annual_info'] as List<dynamic>?)
+          ?.map((e) => e as Object)
           .toList(),
       accountAmount: json['account_amount'] as int,
-      userGrowthInfo: UserGrowthInfo.fromJson(
-          json['user_growth_info'] as Map<String, dynamic>),
+      userGrowthInfo: json['user_growth_info'] == null
+          ? null
+          : UserGrowthInfo.fromJson(
+              json['user_growth_info'] as Map<String, dynamic>),
       isVip: json['is_vip'] as bool,
     );
 
@@ -675,7 +679,7 @@ Map<String, dynamic> _$UserInfoModelToJson(UserInfoModel instance) =>
       'is_logout': instance.isLogout,
       'annual_info': instance.annualInfo,
       'account_amount': instance.accountAmount,
-      'user_growth_info': instance.userGrowthInfo.toJson(),
+      'user_growth_info': instance.userGrowthInfo?.toJson(),
       'is_vip': instance.isVip,
     };
 

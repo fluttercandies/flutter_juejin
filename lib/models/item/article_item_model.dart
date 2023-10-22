@@ -17,7 +17,7 @@ class ArticleItemModel extends DataModel {
     required this.reqId,
     required this.status,
     this.authorInteract,
-    required this.extra,
+    this.extra,
   });
 
   factory ArticleItemModel.fromJson(Map<String, dynamic> json) =>
@@ -34,7 +34,7 @@ class ArticleItemModel extends DataModel {
   final String reqId;
   final ArticleStatus status;
   final Object? authorInteract;
-  final ArticleExtra extra;
+  final ArticleExtra? extra;
 
   @override
   Map<String, dynamic> toJson() => _$ArticleItemModelToJson(this);
@@ -205,19 +205,19 @@ class ArticleStatus extends DataModel {
 @JsonSerializable()
 class ArticleExtra extends DataModel {
   const ArticleExtra({
-    required this.boostType,
+    this.boostType,
   });
 
   factory ArticleExtra.fromJson(Map<String, dynamic> json) =>
       _$ArticleExtraFromJson(json);
 
-  final String boostType;
+  final String? boostType;
 
   @override
   Map<String, dynamic> toJson() => _$ArticleExtraToJson(this);
 
   @override
-  List<Object?> get props => <Object>[boostType];
+  List<Object?> get props => <Object?>[boostType];
 }
 
 @JsonSerializable()
@@ -229,12 +229,12 @@ class Category extends DataModel {
     required this.rank,
     required this.backGround,
     required this.icon,
-    required this.ctime,
-    required this.mtime,
     required this.showType,
     required this.itemType,
     required this.promoteTagCap,
     required this.promotePriority,
+    this.ctime,
+    this.mtime,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) =>
@@ -246,8 +246,8 @@ class Category extends DataModel {
   final int rank;
   final String backGround;
   final String icon;
-  final int ctime;
-  final int mtime;
+  final int? ctime;
+  final int? mtime;
   final int showType;
   final int itemType;
   final int promoteTagCap;
@@ -257,7 +257,7 @@ class Category extends DataModel {
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
 
   @override
-  List<Object?> get props => <Object>[
+  List<Object?> get props => <Object?>[
         categoryId,
         categoryName,
         categoryUrl,

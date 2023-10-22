@@ -53,7 +53,7 @@ class AdvertiseItemModel extends DataModel {
   final int advertType;
   final int stationType;
   final String authorName;
-  final int authorId;
+  final String authorId;
   final String title;
   final String brief;
   final String url;

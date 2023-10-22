@@ -10,7 +10,6 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:diox/diox.dart';
 import 'package:diox_cookie_manager/diox_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../constants/constants.dart';
@@ -160,7 +159,6 @@ class HttpUtil {
     CancelToken? cancelToken,
     Options? options,
     bool deleteIfExist = true,
-    bool openAfterDownloaded = false,
   }) async {
     final Completer<String> completer = Completer<String>();
     try {
@@ -182,12 +180,6 @@ class HttpUtil {
             file.deleteSync();
           }
           if (file.existsSync()) {
-            if (openAfterDownloaded) {
-              _log('File exist in $filePath, opening...');
-              _openFile(filePath);
-            } else {
-              _log('File exist in $filePath.');
-            }
             completer.complete(filePath);
             cancelToken!.cancel();
             stopwatch.stop();
@@ -229,9 +221,6 @@ class HttpUtil {
         sb.write('\n[SPEED]: ${speed.fileSizeFromBytes}/s');
       }
       _log(sb.toString());
-      if (openAfterDownloaded) {
-        _openFile(filePath);
-      }
       completer.complete(filePath);
     } on DioError catch (e, s) {
       if (e.type != DioErrorType.cancel) {
@@ -273,17 +262,6 @@ class HttpUtil {
       );
     }
     return Uri.decodeComponent(validHeaders.first.removeAll('filename='));
-  }
-
-  static Future<OpenResult?> _openFile(String path) async {
-    try {
-      _log('Opening file $path...');
-      final OpenResult result = await OpenFile.open(path);
-      return result;
-    } catch (e, s) {
-      _log('Error when opening file [$path]: $e', stackTrace: s, isError: true);
-      return null;
-    }
   }
 
   static ResponseModel<T> _handleStatusCode<T extends DataModel>(

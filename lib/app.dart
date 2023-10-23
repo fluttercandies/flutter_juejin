@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
@@ -43,7 +41,7 @@ class JJAppState extends State<JJApp> with WidgetsBindingObserver {
     return OKToast(
       duration: const Duration(seconds: 3),
       position: ToastPosition.bottom.copyWith(
-        offset: -MediaQueryData.fromWindow(ui.window).size.height / 12,
+        offset: -Screens.mediaQuery.size.height / 12,
       ),
       radius: 5,
       child: child,

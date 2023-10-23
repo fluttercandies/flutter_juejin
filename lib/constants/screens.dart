@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
-import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +10,9 @@ import 'package:flutter/services.dart';
 class Screens {
   const Screens._();
 
-  static MediaQueryData get mediaQuery => MediaQueryData.fromWindow(ui.window);
+  static MediaQueryData get mediaQuery => MediaQueryData.fromView(
+        WidgetsBinding.instance.platformDispatcher.views.first,
+      );
 
   static double fixedFontSize(double fontSize) => fontSize / textScaleFactor;
 
@@ -36,6 +38,9 @@ class Screens {
   static double get bottomSafeHeight => mediaQuery.padding.bottom;
 
   static double get safeHeight => height - topSafeHeight - bottomSafeHeight;
+
+  static FlutterView get window =>
+      WidgetsBinding.instance.platformDispatcher.views.first;
 
   static void updateStatusBarStyle(SystemUiOverlayStyle style) {
     SystemChrome.setSystemUIOverlayStyle(style);

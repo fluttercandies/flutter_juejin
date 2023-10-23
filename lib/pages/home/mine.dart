@@ -90,7 +90,7 @@ class _MinePageState extends State<MinePage> {
         children: [
           counter(0, context.l10n.userLikes),
           counter(0, context.l10n.userFavorites),
-          counter(0, context.l10n.userFollows)
+          counter(0, context.l10n.userFollows),
         ],
       ),
     );

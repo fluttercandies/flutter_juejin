@@ -6,8 +6,7 @@ import 'package:flutter/cupertino.dart' show CupertinoActivityIndicator;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_more_list/loading_more_list.dart';
-import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart'
-    hide CupertinoActivityIndicator;
+import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
 import '../../constants/resources.dart';
 import '../../constants/screens.dart';
@@ -231,7 +230,6 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
       physics: physics,
       controller: controller,
       scrollDirection: scrollDirection,
-      rebuildCustomScrollView: true,
       slivers: _effectiveSliversBuilder(context),
     );
     if (!enableRefresh) {

@@ -3,11 +3,8 @@
 // LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:juejin/exports.dart';
 import 'package:loading_more_list/loading_more_list.dart';
-
-import '../../models/data_model.dart';
-import '../../models/loading_base.dart';
-import 'base_refresh_wrapper.dart';
 
 class RefreshListWrapper<T extends DataModel> extends BaseRefreshWrapper<T> {
   const RefreshListWrapper({

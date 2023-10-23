@@ -4,8 +4,7 @@
 
 import 'package:flutter/cupertino.dart' hide RefreshIndicatorMode;
 import 'package:flutter/material.dart';
-import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart'
-    hide CupertinoActivityIndicator;
+import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
 import '../../extensions/build_context_extension.dart';
 import '../tapper.dart';
@@ -39,23 +38,23 @@ class PullToRefreshHeader extends StatelessWidget {
     }
 
     final double dragOffset = info?.dragOffset ?? 0.0;
-    final RefreshIndicatorMode? mode = info?.mode;
+    final PullToRefreshIndicatorMode? mode = info?.mode;
     bool isRefreshingMode = false;
 
     String text;
     switch (mode) {
-      case RefreshIndicatorMode.snap:
-      case RefreshIndicatorMode.refresh:
+      case PullToRefreshIndicatorMode.snap:
+      case PullToRefreshIndicatorMode.refresh:
         isRefreshingMode = true;
         text = context.l10n.listRefreshing;
         break;
-      case RefreshIndicatorMode.armed:
+      case PullToRefreshIndicatorMode.armed:
         text = context.l10n.listRefreshArmed;
         break;
-      case RefreshIndicatorMode.done:
+      case PullToRefreshIndicatorMode.done:
         text = context.l10n.listRefreshSucceed;
         break;
-      case RefreshIndicatorMode.error:
+      case PullToRefreshIndicatorMode.error:
         text = context.l10n.listRefreshFailed;
         break;
       default:
@@ -63,7 +62,7 @@ class PullToRefreshHeader extends StatelessWidget {
         break;
     }
 
-    if (mode == RefreshIndicatorMode.done) {
+    if (mode == PullToRefreshIndicatorMode.done) {
       widget = const SizedBox.expand();
     } else {
       widget = Row(
@@ -86,7 +85,7 @@ class PullToRefreshHeader extends StatelessWidget {
 
     widget = SizedBox(height: dragOffset, child: widget);
 
-    if (mode == RefreshIndicatorMode.error) {
+    if (mode == PullToRefreshIndicatorMode.error) {
       widget = Tapper(
         onTap: () => info?.pullToRefreshNotificationState.show(),
         child: SizedBox(

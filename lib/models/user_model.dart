@@ -322,3 +322,219 @@ class UserOrg extends DataModel {
   @override
   List<Object?> get props => <Object?>[orgInfo, orgUser, isFollowed];
 }
+
+@JsonSerializable()
+class UserPassportModel extends DataModel {
+  const UserPassportModel({
+    this.appId = 0,
+    required this.userId,
+    this.userIdStr = '',
+    this.odinUserType = 0,
+    required this.name,
+    this.screenName = '',
+    this.avatarUrl = '',
+    this.userVerified = false,
+    this.emailCollected = false,
+    this.phoneCollected = false,
+    this.verifiedContent = '',
+    this.verifiedAgency = '',
+    this.isBlocked = 0,
+    this.isBlocking = 0,
+    this.bgImgUrl = '',
+    this.gender = 0,
+    this.mediaId = 0,
+    this.userAuthInfo = '',
+    this.industry = '',
+    this.area = '',
+    this.canBeFoundByPhone = 0,
+    this.mobile = '',
+    this.birthday = '',
+    this.description = '',
+    this.email = '',
+    this.newUser = 0,
+    this.firstLoginApp = 0,
+    required this.sessionKey,
+    this.isRecommendAllowed = 0,
+    this.recommendHintMessage = '',
+    this.connects,
+    this.followingsCount = 0,
+    this.followersCount = 0,
+    this.visitCountRecent = 0,
+    this.skipEditProfile = 0,
+    this.isManualSetUserInfo = false,
+    this.deviceId = 0,
+    this.countryCode = 0,
+    this.hasPassword = 0,
+    this.shareToRepost = 0,
+    this.userDecoration = '',
+    this.userPrivacyExtend = 0,
+    this.oldUserId = 0,
+    this.oldUserIdStr = '',
+    this.secUserId = '',
+    this.secOldUserId = '',
+    this.vcdAccount = 0,
+    this.vcdRelation = 0,
+    this.canBindVisitorAccount = false,
+    this.isVisitorAccount = false,
+    this.isOnlyBindIns = false,
+    this.userDeviceRecordStatus = 0,
+    this.isKidsMode = 0,
+    this.isEmployee = false,
+    this.passportEnterpriseUserType = 0,
+    this.needDeviceCreate = 0,
+    this.needTtwidMigration = 0,
+    this.userAuthStatus = 0,
+    this.userSafeMobile2Fa = '',
+    this.safeMobileCountryCode = 0,
+    this.liteUserInfoString = '',
+    this.liteUserInfoDemotion = 0,
+    this.appUserInfo,
+  });
+
+  const UserPassportModel.empty()
+      : this(
+          userId: 0,
+          name: '',
+          sessionKey: '',
+        );
+
+  factory UserPassportModel.fromJson(Map<String, dynamic> json) =>
+      _$UserPassportModelFromJson(json);
+
+  bool get isEmpty => userId == 0;
+
+  bool get isLogin => !isEmpty && sessionKey.isNotEmpty;
+
+  final int appId;
+  final int userId;
+  final String userIdStr;
+  final int odinUserType;
+  final String name;
+  final String screenName;
+  final String avatarUrl;
+  final bool userVerified;
+  final bool emailCollected;
+  final bool phoneCollected;
+  final String verifiedContent;
+  final String verifiedAgency;
+  final int isBlocked;
+  final int isBlocking;
+  final String bgImgUrl;
+  final int gender;
+  final int mediaId;
+  final String userAuthInfo;
+  final String industry;
+  final String area;
+  final int canBeFoundByPhone;
+  final String mobile;
+  final String birthday;
+  final String description;
+  final String email;
+  final int newUser;
+  final int firstLoginApp;
+  final String sessionKey;
+  final int isRecommendAllowed;
+  final String recommendHintMessage;
+  final List? connects;
+  final int followingsCount;
+  final int followersCount;
+  final int visitCountRecent;
+  final int skipEditProfile;
+  final bool isManualSetUserInfo;
+  final int deviceId;
+  final int countryCode;
+  final int hasPassword;
+  final int shareToRepost;
+  final String userDecoration;
+  final int userPrivacyExtend;
+  final int oldUserId;
+  final String oldUserIdStr;
+  final String secUserId;
+  final String secOldUserId;
+  final int vcdAccount;
+  final int vcdRelation;
+  final bool canBindVisitorAccount;
+  final bool isVisitorAccount;
+  final bool isOnlyBindIns;
+  final int userDeviceRecordStatus;
+  final int isKidsMode;
+  final bool isEmployee;
+  final int passportEnterpriseUserType;
+  final int needDeviceCreate;
+  final int needTtwidMigration;
+  final int userAuthStatus;
+  final String userSafeMobile2Fa;
+  final int safeMobileCountryCode;
+  final String liteUserInfoString;
+  final int liteUserInfoDemotion;
+  final Json? appUserInfo;
+
+  @override
+  List<Object?> get props => <Object?>[
+        appId,
+        userId,
+        userIdStr,
+        odinUserType,
+        name,
+        screenName,
+        avatarUrl,
+        userVerified,
+        emailCollected,
+        phoneCollected,
+        verifiedContent,
+        verifiedAgency,
+        isBlocked,
+        isBlocking,
+        bgImgUrl,
+        gender,
+        mediaId,
+        userAuthInfo,
+        industry,
+        area,
+        canBeFoundByPhone,
+        mobile,
+        birthday,
+        description,
+        email,
+        newUser,
+        sessionKey,
+        isRecommendAllowed,
+        recommendHintMessage,
+        connects,
+        followingsCount,
+        followersCount,
+        visitCountRecent,
+        skipEditProfile,
+        isManualSetUserInfo,
+        deviceId,
+        countryCode,
+        hasPassword,
+        shareToRepost,
+        userDecoration,
+        userPrivacyExtend,
+        oldUserId,
+        oldUserIdStr,
+        secUserId,
+        secOldUserId,
+        vcdAccount,
+        vcdRelation,
+        canBindVisitorAccount,
+        isVisitorAccount,
+        isOnlyBindIns,
+        userDeviceRecordStatus,
+        isKidsMode,
+        isEmployee,
+        passportEnterpriseUserType,
+        needDeviceCreate,
+        needTtwidMigration,
+        userAuthStatus,
+        userSafeMobile2Fa,
+        safeMobileCountryCode,
+        liteUserInfoString,
+        liteUserInfoDemotion,
+        appUserInfo,
+      ];
+
+  @override
+  Json toJson() => _$UserPassportModelToJson(this);
+}

@@ -17,7 +17,9 @@ class PassportAPI {
   static const String _api = '${Urls.apiHost}/passport';
   static const String _user = '$_api/user';
 
-  static Future<ResponseModel<EmptyDataModel>> login(String u, String p) {
+  /// Login failed:
+  /// {data: {captcha: , desc_url: , description: 帐号或密码错误, error_code: 1009}, message: error}
+  static Future<ResponseModel<UserPassportModel>> login(String u, String p) {
     return HttpUtil.fetchModel(
       FetchType.post,
       url: '$_user/login/',
@@ -30,6 +32,15 @@ class PassportAPI {
         'account': u.toEncrypted,
         'password': p.toEncrypted,
       },
+      contentType: Headers.formUrlEncodedContentType,
+    );
+  }
+
+  /// TODO(shirne): refresh token
+  static Future<ResponseModel<UserPassportModel>> restore() {
+    return HttpUtil.fetchModel(
+      FetchType.post,
+      url: '$_user/refresh/',
       contentType: Headers.formUrlEncodedContentType,
     );
   }

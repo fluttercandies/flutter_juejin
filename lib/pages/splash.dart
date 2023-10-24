@@ -4,17 +4,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:juejin/exports.dart';
 
 @FFRoute(name: 'splash-page')
-class SplashPage extends StatefulWidget {
+class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
     super.initState();
@@ -36,9 +37,25 @@ class _SplashPageState extends State<SplashPage> {
       DeviceUtil.initDeviceInfo(forceRefresh: true),
       PackageUtil.initInfo(),
       HttpUtil.init(),
+      HiveUtil.init(),
     ]);
     await DeviceUtil.setHighestRefreshRate();
     await HttpUtil.fetch(FetchType.get, url: 'https://${Urls.domain}');
+
+    final tokenNotifier = ref.read(tokenProvider.notifier);
+    tokenNotifier.restore();
+
+    if (tokenNotifier.isLogin) {
+      HttpUtil.setHeaders('token', tokenNotifier.token);
+      PassportAPI.restore().then((data) {
+        if (data.isSucceed) {
+          ref.read(userProvider.notifier).update(data.data!);
+        } else {
+          tokenNotifier.logout();
+        }
+      });
+    }
+
     if (mounted) {
       navigator.pushReplacementNamed(Routes.homePage.name);
     }

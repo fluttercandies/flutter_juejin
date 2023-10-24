@@ -173,6 +173,39 @@ class JJLocalizationsZh extends JJLocalizations {
   String get sortLatest => '最新';
 
   @override
+  String get loginTitle => '登录';
+
+  @override
+  String get loginSlogan => '登录体验更多精彩';
+
+  @override
+  String get hintUsername => '手机号/邮箱';
+
+  @override
+  String get hintPassword => '密码';
+
+  @override
+  String get buttonSignIn => '登录';
+
+  @override
+  String get linkSignUp => '注册新用户';
+
+  @override
+  String get linkRetrieve => '找回密码';
+
+  @override
+  String get loginSuccess => '登录成功';
+
+  @override
+  String get needUsername => '请填写用户名';
+
+  @override
+  String get incorectUsername => '请填写手机号码或者邮箱';
+
+  @override
+  String get needPassword => '请填写密码';
+
+  @override
   String durationYears(int many) {
     String _temp0 = intl.Intl.pluralLogic(
       many,

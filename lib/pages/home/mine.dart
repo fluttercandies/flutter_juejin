@@ -3,6 +3,7 @@
 // LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:juejin/exports.dart';
 
 class MinePage extends StatefulWidget {
@@ -37,36 +38,48 @@ class _MinePageState extends State<MinePage> {
     );
   }
 
-  Widget _buildUserAvatar(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      color: context.theme.dividerColor,
-      child: SvgPicture.asset(R.ASSETS_BRAND_SVG),
-    );
-  }
-
-  Widget _buildUsername(BuildContext context) {
-    return Text(
-      context.l10n.userSignInOrUp,
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-    );
-  }
-
   Widget _buildUser(BuildContext context) {
-    return SizedBox(
-      height: 54,
-      child: Row(
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 1,
-            child: ClipOval(
-              child: _buildUserAvatar(context),
+    return Consumer(
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        final userModel = ref.watch(userProvider);
+        return GestureDetector(
+          onTap: () => context.navigator.pushNamed(
+            userModel.isLogin ? Routes.userProfile.name : Routes.loginPage.name,
+          ),
+          child: SizedBox(
+            height: 54,
+            child: Row(
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: ClipOval(
+                    child: userModel.isLogin
+                        ? Image.network(
+                            userModel.avatarUrl,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            padding: const EdgeInsets.all(8),
+                            color: context.theme.dividerColor,
+                            child: SvgPicture.asset(R.ASSETS_BRAND_SVG),
+                          ),
+                  ),
+                ),
+                const Gap.h(16),
+                Text(
+                  userModel.isLogin
+                      ? userModel.screenName
+                      : context.l10n.userSignInOrUp,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
-          const Gap.h(16),
-          _buildUsername(context),
-        ],
-      ),
+        );
+      },
     );
   }
 

@@ -405,6 +405,72 @@ abstract class JJLocalizations {
   /// **'Latest'**
   String get sortLatest;
 
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get loginTitle;
+
+  /// No description provided for @loginSlogan.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to experience more'**
+  String get loginSlogan;
+
+  /// No description provided for @hintUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone/email'**
+  String get hintUsername;
+
+  /// No description provided for @hintPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get hintPassword;
+
+  /// No description provided for @buttonSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get buttonSignIn;
+
+  /// No description provided for @linkSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account'**
+  String get linkSignUp;
+
+  /// No description provided for @linkRetrieve.
+  ///
+  /// In en, this message translates to:
+  /// **'Fogot password?'**
+  String get linkRetrieve;
+
+  /// No description provided for @loginSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Login success'**
+  String get loginSuccess;
+
+  /// No description provided for @needUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a mobile number or email'**
+  String get needUsername;
+
+  /// No description provided for @incorectUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be a mobile number or email'**
+  String get incorectUsername;
+
+  /// No description provided for @needPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get needPassword;
+
   /// No description provided for @durationYears.
   ///
   /// In en, this message translates to:

@@ -173,6 +173,39 @@ class JJLocalizationsEn extends JJLocalizations {
   String get sortLatest => 'Latest';
 
   @override
+  String get loginTitle => 'Sign in';
+
+  @override
+  String get loginSlogan => 'Log in to experience more';
+
+  @override
+  String get hintUsername => 'Phone/email';
+
+  @override
+  String get hintPassword => 'Password';
+
+  @override
+  String get buttonSignIn => 'Sign in';
+
+  @override
+  String get linkSignUp => 'Create an account';
+
+  @override
+  String get linkRetrieve => 'Fogot password?';
+
+  @override
+  String get loginSuccess => 'Login success';
+
+  @override
+  String get needUsername => 'Please enter a mobile number or email';
+
+  @override
+  String get incorectUsername => 'Username must be a mobile number or email';
+
+  @override
+  String get needPassword => 'Please enter your password';
+
+  @override
   String durationYears(int many) {
     String _temp0 = intl.Intl.pluralLogic(
       many,

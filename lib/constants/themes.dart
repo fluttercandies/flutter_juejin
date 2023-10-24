@@ -63,9 +63,28 @@ ThemeData themeBy({
     inputDecorationTheme: InputDecorationTheme(
       border: InputBorder.none,
       enabledBorder: InputBorder.none,
-      hintStyle: TextStyle(color: tg.iconColor),
+      hintStyle: TextStyle(color: tg.iconColor, height: 1.35),
+      prefixIconColor: tg.iconColor,
     ),
     scaffoldBackgroundColor: tg.backgroundColor,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: themeColorDark,
+        shape: const StadiumBorder(),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: themeColorDark.withAlpha(200),
+        shape: const StadiumBorder(),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: themeColorDark.withAlpha(200),
+        shape: const StadiumBorder(),
+      ),
+    ),
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: tg.themeColor,
       selectionColor: tg.themeColor.withOpacity(.25),

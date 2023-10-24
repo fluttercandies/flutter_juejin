@@ -49,9 +49,18 @@ class HttpUtil {
     Directory(cookiesPath).createSync(recursive: true);
     cookieJar = PersistCookieJar(storage: FileStorage(cookiesPath));
     cookieManager = CookieManager(cookieJar);
+
     dio = Dio()
       ..options = baseOptions
       ..interceptors.addAll([cookieManager, _interceptor]);
+  }
+
+  static void setHeaders(String key, String value) {
+    dio.options.headers.addAll({key: value});
+  }
+
+  static void removeHeaders(String key) {
+    dio.options.headers.remove(key);
   }
 
   static ResponseModel<T> _successModel<T extends DataModel>() =>

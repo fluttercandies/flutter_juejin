@@ -51,7 +51,7 @@ class DeviceUtil {
       deviceInfo = await _deviceInfoPlugin.iosInfo;
       iOSInfo = deviceInfo as IosDeviceInfo;
 
-      deviceModel = iOSInfo!.localizedModel ?? iOSInfo!.name ?? iOSInfo!.model!;
+      deviceModel = iOSInfo!.localizedModel;
       osName = 'iOS';
       osVersion = iOSInfo!.systemVersion.toString();
     } else {

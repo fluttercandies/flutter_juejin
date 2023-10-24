@@ -7,14 +7,14 @@ import 'package:flutter/widgets.dart';
 const None none = None();
 
 class None extends Widget {
-  const None({Key? key}) : super(key: key);
+  const None({super.key});
 
   @override
   Element createElement() => _NoneElement(this);
 }
 
 class _NoneElement extends Element {
-  _NoneElement(Widget widget) : super(widget);
+  _NoneElement(super.widget);
 
   @override
   void mount(Element? parent, dynamic newSlot) {

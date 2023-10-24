@@ -12,7 +12,7 @@ import '../components/comments.dart';
 const _pinContentMaxLines = 3;
 
 class PinsPage extends StatefulWidget {
-  const PinsPage({Key? key}) : super(key: key);
+  const PinsPage({super.key});
 
   @override
   State<PinsPage> createState() => _PinsPageState();
@@ -145,7 +145,7 @@ class _PinsPageState extends State<PinsPage> {
 }
 
 class _PinItemWidget extends StatelessWidget {
-  const _PinItemWidget(this.pin, {Key? key}) : super(key: key);
+  const _PinItemWidget(this.pin, {super.key});
 
   final PinItemModel pin;
 
@@ -452,7 +452,7 @@ class _PinItemWidget extends StatelessWidget {
 
 /// Pins content widget to fold or expand the content
 class _PinContentWidget extends StatefulWidget {
-  const _PinContentWidget(this.content, {Key? key}) : super(key: key);
+  const _PinContentWidget(this.content);
 
   final String content;
 

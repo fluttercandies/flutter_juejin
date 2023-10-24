@@ -14,7 +14,7 @@ const double _topicTopPadding = kToolbarHeight + 26;
 
 @FFRoute(name: 'club-page')
 class ClubPage extends StatefulWidget {
-  const ClubPage(this.id, {Key? key, this.topic}) : super(key: key);
+  const ClubPage(this.id, {super.key, this.topic});
 
   final String id;
   final PinTopic? topic;
@@ -360,7 +360,7 @@ class _ClubPageState extends State<ClubPage> {
 }
 
 class _PinItemWidget extends StatelessWidget {
-  const _PinItemWidget(this.pin, {Key? key}) : super(key: key);
+  const _PinItemWidget(this.pin, {super.key});
 
   final PinItemModel pin;
 
@@ -664,7 +664,7 @@ class _PinItemWidget extends StatelessWidget {
 
 /// Pins content widget to fold or expand the content
 class _PinContentWidget extends StatefulWidget {
-  const _PinContentWidget(this.content, {Key? key}) : super(key: key);
+  const _PinContentWidget(this.content);
 
   final String content;
 

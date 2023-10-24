@@ -10,7 +10,7 @@ import '../utils/log_util.dart';
 import 'logo.dart';
 
 class JJErrorWidget extends StatelessWidget {
-  const JJErrorWidget._(this.details, {Key? key}) : super(key: key);
+  const JJErrorWidget._(this.details);
 
   final FlutterErrorDetails details;
 

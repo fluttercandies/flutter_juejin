@@ -14,13 +14,13 @@ import 'package:flutter/material.dart';
 /// https://github.com/AlexV525/dartpad_workshops/tree/main/implement_lazy_indexed_stack
 class LazyIndexedStack extends StatefulWidget {
   const LazyIndexedStack({
-    Key? key,
+    super.key,
     this.alignment = AlignmentDirectional.topStart,
     this.textDirection,
     this.sizing = StackFit.loose,
     this.index = 0,
     this.children = const <Widget>[],
-  }) : super(key: key);
+  });
 
   final AlignmentGeometry alignment;
   final TextDirection? textDirection;

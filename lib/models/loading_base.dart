@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:diox/diox.dart' show DioError, DioErrorType;
+import 'package:dio/dio.dart' show DioException, DioExceptionType;
 import 'package:flutter/foundation.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 
@@ -75,7 +75,7 @@ class LoadingBase<T extends DataModel> extends LoadingMoreBase<T> {
       setState();
       return response.isSucceed;
     } catch (e, s) {
-      if (e is DioError && e.type == DioErrorType.cancel) {
+      if (e is DioException && e.type == DioExceptionType.cancel) {
         return false;
       }
       LogUtil.e(

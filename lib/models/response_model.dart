@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
-import 'package:diox/diox.dart' show DioError, DioErrorType;
+import 'package:dio/dio.dart' show DioException, DioExceptionType;
 import 'package:flutter/foundation.dart';
 import 'package:oktoast/oktoast.dart' show ToastPosition;
 
@@ -233,9 +233,9 @@ Future<void> tryCatchResponse<T extends DataModel>({
     }
     await onFailed?.call(res);
   } catch (e, s) {
-    if (e is DioError) {
+    if (e is DioException) {
       // 处理 401 的操作。
-      if (e.type == DioErrorType.badResponse) {
+      if (e.type == DioExceptionType.badResponse) {
         if (e.response?.statusCode == HttpStatus.unauthorized) {
           showToast(localizations.exceptionAuthenticationExpired);
           LogUtil.w(
@@ -246,7 +246,7 @@ Future<void> tryCatchResponse<T extends DataModel>({
         }
       }
       // 处理取消的操作。
-      if (e.type == DioErrorType.cancel) {
+      if (e.type == DioExceptionType.cancel) {
         LogUtil.w('Request has been cancelled: ${e.requestOptions.uri}');
         await onCancelled?.call();
         return;

@@ -13,7 +13,7 @@ void main() {
     if (e is ModelError) {
       return true;
     }
-    if (e is DioError && e.type == DioErrorType.cancel) {
+    if (e is DioException && e.type == DioExceptionType.cancel) {
       return true;
     }
     HapticUtil.notifyFailure();

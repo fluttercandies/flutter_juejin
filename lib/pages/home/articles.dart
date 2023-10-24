@@ -11,7 +11,7 @@ import 'package:juejin/exports.dart';
 const double _kTabHeight = 46.0;
 
 class ArticlesPage extends StatefulWidget {
-  const ArticlesPage({Key? key}) : super(key: key);
+  const ArticlesPage({super.key});
 
   @override
   State<ArticlesPage> createState() => _ArticlesPageState();
@@ -321,14 +321,14 @@ class _ArticlesPageState extends State<ArticlesPage>
 
 class _ArticleTabPage<T extends DataModel> extends StatefulWidget {
   const _ArticleTabPage({
-    Key? key,
+    super.key,
     this.isFollow = false,
     this.cursorType = CursorType.raw,
     this.categoryId,
     this.hasSort = true,
     this.isActive = false,
     this.refreshStream,
-  }) : super(key: key);
+  });
 
   final bool isFollow;
 
@@ -518,10 +518,9 @@ class _ArticleTabPageState<T extends DataModel>
 
 class _ArticleTagRow extends StatefulWidget {
   const _ArticleTagRow({
-    Key? key,
     required this.categoryId,
     this.onTagChanged,
-  }) : super(key: key);
+  });
 
   final String categoryId;
 
@@ -729,12 +728,11 @@ class _ArticleTagRowState extends State<_ArticleTagRow> {
 
 class _ArticleTag extends StatelessWidget {
   const _ArticleTag({
-    Key? key,
     required this.tagId,
     required this.tagName,
     this.isActive = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final bool isActive;
 
@@ -765,7 +763,7 @@ class _ArticleTag extends StatelessWidget {
 }
 
 class _ArticleWidget extends StatelessWidget {
-  const _ArticleWidget(this.article, {Key? key}) : super(key: key);
+  const _ArticleWidget(this.article, {super.key});
 
   final ArticleItemModel article;
 
@@ -946,7 +944,7 @@ class _ArticleWidget extends StatelessWidget {
 }
 
 class _AdvertiseWidget extends StatelessWidget {
-  const _AdvertiseWidget(this.ad, {Key? key}) : super(key: key);
+  const _AdvertiseWidget(this.ad, {super.key});
 
   final AdvertiseItemModel ad;
 

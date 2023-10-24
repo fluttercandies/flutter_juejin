@@ -11,10 +11,10 @@ import '../tapper.dart';
 
 class PullToRefreshHeader extends StatelessWidget {
   const PullToRefreshHeader({
-    Key? key,
+    super.key,
     this.info,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   final PullToRefreshScrollNotificationInfo? info;
   final TextStyle? textStyle;

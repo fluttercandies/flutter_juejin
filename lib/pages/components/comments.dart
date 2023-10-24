@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
 class CommentsWidget extends StatefulWidget {
-  const CommentsWidget(this.id, {Key? key, required this.type, this.count})
-      : super(key: key);
+  const CommentsWidget(this.id, {super.key, required this.type, this.count});
 
   final String id;
 
@@ -140,7 +139,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
 }
 
 class _CommentItem extends StatelessWidget {
-  const _CommentItem(this.item, {Key? key}) : super(key: key);
+  const _CommentItem(this.item, {super.key});
 
   final CommentItemModel item;
 
@@ -262,7 +261,7 @@ class _CommentItem extends StatelessWidget {
 }
 
 class _ReplyItem extends StatelessWidget {
-  const _ReplyItem(this.reply, {Key? key}) : super(key: key);
+  const _ReplyItem(this.reply);
 
   final ReplyInfo reply;
 

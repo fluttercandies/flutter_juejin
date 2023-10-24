@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:juejin/exports.dart';
 
 class MinePage extends StatefulWidget {
-  const MinePage({Key? key}) : super(key: key);
+  const MinePage({super.key});
 
   @override
   State<MinePage> createState() => _MinePageState();

@@ -9,13 +9,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 class JJWebView extends StatefulWidget {
   const JJWebView({
-    Key? key,
+    super.key,
     this.url,
     this.controller,
     this.isWebViewOnly = false,
     this.enableProgressBar = true,
-  })  : assert(url != null || controller != null),
-        super(key: key);
+  })  : assert(url != null || controller != null);
 
   final String? url;
   final NestedWebViewController? controller;

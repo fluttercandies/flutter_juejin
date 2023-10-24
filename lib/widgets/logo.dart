@@ -11,12 +11,12 @@ const String defaultLogoHeroTag = 'jj-hero-default';
 
 class JJLogo extends StatelessWidget {
   const JJLogo({
-    Key? key,
+    super.key,
     this.width,
     this.height,
     this.heroTag,
     this.withText = false,
-  }) : super(key: key);
+  });
 
   final double? width;
   final double? height;

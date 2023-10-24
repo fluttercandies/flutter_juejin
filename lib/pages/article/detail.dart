@@ -17,7 +17,7 @@ const _bottomBarHeight = kBottomNavigationBarHeight;
 
 @FFRoute(name: 'article-detail-page')
 class ArticleDetailPage extends StatefulWidget {
-  const ArticleDetailPage(this.id, {Key? key, this.item}) : super(key: key);
+  const ArticleDetailPage(this.id, {super.key, this.item});
 
   final String id;
   final ArticleItemModel? item;
@@ -339,12 +339,12 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 
 class _IconAction extends StatelessWidget {
   const _IconAction({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     this.semanticsLabel,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final Widget icon;
   final Text label;

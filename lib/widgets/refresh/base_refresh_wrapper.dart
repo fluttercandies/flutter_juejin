@@ -41,7 +41,7 @@ const double maxDragOffset = 60;
 
 abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
   const BaseRefreshWrapper({
-    Key? key,
+    super.key,
     required this.loadingBase,
     required this.itemBuilder,
     this.sliversBuilder,
@@ -61,7 +61,7 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
     this.refreshHeaderTextStyle,
     this.lastChildLayoutType = LastChildLayoutType.fullCrossAxisExtent,
     this.physics,
-  }) : super(key: key);
+  });
 
   final LoadingBase<T> loadingBase;
   final RefreshItemBuilder<T> itemBuilder;
@@ -242,11 +242,11 @@ abstract class BaseRefreshWrapper<T extends DataModel> extends StatelessWidget {
 
 class ListMoreIndicator extends StatelessWidget {
   const ListMoreIndicator({
-    Key? key,
+    super.key,
     this.isSliver = true,
     this.isRequesting = false,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   final bool isSliver;
   final bool isRequesting;
@@ -296,7 +296,7 @@ class ListMoreIndicator extends StatelessWidget {
 
 class ListEmptyIndicator extends StatelessWidget {
   const ListEmptyIndicator({
-    Key? key,
+    super.key,
     this.isSliver = true,
     this.isError = false,
     this.loadingBase,
@@ -308,7 +308,7 @@ class ListEmptyIndicator extends StatelessWidget {
     this.indicatorText,
     this.textStyle,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final bool isSliver;
   final bool isError;

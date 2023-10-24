@@ -50,6 +50,7 @@ class RefreshListWrapper<T extends DataModel> extends BaseRefreshWrapper<T> {
       childCountBuilder: dividerBuilder != null
           ? (int length) => length == 0 ? 0 : length * 2 - 1
           : null,
+      getActualIndex: dividerBuilder != null ? (int index) => index ~/ 2 : null,
       padding: buildEffectivePadding(context),
       lastChildLayoutType: lastChildLayoutType,
     );

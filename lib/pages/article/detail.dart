@@ -339,7 +339,6 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 
 class _IconAction extends StatelessWidget {
   const _IconAction({
-    super.key,
     required this.icon,
     required this.label,
     this.semanticsLabel,

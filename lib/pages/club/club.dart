@@ -664,7 +664,7 @@ class _PinItemWidget extends StatelessWidget {
 
 /// Pins content widget to fold or expand the content
 class _PinContentWidget extends StatefulWidget {
-  const _PinContentWidget(this.content, {super.key});
+  const _PinContentWidget(this.content);
 
   final String content;
 

@@ -261,7 +261,7 @@ class _CommentItem extends StatelessWidget {
 }
 
 class _ReplyItem extends StatelessWidget {
-  const _ReplyItem(this.reply, {super.key});
+  const _ReplyItem(this.reply);
 
   final ReplyInfo reply;
 

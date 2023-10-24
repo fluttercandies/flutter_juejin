@@ -518,7 +518,6 @@ class _ArticleTabPageState<T extends DataModel>
 
 class _ArticleTagRow extends StatefulWidget {
   const _ArticleTagRow({
-    super.key,
     required this.categoryId,
     this.onTagChanged,
   });
@@ -729,7 +728,6 @@ class _ArticleTagRowState extends State<_ArticleTagRow> {
 
 class _ArticleTag extends StatelessWidget {
   const _ArticleTag({
-    super.key,
     required this.tagId,
     required this.tagName,
     this.isActive = false,

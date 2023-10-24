@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
-import 'package:diox/diox.dart';
+import 'package:dio/dio.dart';
 
 import '../constants/constants.dart';
 import '../extensions/string_extension.dart';

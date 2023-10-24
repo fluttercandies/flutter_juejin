@@ -7,8 +7,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:diox/diox.dart';
-import 'package:diox_cookie_manager/diox_cookie_manager.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -222,8 +222,8 @@ class HttpUtil {
       }
       _log(sb.toString());
       completer.complete(filePath);
-    } on DioError catch (e, s) {
-      if (e.type != DioErrorType.cancel) {
+    } on DioException catch (e, s) {
+      if (e.type != DioExceptionType.cancel) {
         completer.completeError(e, s);
       }
     } catch (e, s) {
@@ -452,9 +452,9 @@ class HttpUtil {
         res.data = resolvedData;
         handler.resolve(res);
       },
-      onError: (DioError e, ErrorInterceptorHandler handler) async {
-        DioError error = e;
-        if (error.type == DioErrorType.cancel) {
+      onError: (DioException e, ErrorInterceptorHandler handler) async {
+        DioException error = e;
+        if (error.type == DioExceptionType.cancel) {
           error = error.copyWith(
             response: error.response ??
                 Response<Json>(
@@ -472,7 +472,7 @@ class HttpUtil {
           _log(error, stackTrace: error.stackTrace, isError: true);
         }
         final bool isConnectionTimeout =
-            error.type == DioErrorType.connectionTimeout;
+            error.type == DioExceptionType.connectionTimeout;
         final bool isStatusError = error.response != null &&
             error.response!.statusCode != null &&
             error.response!.statusCode! >= HttpStatus.internalServerError;

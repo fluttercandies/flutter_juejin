@@ -4,7 +4,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/cupertino.dart';
@@ -281,7 +280,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   double y = scrollOffset;
                   if (Platform.isAndroid) {
                     // https://github.com/flutter/flutter/issues/75841
-                    y *= ui.window.devicePixelRatio;
+                    y *=  Screens.window.devicePixelRatio;
                   }
                   _controller!.controller?.scrollTo(x: 0, y: y.ceil());
                 },

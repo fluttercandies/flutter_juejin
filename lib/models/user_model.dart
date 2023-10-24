@@ -80,9 +80,9 @@ class UserInfoModel extends DataModel {
   @JsonKey(name: 'extramap')
   final Object? extraMap;
   final int isLogout;
-  final List<Object> annualInfo;
+  final List<Object>? annualInfo;
   final int accountAmount;
-  final UserGrowthInfo userGrowthInfo;
+  final UserGrowthInfo? userGrowthInfo;
   final bool isVip;
 
   Widget buildCircleAvatar({double? size}) {
@@ -100,9 +100,12 @@ class UserInfoModel extends DataModel {
   }
 
   Widget buildVipImage({double? size}) {
+    if (userGrowthInfo == null) {
+      return const SizedBox();
+    }
     final String asset = R.ASSETS_ICON_USER_VIP_LV1_WEBP.replaceAll(
       '1',
-      '${userGrowthInfo.vipLevel}',
+      '${userGrowthInfo!.vipLevel}',
     );
     return Image.asset(asset, width: size, height: size, fit: BoxFit.cover);
   }
@@ -114,7 +117,7 @@ class UserInfoModel extends DataModel {
         Text(userName),
         const SizedBox(width: 4),
         if (level > 0) buildLevelImage(width: levelWidth, height: levelHeight),
-        if (userGrowthInfo.vipLevel > 0)
+        if (userGrowthInfo != null && userGrowthInfo!.vipLevel > 0)
           Padding(
             padding: const EdgeInsetsDirectional.only(start: 4),
             child: buildVipImage(size: levelHeight * 1.375),

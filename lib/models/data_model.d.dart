@@ -2,6 +2,7 @@ part of 'data_model.dart';
 
 final Map<Type, DataFactory> dataModelFactories = <Type, DataFactory>{
   EmptyDataModel: EmptyDataModel.fromJson,
+  FeedModel: FeedModel.fromJson,
   AdvertiseItemModel: AdvertiseItemModel.fromJson,
   ArticleItemModel: ArticleItemModel.fromJson,
   ArticleInfo: ArticleInfo.fromJson,
@@ -18,7 +19,6 @@ final Map<Type, DataFactory> dataModelFactories = <Type, DataFactory>{
   PinTopic: PinTopic.fromJson,
   PinTheme: PinTheme.fromJson,
   HotComment: HotComment.fromJson,
-  FeedModel: FeedModel.fromJson,
   UserInfoModel: UserInfoModel.fromJson,
   UserUniversity: UserUniversity.fromJson,
   UserMajor: UserMajor.fromJson,

@@ -3,8 +3,7 @@ export 'package:diox/diox.dart';
 export 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 export 'package:flutter/services.dart' show HapticFeedback, TextInputFormatter;
 export 'package:flutter_svg/flutter_svg.dart' show SvgPicture;
-export 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart'
-    hide CupertinoActivityIndicator;
+export 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
 export 'apis/content_api.dart';
 export 'apis/interact_api.dart';

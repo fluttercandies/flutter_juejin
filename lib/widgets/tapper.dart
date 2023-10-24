@@ -2,11 +2,10 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 
-import 'dart:ui' as ui;
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:juejin/constants/screens.dart';
 
 /// [Tapper] 默认实现点击时隐藏键盘，以及以 [HitTestBehavior.opaque] 作为默认行为。
 class Tapper extends StatelessWidget {
@@ -99,7 +98,7 @@ class Tapper extends StatelessWidget {
       onTapDown: onTapDown,
       onTapUp: onTapUp,
       onTap: () {
-        if (MediaQueryData.fromWindow(ui.window).viewInsets.bottom > 0) {
+        if (Screens.mediaQuery.viewInsets.bottom > 0) {
           SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
         }
         if (onTap != null) {
